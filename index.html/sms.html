@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGT Booking</title>
+
+    <!-- Bootstrap & Select2 Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap">
+
+    <!-- jQuery & Bootstrap Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+</head>
+<meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="assets/css/styles.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap');
+
+    #copyTextBox {
+        font-size: 14px;
+        width: calc(50% - 20px);
+        height: calc(100vh - 50px);
+        resize: none;
+        overflow: auto;
+        padding: 20px;
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-family: 'Almarai', sans-serif;
+        line-height: 1.5;
+        position: fixed;
+        left: 0;
+        top: 120px;
+    }
+    .mix-text {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+    }
+
+    .mix-text .english {
+        direction: ltr;
+        unicode-bidi: embed;
+    }
+
+    .fixed-position {
+        position: fixed;
+
+    }
+</style>
+<script src="jquery.charReplacer.js"></script>
+<body style="font-family: 'Almarai', sans-serif; direction: rtl; background-color: #ffffff;"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+    $(document).ready(function () {
+        $("#serial_name").on("keyup", function () {
+            let serial = $(this).val().trim();
+
+            if (serial.length > 0) {
+                let url = "https://www.unionaire-tech.com/get_customer_data_from_serial?serial_name=" + serial;
+
+                $.getJSON(url, function (data) {
+                    if (data && data.data) {
+                        // Show customer details
+                        $("#name").val(data.data.name);
+                        $("#phone").val(data.data.main_mobile_number);
+                        $("#state").val(data.data.state_name);
+                        $("#city").val(data.data.city_name);
+                        $("#customerDetails").show();
+                    } else {
+                        $("#customerDetails").hide();
+                    }
+                });
+            } else {
+                $("#customerDetails").hide();
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        var fieldCount = 1;
+
+        $("#addzerialBtn").on("click", function () {
+            var zerialInput = '<div class="form-group">' +
+                '<label for="zerial_name_' + fieldCount + '">' + fieldCount + ':</label>' +
+                '<input style="font-size:12px; width: 140px; height: 30px; display: inline-block;" type="text" class="form-control input-lg zerial-input" placeholder="Serial" name="zerial_name_' + fieldCount + '" id="zerial_name_' + fieldCount + '" value="" required="required" maxlength="20" />' +
+                '<p id="issue_date_' + fieldCount + '"></p>' +
+                '</div>';
+            $("#zerialInputsContainer").append(zerialInput);
+            updatezerialCount();
+        });
+
+        $("#removezerialBtn").on("click", function () {
+            if (fieldCount > 0) {
+                fieldCount--;
+                $("#zerialInputsContainer .form-group:last-child").remove();
+                updatezerialCount();
+            }
+        });
+
+        function updatezerialCount() {
+            var zerialInputs = $(".zerial-input");
+            fieldCount = zerialInputs.length;
+            zerialInputs.each(function (index) {
+                $(this).attr("name", "zerial_name_" + (index + 1));
+                $(this).attr("id", "zerial_name_" + (index + 1));
+                $(this).prev("label").text((index + 1));
+            });
+            updateCopyText();
+        }
+
+        $(document).on("input", ".zerial-input", function () {
+            var currentzerialInput = $(this);
+            var currentissueDate = currentzerialInput.next("p");
+            currentissueDate.empty();
+
+            var zerialValue = currentzerialInput.val().replace(/\s+/g, "");
+
+            zerialValue = zerialValue.toLocaleUpperCase();
+            zerialValue = zerialValue.replace("/", "-");
+            zerialValue = zerialValue.replace(",", "-");
+            zerialValue = zerialValue.replace("*", "-");
+            zerialValue = zerialValue.replace('"', '-');
+            zerialValue = zerialValue.replace("'", "-");
+            zerialValue = zerialValue.replace("#", "-");
+            zerialValue = zerialValue.replace(".", "-");
+            zerialValue = zerialValue.replace("_", "-");
+            zerialValue = zerialValue.replace("/", "-");
+            zerialValue = zerialValue.replace("١", "1");
+            zerialValue = zerialValue.replace("٢", "2");
+            zerialValue = zerialValue.replace("٣", "3");
+            zerialValue = zerialValue.replace("٤", "4");
+            zerialValue = zerialValue.replace("٥", "5");
+            zerialValue = zerialValue.replace("٦", "6");
+            zerialValue = zerialValue.replace("٧", "7");
+            zerialValue = zerialValue.replace("٨", "8");
+            zerialValue = zerialValue.replace("٩", "9");
+            zerialValue = zerialValue.replace("٠", "0");
+
+            currentzerialInput.val(zerialValue);
+
+            currentissueDate.text("...Loading");
+
+            var url = "https://www.unionaire-tech.com/get_last_date?a_serial=" + zerialValue;
+            $.getJSON(url)
+                .done(function (data) {
+                    currentissueDate.text(data.issue_date);
+                    updateCopyText();
+                });
+        });
+
+        $("#copyButton").on("click", function () {
+            var copyText = "";
+            var zerialInputs = $(".zerial-input");
+            var numzerials = zerialInputs.length;
+
+            if (numzerials === 0) {
+                copyText = "عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى\nhttp://unionaire.com/ct/\n\nويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى\nhttps://wa.me/message/TCLIMRXYFJP5H1\n الواتس اب من خلال الرابط ";
+            }
+            else if (numzerials === 1) {
+                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات\nhttps://unionaire.com/ct/index.php?serial=" + zerialInputs.val() + "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
+            } else {
+                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات";
+                $(".zerial-input").each(function () {
+                    copyText += "\nhttps://unionaire.com/ct/index.php?serial=" + $(this).val();
+                });
+                copyText += "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
+            }
+
+            $("#copyTextBox").val(copyText);
+            $("#copyTextBox").select();
+            document.execCommand("copy");
+
+            alert("Text copied to clipboard!");
+        });
+
+        function updateCopyText() {
+            var copyText = "";
+            var zerialInputs = $(".zerial-input");
+            var numzerials = zerialInputs.length;
+
+            if (numzerials === 0) {
+                copyText = "عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى\nhttp://unionaire.com/ct/\n\ويمكنكم الحجز  ومتابعه البلاغ عن طريق الواتس أب من خلال الرابط التالى\nhttps://wa.me/message/TCLIMRXYFJP5H1\n";
+            }
+            else if (numzerials === 1) {
+                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات\nhttps://unionaire.com/ct/index.php?serial=" + zerialInputs.val() + "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
+            } else {
+                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات";
+                $(".zerial-input").each(function () {
+                    copyText += "\nhttps://unionaire.com/ct/index.php?serial=" + $(this).val();
+                });
+                copyText += "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
+            }
+
+            $("#copyTextBox").val(copyText);
+        }
+
+        updateCopyText();
+    });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div style="display: flex; align-items: center;">
+                <img src="https://unionaire.com/ct/unionaire.png" width="150" height="150" style="font-size: 48px;">
+            </div>
+            <h1></h1>
+            <button id="addzerialBtn" class="btn btn-primary">Add Serial</button>
+            <button id="removezerialBtn" class="btn btn-danger">Remove Serial</button>
+            <br><br>
+            <div id="zerialInputsContainer">
+                <div class="form-group">
+                    <label for="zerial_name_1">1</label>
+                    <input style="font-size: 12px; width: 140px; height: 30px; display: inline-block;" type="text" class="form-control input-lg zerial-input" placeholder="Serial" name="zerial_name_1" id="zerial_name_1" value="" required="required" maxlength="20" />
+                    <p id="issue_date_1"></p>
+                </div>
+            </div>
+            <button id="copyButton" class="btn btn-success">Copy Message</button>
+            <textarea id="copyTextBox" readonly></textarea>
+
+            <!-- Customer Details Display -->
+            <div id="customerDetails" style="display:none;">
+                <div>Name: <input type="text" id="name" readonly /></div>
+                <div>Phone: <input type="text" id="phone" readonly /></div>
+                <div>State: <input type="text" id="state" readonly /></div>
+                <div>City: <input type="text" id="city" readonly /></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

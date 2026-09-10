@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فروع بيع قطع الغيار</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+}
+
+body{
+background:
+linear-gradient(135deg,#020617,#0f172a,#111827);
+min-height:100vh;
+padding:25px;
+color:#fff;
+}
+
+.container{
+max-width:1800px;
+margin:auto;
+}
+
+.header{
+background:rgba(255,255,255,0.07);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:30px;
+margin-bottom:25px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.header h1{
+font-size:38px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.header p{
+color:#cbd5e1;
+}
+
+.controls{
+display:flex;
+gap:15px;
+margin-top:25px;
+flex-wrap:wrap;
+}
+
+.controls input,
+.controls select{
+flex:1;
+min-width:250px;
+padding:18px;
+border:none;
+border-radius:18px;
+font-size:15px;
+font-weight:700;
+outline:none;
+background:#fff;
+color:#111827;
+}
+
+.controls select option{
+background:#fff;
+color:#111827;
+}
+
+.table-box{
+overflow:auto;
+border-radius:30px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1600px;
+}
+
+thead{
+background:linear-gradient(90deg,#0ea5e9,#2563eb);
+}
+
+thead th{
+padding:22px;
+text-align:center;
+font-size:15px;
+font-weight:800;
+}
+
+tbody tr{
+transition:.3s;
+border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+tbody tr:nth-child(even){
+background:rgba(255,255,255,.03);
+}
+
+tbody tr:hover{
+background:rgba(255,255,255,.08);
+}
+
+tbody td{
+padding:18px;
+text-align:center;
+line-height:1.9;
+font-size:14px;
+color:#f8fafc;
+}
+
+.name{
+font-weight:800;
+color:#7dd3fc;
+}
+
+.phone{
+color:#facc15;
+font-weight:800;
+direction:ltr;
+}
+
+.badge{
+display:inline-block;
+padding:8px 16px;
+border-radius:30px;
+background:rgba(14,165,233,.15);
+border:1px solid rgba(14,165,233,.25);
+color:#7dd3fc;
+font-size:13px;
+font-weight:700;
+}
+
+.copy-btn{
+border:none;
+padding:10px 18px;
+border-radius:12px;
+background:linear-gradient(135deg,#f59e0b,#d97706);
+color:#fff;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.copy-btn:hover{
+transform:translateY(-2px);
+}
+
+.footer{
+margin-top:20px;
+text-align:center;
+color:#cbd5e1;
+font-size:15px;
+}
+
+::-webkit-scrollbar{
+height:10px;
+width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#38bdf8;
+border-radius:20px;
+}
+
+::-webkit-scrollbar-track{
+background:#0f172a;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>فروع الشركة لبيع قطع الغيار</h1>
+
+<p>
+دليل شامل لجميع الفروع ومراكز بيع قطع الغيار بالمحافظات
+</p>
+
+<div class="controls">
+
+<input
+type="text"
+id="searchInput"
+placeholder="ابحث بالاسم أو المنطقة أو العنوان..."
+onkeyup="applyFilter()"
+>
+
+<select id="cityFilter" onchange="applyFilter()">
+
+<option value="">كل المناطق</option>
+
+<option value="6 اكتوبر">6 اكتوبر</option>
+<option value="الوراق">الوراق</option>
+<option value="فيصل">فيصل</option>
+<option value="البدرشين">البدرشين</option>
+<option value="حلوان">حلوان</option>
+<option value="المقطم">المقطم</option>
+<option value="الزاويه الحمراء">الزاويه الحمراء</option>
+<option value="عين شمس">عين شمس</option>
+<option value="جليم">جليم</option>
+<option value="دمنهور">دمنهور</option>
+<option value="المنوفية">المنوفية</option>
+<option value="الحسينية">الحسينية</option>
+<option value="المنصورة">المنصورة</option>
+<option value="أسيوط">أسيوط</option>
+<option value="قنا">قنا</option>
+<option value="المنيا الجديدة">المنيا الجديدة</option>
+<option value="كوم امبو">كوم امبو</option>
+<option value="اخميم">اخميم</option>
+<option value="الفيوم">الفيوم</option>
+<option value="كفر الشيخ">كفر الشيخ</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+
+<tr>
+<th>الاسم</th>
+<th>منطقة العمل</th>
+<th>التليفون</th>
+<th>العنوان</th>
+<th>المنطقة</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+<tr>
+<td class="name">حسام سيد</td>
+<td class="city"><span class="badge">6 اكتوبر ( شاشات فقط )</span></td>
+<td class="phone">01005464607</td>
+<td>مدينة 6 أكتوبر - المنطقة الصناعية الثالثه - مصنع يونيون اير (الهندسية)</td>
+<td>6 اكتوبر</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد صلاح جبر</td>
+<td class="city"><span class="badge">مركز اكسترا</span></td>
+<td class="phone">01022129333 - 01060824078</td>
+<td>الوراق - 10ش النزهه متفرع من كورنيش النيل بجوار قسم الوراق والبنك الاهلى</td>
+<td>الوراق</td>
+
+</tr>
+
+<tr>
+<td class="name">محمود نبيل</td>
+<td class="city"><span class="badge">مركز مالك</span></td>
+<td class="phone">01050160775 - 01140077660</td>
+<td>فيصل - 18ش الاربعين متفرع من شارع الطوابق فيصل كعابيش</td>
+<td>فيصل</td>
+
+</tr>
+
+<tr>
+<td class="name">احمد رشدى</td>
+<td class="city"><span class="badge">مركز مؤسسة ديجيتال</span></td>
+<td class="phone">01114142518 - 01050506018</td>
+<td>البدرشين بجوار الدائرى الاوسطى وبجوار مدارس مصر العليا طريق مصر اسيوط البطئ</td>
+<td>البدرشين</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد ابراهيم فتحى</td>
+<td class="city"><span class="badge">مركز محمد ابراهيم</span></td>
+<td class="phone">01095314567 - 01115562412</td>
+<td>حلوان - 6ش ابو بكر الصديق علي فايضي بجوار مستشفي الحميات</td>
+<td>حلوان</td>
+
+</tr>
+
+<tr>
+<td class="name">محمود حسن</td>
+<td class="city"><span class="badge">مركز كايرو كول</span></td>
+<td class="phone">01111529060 - 01015321999</td>
+<td>المقطم - 9287 شارع الجامعه الحديثه الهضبه الوسطى</td>
+<td>المقطم</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد ابراهيم</td>
+<td class="city"><span class="badge">مركز بريميوم</span></td>
+<td class="phone">01023710233 01001675292 01011399528</td>
+<td>الزاويه الحمراء - 69ش على حسان متفرع من شارع الحريه مدينه النور</td>
+<td>الزاويه الحمراء</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد سعيد احمد الشيمي</td>
+<td class="city"><span class="badge">عين شمس</span></td>
+<td class="phone">01069778712</td>
+<td>6ش جمال عبد الناصر متفرع من شارع جسر السويس بجوار حضرموت عنتر للمشويات</td>
+<td>عين شمس</td>
+
+</tr>
+
+<tr>
+<td class="name">هشام محمد عبد الفضيل عبد الغني بدر</td>
+<td class="city"><span class="badge">اسكندرية</span></td>
+<td class="phone">01557232621</td>
+<td>33 شارع عبد الحي متفرع من احمد فتحي جليم</td>
+<td>جليم</td>
+
+</tr>
+
+<tr>
+<td class="name">مصطفي نصر</td>
+<td class="city"><span class="badge">البحيرة</span></td>
+<td class="phone">01555860795</td>
+<td>دمنهور -خلف النادي الاجتماعي</td>
+<td>دمنهور</td>
+
+</tr>
+
+<tr>
+<td class="name">أحمد جابر عبد الحميد</td>
+<td class="city"><span class="badge">المنوفية</span></td>
+<td class="phone">01000609104</td>
+<td>قرية مصلحه طريق قويسنا بنها على الطريق العام ش . الورش</td>
+<td>شبين الكوم - طريق شبين قويسنا</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد عبد الفتاح</td>
+<td class="city"><span class="badge">الشرقية</span></td>
+<td class="phone">01020951699</td>
+<td>الحسنيه شارع شهيد طيار بجوار معرض البطل</td>
+<td>الحسينية</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد صابر</td>
+<td class="city"><span class="badge">الدقهلية</span></td>
+<td class="phone">01066074642</td>
+<td>15 شارع مزرعة الدواجن برج الكرمه 2 امام مكتب السياحة</td>
+<td>المنصورة</td>
+
+</tr>
+
+<tr>
+<td class="name">احمد همام</td>
+<td class="city"><span class="badge">اسيوط</span></td>
+<td class="phone">01009746716</td>
+<td>مدينه اسيوط ش النميس بجوار اسماك الزعيم أو سمكمك</td>
+<td>أسيوط</td>
+
+</tr>
+
+<tr>
+<td class="name">احمد فتحي</td>
+<td class="city"><span class="badge">قنا</span></td>
+<td class="phone">01095695087</td>
+<td>شارع مصنع المكرونه امام مالتى فارمه للادويه</td>
+<td>قنا</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد عبدالله</td>
+<td class="city"><span class="badge">المنيا</span></td>
+<td class="phone">01147692304</td>
+<td>المنيا الجديده الحي الحرفي امام ادارة التجنيد</td>
+<td>المنيا الجديدة</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد سعيد</td>
+<td class="city"><span class="badge">اسوان</span></td>
+<td class="phone">01110378229</td>
+<td>أسوان مركز كومبو شارع البيارة</td>
+<td>كوم امبو</td>
+
+</tr>
+
+<tr>
+<td class="name">احمد فؤاد</td>
+<td class="city"><span class="badge">سوهاج</span></td>
+<td class="phone">01009700105</td>
+<td>سوهاج اخميم شارع العقيد عمارة اولاد ابو عمار على الناصيه فرع البنك الاهلى</td>
+<td>اخميم</td>
+
+</tr>
+
+<tr>
+<td class="name">خالد سيد</td>
+<td class="city"><span class="badge">الفيوم</span></td>
+<td class="phone">01063900174</td>
+<td>منطقة مجمع المحاكم اخر شارع الجون خلف مدرسة التجارة بنات</td>
+<td>الفيوم</td>
+
+</tr>
+
+<tr>
+<td class="name">محمد فوزي</td>
+<td class="city"><span class="badge">كفر الشيخ</span></td>
+<td class="phone">01062315208</td>
+<td>كفر الشيخ عماير المحاسبين الجديده خلف مخزن ادويه علي عطيه عماره المهندس محمد الاحول</td>
+<td>كفر الشيخ</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="footer">
+عدد الفروع الظاهرة:
+<span id="resultCount">20</span>
+</div>
+
+</div>
+
+<script>
+
+function applyFilter(){
+
+let filter =
+document.getElementById("cityFilter")
+.value.toLowerCase();
+
+let search =
+document.getElementById("searchInput")
+.value.toLowerCase();
+
+let rows =
+document.querySelectorAll("#tableBody tr");
+
+let visibleCount = 0;
+
+rows.forEach(row=>{
+
+let city =
+row.querySelector(".city")
+.innerText.toLowerCase();
+
+let rowText =
+row.innerText.toLowerCase();
+
+let matchesCity =
+filter === "" || rowText.includes(filter);
+
+let matchesSearch =
+rowText.includes(search);
+
+if(matchesCity && matchesSearch){
+
+row.style.display = "";
+visibleCount++;
+
+}else{
+
+row.style.display = "none";
+
+}
+
+});
+
+document.getElementById("resultCount")
+.innerText = visibleCount;
+
+}
+
+function copyNumber(number){
+
+navigator.clipboard.writeText(number);
+
+alert("تم نسخ الرقم");
+
+}
+
+</script>
+
+</body>
+</html>

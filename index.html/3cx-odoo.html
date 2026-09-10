@@ -1,0 +1,108 @@
+<!-- Odoo Modern Panel -->
+<style>
+    .panel {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .btn-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .open-link-button {
+        background: linear-gradient(135deg, #1f5ea1, #0d6efd);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 15px;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: 0.3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-family: 'Cairo', sans-serif;
+        font-weight: 600;
+    }
+
+    .open-link-button:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #0b3d91, #0a58ca);
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #1f5ea1;
+    }
+
+    @media(max-width:600px){
+        .open-link-button{
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
+</style>
+
+<div class="panel">
+    <div class="title">📌 لوحة روابط النظام المتكامل</div>
+
+    <!-- الصف الأول -->
+    <div class="btn-grid">
+        <button class="open-link-button" onclick="openLink1()">➕ تسجيل عميل جديد</button>
+        <button class="open-link-button" onclick="openLink()">📝 حجز بلاغ صيانة جديد</button>
+        <button class="open-link-button" onclick="openLink2()">🔍 البحث برقم السريال</button>
+    </div>
+
+    <!-- الصف الثاني -->
+    <div class="btn-grid">
+        <button class="open-link-button" onclick="openLink8()">📊 مقايسة الأجهزة</button>
+        <button class="open-link-button" onclick="openLink6()">📎 إضافة سريال غير مسجل</button>
+        <button class="open-link-button" onclick="openLink5()">💬 سجل الرسائل القصيرة SMS</button>
+        <button class="open-link-button" onclick="openLink4()">🔧 أوامر الإصلاح Repair</button>
+        <button class="open-link-button" onclick="openLink3()">👥 قاعدة بيانات العملاء Customer</button>
+        <button class="open-link-button" onclick="openLink7()">📞 نظام 3cx</button>
+    </div>
+</div>
+
+<script>
+function openLink() {
+    window.open('https://www.unionaire-tech.com/web?#id=&action=400&model=helpdesk.ticket&view_type=form&menu_id=248','_blank');
+}
+
+function openLink1() {
+    window.open('https://www.unionaire-tech.com/web?#id=&action=51&model=res.partner&view_type=form&menu_id=248','_blank');
+}
+
+function openLink2() {
+    window.open('https://www.unionaire-tech.com/web?#action=490&active_id=956473&model=stock.production.lot&view_type=list&menu_id=248','_blank');
+}
+
+function openLink3() {
+    window.open('https://www.unionaire-tech.com/web?#action=51&model=res.partner&view_type=list&menu_id=248','_blank');
+}
+
+function openLink4() {
+    window.open('https://www.unionaire-tech.com/web?#action=434&model=repair.order&view_type=list&menu_id=268','_blank');
+}
+
+function openLink5() {
+    window.open('https://www.unionaire-tech.com/web?#action=1046&model=sms.message.log&view_type=list&menu_id=634','_blank');
+}
+
+function openLink6() {
+    window.open('https://forms.office.com/pages/responsepage.aspx?id=g0ha3ChqyUyjU4unbbAv6EV0cC1bUUpLnmDYK7TkzIFUN0dKRkNNSFdTUTFVSVlNRk1WUEZQTFpRWi4u','_blank');
+}
+
+function openLink7() {
+    window.open('https://icallhk.3cx.sc/#/login','_blank');
+}
+
+function openLink8() {
+    window.open('https://dealer.unionaire.com:8443/ords/lines/r/ugt/home?session=0','_blank');
+}
+</script>

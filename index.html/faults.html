@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام اختيار الأعطال الذكي</title>
+<!-- استدعاء خط Tajawal وأيقونات FontAwesome لمظهر احترافي -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #10b981;
+    --secondary-hover: #059669;
+    --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  body {
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 650px;
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #0f172a;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 20px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* أزرار التحكم والرجوع */
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .back-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text-main);
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-btn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+  }
+
+  /* أزرار اختيار النوع والمنتجات */
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .main-btn, .product-btn {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: #fff;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .main-btn:hover, .product-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.15);
+  }
+
+  /* شريط البحث */
+  .search-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+  }
+
+  /* كروت الأعطال */
+  .faults-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-left: 5px;
+  }
+
+  /* تخصيص شريط التمرير */
+  .faults-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .faults-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  .card {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    transition: 0.2s;
+  }
+
+  .card:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+
+  .card span {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  button.copyBtn {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--secondary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+    white-space: nowrap;
+  }
+
+  button.copyBtn:hover {
+    background: var(--secondary-hover);
+  }
+
+  /* التنبيه المنبثق الناعم (Toast) */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1e293b;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+    opacity: 0;
+    z-index: 1000;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- الصفحة الرئيسية -->
+  <div id="mainPage">
+    <h1><i class="fa-solid fa-gears" style="color: var(--primary-color); margin-left: 10px;"></i>نظام اختيار الأعطال</h1>
+    <h2>الرجاء اختيار الفئة للبدء:</h2>
+    <div class="grid-container">
+      <button class="main-btn" onclick="selectType('عميل')">
+        <i class="fa-solid fa-user-tie fa-2x"></i>
+        <span>قسم العملاء</span>
+      </button>
+      <button class="main-btn" onclick="selectType('معرض')">
+        <i class="fa-solid fa-store fa-2x"></i>
+        <span>قسم المعارض / التجار</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- صفحة المنتجات -->
+  <div id="productsPage" style="display:none;">
+    <div class="header-actions">
+      <button class="back-btn" onclick="goBackToMain()"><i class="fa-solid fa-arrow-right"></i> عودة للأقسام</button>
+      <h1 id="typeTitle" style="margin-bottom:0; font-size:22px;"></h1>
+    </div>
+    <h2>اختر المنتج المطلوب:</h2>
+    <div id="productsContainer" class="grid-container"></div>
+  </div>
+
+  <!-- صفحة الأعطال -->
+  <div id="faultsPage" style="display:none;">
+    <div class="header-actions">
+      <button class="back-btn" onclick="goBackToProducts()"><i class="fa-solid fa-arrow-right"></i> عودة للمنتجات</button>
+      <h1 id="productTitle" style="margin-bottom:0; font-size:22px;"></h1>
+    </div>
+    
+    <!-- شريط البحث الذكي -->
+    <div class="search-wrapper">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن العطل هنا..." oninput="filterFaults()">
+    </div>
+
+    <div id="faultsContainer" class="faults-list"></div>
+  </div>
+
+</div>
+
+<!-- التنبيه الاحترافي الذاتي الاختفاء -->
+<div id="toast" class="toast"><i class="fa-solid fa-circle-check" style="color: var(--secondary-color);"></i> تم نسخ العطل بنجاح!</div>
+
+<script>
+// البيانات الأساسية (تم الاحتفاظ بها كاملة وبنفس البنية)
+const allFaultsData = [
+  {fault:"ديب فريزر - لايبرد", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - تكوين تلج", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - الباب لا يغلق", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - فاصل باور", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - الشاشة الديجتال لا تعمل", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - تبريد ضعيف", product:"ديب فريزر", type:"عميل"},
+  {fault:"ديب فريزر - لا تفصل", product:"ديب فريزر", type:"عميل"},
+  {fault:"بوتجاز - شكوي شعلات ( لا تعمل - ضعيفة )", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - الاشعال الذاتي", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - مشكلة بالمفاتيح", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - شكوي فرن ( لا تعمل - ضعيفة )", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - شكوي (الشواية لا تعمل او بتفصل )", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - المروحة لا تعمل", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - تسريب غاز", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - فاصل باور", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - الجهاز بيكهرب", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - انفجار", product:"بوتجاز", type:"عميل"},
+  {fault:"بوتجاز - الجهاز بيسخن", product:"بوتجاز", type:"عميل"},
+  {fault:"ثلاجه دي فروست - لايبرد", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"ثلاجه دي فروست - تكوين تلج", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"ثلاجه دي فروست - الباب لا يغلق", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"ثلاجه دي فروست - تسريب مياة", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"ثلاجه دي فروست - فاصل باور - لا تعمل نهائي", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"ثلاجه دي فروست - لا تفصل", product:"ثلاجه دي فروست", type:"عميل"},
+  {fault:"التكييف - لا يبرد", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - صوت عالي", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - تسريب مياة", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - مسطرة توزيع الهواء لا تعمل", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - لا يعمل ساخن", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الكباس لا يعمل", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز بيفصل تلقائي باستمرار", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - فاصل باور", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - تكوين ثلج", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز لايستقبل من الريموت", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - مروحة الكباس لاتعمل", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز يعطى E5", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز يعمل ساخن باستمرار", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز يعطى E4", product:"تكييف", type:"عميل"},
+  {fault:"التكييف - الجهاز يعطى E3", product:"تكييف", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - لايبرد", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - تكوين تلج", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - الباب لا يغلق", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - تسريب مياة", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - فاصل باور - لا تعمل نهائي", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - error e3", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - الشاشة الديجتال لا تعمل", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - تبريد ضعيف", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ديجيتال - لا تفصل", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - لايبرد", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - تكوين تلج", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - الباب لا يغلق", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - تسريب مياة", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - فاصل باور - لا تعمل نهائي", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"ثلاجه نوفروست ميكانيكال - لا تفصل", product:"ثلاجه نوفروست", type:"عميل"},
+  {fault:"غسالة - لا تعصر", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - تسريب مياة", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - صوت تخبيط", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - المروحة لا تعمل", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - لا تصرف", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - فاصل باور", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة - الجهاز بيكهرب", product:"غسالة عادية", type:"عميل"},
+  {fault:"غسالة توب لودينج - صوت عالي", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - لا تعصر", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - تسريب مياة", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - لا تصرف", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - المروحة لا تعمل", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - الحلة لا تعمل", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - مشكلة بالبرنامج", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - لا تسحب المياة", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - فاصل باور", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - بتفصل تلقائي", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - تصرف المياة بعد السحب مباشرأ", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - الجهاز بيكهرب", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - لا تعصر ولا تصرف", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"غسالة توب لودينج - الحلة تعمل باتجاه واحد", product:"غسالة فوق اتوماتيك", type:"عميل"},
+  {fault:"سخان غاز - لا يسخن المياة", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان غاز - بيفصل تلقائي", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان غاز - تسريب مياة", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان غاز - درجة الحرارة غير ثابتة", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان غاز - تسريب غاز", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان غاز - بتهب", product:"سخان غاز", type:"عميل"},
+  {fault:"سخان كهرباء - لا يسخن المياة", product:"سخان كهرباء", type:"عميل"},
+  {fault:"سخان كهرباء - تسريب مياة", product:"سخان كهرباء", type:"عميل"},
+  {fault:"سخان كهرباء - درجة الحرارة غير ثابتة", product:"سخان كهرباء", type:"عميل"},
+  {fault:"سخان كهرباء - بيكهرب", product:"سخان كهرباء", type:"عميل"},
+  {fault:"بوتجاز - معرض - كسر زجاج فرن خارجى", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - كسر زجاج فرن داخلى", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - كسر زجاج فرن وسط", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - باب حافظة", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - مفصلات باب فرن", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - اكرة ( نوب)", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - مفتاح تشغيل", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - مشتملات", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - يد باب فرن", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - تغليف كامل", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - كرتونه", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - عيب بالجوانب", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - لمبة الفرن", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - مروحة لا تعمل", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - موتور الشواية لا يعمل", product:"بوتجاز", type:"معرض"},
+  {fault:"بوتجاز - معرض - أخرى", product:"بوتجاز", type:"معرض"},
+  {fault:"ثلاجة - معرض - مشكلة بالباب", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - زجاج الباب", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - عدم تبريد", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - أرجل", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - عيب جوان", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - مشتملات", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - مقبض", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - تغليف كامل", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - كرتونه", product:"ثلاجة", type:"معرض"},
+  {fault:"ثلاجة - معرض - أخرى", product:"ثلاجة", type:"معرض"},
+  {fault:"ديب فريزر - معرض - زجاج جرار مكسور", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - عدم تبريد", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - عيب جوان", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - مشكلة بالباب", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - ارجل", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - لوحة البيان لا تعمل", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - مشكلة بكارتة الشاشة", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - تغليف كامل", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - كرتونه", product:"ديب فريزر", type:"معرض"},
+  {fault:"ديب فريزر - معرض - أخرى", product:"ديب فريزر", type:"معرض"},
+  {fault:"مبرد المياه - معرض - عيب بالحافظه", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - كسر بحامل القارورة", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - الحنفيه لا تعمل", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - عدم تبريد", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - تغليف كامل", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - كرتونه", product:"مبرد مياه", type:"معرض"},
+  {fault:"مبرد المياه - معرض - أخرى", product:"مبرد مياه", type:"معرض"},
+  {fault:"HA / غسالة - معرض - مشكلة بالباب", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - زجاج الباب مكسور", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - عيب بالفريم", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - اكرة تشغيل", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - كسر بالقاعده", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - تغليف كامل", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - كرتونه", product:"غسالة", type:"معرض"},
+  {fault:"HA / غسالة - معرض - أخرى", product:"غسالة", type:"معرض"},
+  {fault:"سخان غاز - معرض - كسر بالزجاج", product:"سخان غاز", type:"معرض"},
+  {fault:"سخان غاز - معرض - مشكلة ببيت الحجارة", product:"سخان غاز", type:"معرض"},
+  {fault:"سخان غاز - معرض - اكرة تشغيل", product:"سخان غاز", type:"معرض"},
+  {fault:"سخان غاز - معرض - تغليف كامل", product:"سخان غاز", type:"معرض"},
+  {fault:"سخان غاز - معرض - كرتونه", product:"سخان غاز", type:"معرض"},
+  {fault:"سخان غاز - معرض - أخرى", product:"سخان غاز", type:"معرض"},
+  {fault:"مروحة - معرض - العمود غير مطابق مع فتحه المسمار", product:"مروحة", type:"معرض"},
+  {fault:"مروحة - معرض - عيب بالشبكة", product:"مروحة", type:"معرض"},
+  {fault:"مروحة - معرض - عيبد بريشة المروحه", product:"مروحة", type:"معرض"},
+  {fault:"مروحة - معرض - أخرى", product:"مروحة", type:"معرض"},
+  {fault:"تكييف - معرض - كسر بوش الفانه", product:"تكييف", type:"معرض"},
+  {fault:"تكييف - معرض - توريد مشتملات", product:"تكييف", type:"معرض"},
+  {fault:"تكييف - معرض - عيب بسقف الوحده الخارجيه", product:"تكييف", type:"معرض"},
+  {fault:"تكييف - معرض - تغليف كامل", product:"تكييف", type:"معرض"},
+  {fault:"تكييف - معرض - كرتونه", product:"تكييف", type:"معرض"},
+  {fault:"تكييف - معرض - أخرى", product:"تكييف", type:"معرض"},
+  {fault:"شاشة - معرض - كسر", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - خطوط", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - فاصلة باور", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - مشكلة بالصوت", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - لا تستقبل من الريموت", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - لا يوجد صورة", product:"شاشه", type:"معرض"},
+  {fault:"شاشة - معرض - كرتونه", product:"شاشه", type:"معرض"}
+];
+
+const mainPage = document.getElementById('mainPage');
+const productsPage = document.getElementById('productsPage');
+const faultsPage = document.getElementById('faultsPage');
+const productsContainer = document.getElementById('productsContainer');
+const faultsContainer = document.getElementById('faultsContainer');
+const typeTitle = document.getElementById('typeTitle');
+const productTitle = document.getElementById('productTitle');
+const searchInput = document.getElementById('searchInput');
+
+let selectedType = '';
+let selectedProduct = '';
+let currentFaults = []; // لتخزين الأعطال الحالية النشطة لتسهيل البحث فيها
+
+function selectType(type) {
+  selectedType = type;
+  mainPage.style.display = 'none';
+  productsPage.style.display = 'block';
+  typeTitle.innerHTML = type === 'عميل' ? '<i class="fa-solid fa-user-tie"></i> قسم العملاء' : '<i class="fa-solid fa-store"></i> قسم المعارض';
+
+  const products = [...new Set(allFaultsData.filter(f=>f.type===type).map(f=>f.product))];
+  productsContainer.innerHTML = '';
+  products.forEach(p=>{
+    const btn = document.createElement('button');
+    btn.className = 'product-btn';
+    btn.innerHTML = `<i class="fa-solid fa-layer-group"></i> <span>${p}</span>`;
+    btn.onclick = ()=>selectProduct(p);
+    productsContainer.appendChild(btn);
+  });
+}
+
+function selectProduct(product) {
+  selectedProduct = product;
+  productsPage.style.display = 'none';
+  faultsPage.style.display = 'block';
+  productTitle.innerHTML = `<i class="fa-solid fa-screwdriver-wrench"></i> أعطال: ${product}`;
+  searchInput.value = ''; // تصفية حقل البحث عند دخول صفحة جديدة
+
+  currentFaults = allFaultsData.filter(f=>f.type===selectedType && f.product===product);
+  renderFaults(currentFaults);
+}
+
+// دالة لبناء الكروت وتحديثها
+function renderFaults(faultsArray) {
+  faultsContainer.innerHTML = '';
+  if(faultsArray.length === 0) {
+    faultsContainer.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">لا توجد أعطال مطابقة للبحث.</div>';
+    return;
+  }
+  faultsArray.forEach(f=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<span>${f.fault}</span><button class="copyBtn" onclick="copyText('${f.fault}')"><i class="fa-regular fa-copy"></i> نسخ</button>`;
+    faultsContainer.appendChild(card);
+  });
+}
+
+// دالة الفلترة الفورية أثناء الكتابة في البحث
+function filterFaults() {
+  const query = searchInput.value.toLowerCase().trim();
+  const filtered = currentFaults.filter(f => f.fault.toLowerCase().includes(query));
+  renderFaults(filtered);
+}
+
+function goBackToMain() {
+  productsPage.style.display = 'none';
+  mainPage.style.display = 'block';
+}
+
+function goBackToProducts() {
+  faultsPage.style.display = 'none';
+  productsPage.style.display = 'block';
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast();
+  }).catch(err => {
+    console.error('خطأ في النسخ: ', err);
+  });
+}
+
+// دالة إظهار التنبيه الاحترافي
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.addClassList = toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}
+</script>
+
+</body>
+</html>

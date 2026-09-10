@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام الكول سنتر المتكامل - يونيون إير</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --bg-color: #f4f6f9;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #cbd5e1;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Cairo', Arial, sans-serif;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.header {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.nav button {
+    padding: 12px 28px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    border-radius: 30px;
+    background: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    color: #555;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.nav button:hover {
+    background: #f8fafc;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.nav button.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.section {
+    display: none;
+}
+
+.box {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+h3 {
+    color: #1e293b;
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    padding-right: 12px;
+}
+
+h3::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.script-container {
+    display: none;
+    margin-top: 25px;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ستايلات قسم الهندلة الجديد */
+.followup-fields {
+    display: none;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.form-row {
+    flex: 1 1 calc(33.333% - 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row label {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.form-row input {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.form-row input:read-only {
+    background-color: #f1f5f9;
+}
+
+.handling-script-box {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.handling-script-box .script {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-right: 5px solid var(--primary-color);
+    white-space: pre-line;
+    font-size: 15.5px;
+    color: #1e293b;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.handling-script-box .script-header {
+    background: #f1f5f9;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+}
+
+.handling-script-box .script-title {
+    font-weight: 700;
+    color: #475569;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex: 1 1 100%;
+    }
+    .nav button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">نظام الكول سنتر المتكامل - يونيون إير</div>
+
+<div class="container">
+
+    <div class="nav">
+        <button id="btn-handling" class="active" onclick="showTab('handling')">الهندلة</button>
+        <button id="btn-complain" onclick="showTab('complain')">Complain (الشكاوى)</button>
+        <button id="btn-unsales" onclick="showTab('unsales')">UN Sales</button>
+    </div>
+
+    <!-- قسم الهندلة (تم استبداله بالكود الجديد) -->
+    <div id="handling" class="section" style="display:block">
+        <div class="box">
+            <h3>اختر نوع الحالة لمتابعة البلاغ</h3>
+            <select id="handlingDropdown" onchange="handleHandlingSelection()">
+                <option value="">-- اضغط للاختيار --</option>
+                <option value="Field Visit - تأخر زيارة منزلية">تأخر زيارة منزلية (Field Visit)</option>
+                <option value="Tec.Report - تأخر متابعة تقرير فني">تأخر متابعة تقرير فني (Tec.Report)</option>
+                <option value="Customer Rejection F.Up - تأخر متابعة اعتراض عميل">تأخر متابعة اعتراض عميل (Customer Rejection)</option>
+                <option value="Internal Leak Follow.Up - تأخر متابعة اجهزة بها تنفيس">تأخر متابعة اجهزة بها تنفيس (Internal Leak)</option>
+                <option value="Spare Part Required - تأخر متابعة توفير قطع غيار">تأخر متابعة توفير قطع غيار (Spare Part)</option>
+                <option value="Workshop - تأخر اصلاح جهاز بالورشة">تأخر اصلاح جهاز بالورشة (Workshop)</option>
+                <option value="Product Required - تأخر متابعة توفير استبدال">تأخر متابعة توفير استبدال (Product Required)</option>
+                <option value="Refund Product Required - تأخر متابعة رد قيمة">تأخر متابعة رد قيمة (Refund)</option>
+            </select>
+
+            <!-- حقول المتابعة -->
+            <div id="followup-fields" class="followup-fields">
+                <div class="form-row">
+                    <label>📅 تاريخ انشاء طلب الاستكمال</label>
+                    <input type="text" id="creation-date" placeholder="مثال: 01/01/2024" oninput="updateFollowupFields()">
+                </div>
+                <div class="form-row">
+                    <label>⏱️ زمن المتابعة</label>
+                    <input type="text" id="follow-up-time" readonly>
+                </div>
+                <div class="form-row">
+                    <label>📆 تاريخ اليوم</label>
+                    <input type="text" id="today-date" readonly>
+                </div>
+                <div class="form-row">
+                    <label>📊 ايام العمل منذ انشاء طلب الاستكمال</label>
+                    <input type="text" id="difference" readonly>
+                </div>
+                <div class="form-row">
+                    <label>📅 تاريخ انهاء الاستكمال</label>
+                    <input type="text" id="completion-date" readonly>
+                </div>
+                <div class="form-row">
+                    <label>⚠️ موقف زمن المتابعة</label>
+                    <input type="text" id="overdue" readonly>
+                </div>
+
+                <!-- نص الهندلة (يظهر فقط عند تجاوز المدة) -->
+                <div id="handling-script-wrapper" class="handling-script-box" style="display: none;">
+                    <div class="script-header">
+                        <span class="script-title">📋 نص الرد الجاهز المعتمد (الهندلة):</span>
+                    </div>
+                    <div id="handlingScript" class="script"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الشكاوى -->
+    <div id="complain" class="section">
+        <div class="box">
+            <h3>أنواع الشكاوي وتصنيفاتها</h3>
+            <select onchange="showComplain(this.value)">
+                <option value="">-- اضغط للاختيار --</option>
+                <option value="spare_delay">قطع غيار</option>
+                <option value="visit_delay">عدم الالتزام بالتوجه للعميل</option>
+                <option value="cost_wrong">تكلفة غير مستحقة</option>
+                <option value="workshop_delay">تأخر اصلاح بالورشة</option>
+                <option value="no_service">عدم توافر منفذ خدمة</option>
+                <option value="unauthorized">اصلاح بدون علم الشركة</option>
+                <option value="employee">شكوى من موظف</option>
+                <option value="technician">شكوى من الفني</option>
+                <option value="damage">اساءة الفني للمنتج</option>
+                <option value="other">أخرى</option>
+                <option value="exchange_delay">تأخر إجراءات الاستبدال</option>
+            </select>
+
+            <div id="container_complain" class="script-container">
+                <div class="script-header">
+                    <span class="script-title">تفاصيل الشكوى والتوجيه الإداري:</span>
+                </div>
+                <div id="complainScript" class="script"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم UN Sales -->
+    <div id="unsales" class="section">
+        <div class="box">
+            <h3>قائمة حالات الـ UN Sales</h3>
+            <select onchange="showUnsales(this.value)">
+                <option value="">-- اضغط للاختيار --</option>
+                <optgroup label="الزيارة">
+                    <option value="visit_time">استفسار عن ميعاد زيارة</option>
+                    <option value="change_visit">تغيير ميعاد الزيارة</option>
+                    <option value="center">استفسار عن مركز خدمة</option>
+                    <option value="cancel">إلغاء بلاغ</option>
+                </optgroup>
+                <optgroup label="استكمالات">
+                    <option value="exchange">استفسار عن استبدال</option>
+                    <option value="workshop_case">جهاز بالورشة</option>
+                    <option value="spare_case">بلاغ قطع غيار</option>
+                    <option value="old_case">استعلام عن شكوى سابقة</option>
+                    <option value="price">اعتراض على تكلفة</option>
+                    <option value="support">دعم فني</option>
+                </optgroup>
+                <optgroup label="أخرى">
+                    <option value="sales">مبيعات</option>
+                    <option value="spare_buy">شراء قطع غيار</option>
+                    <option value="other_product">منتج غير الشركة</option>
+                    <option value="warranty">تفعيل ضمان</option>
+                    <option value="redirect">تحويل واتس/لينك</option>
+                    <option value="model">مواصفات الأجهزة</option>
+                    <option value="unknown">معلومة غير موجودة</option>
+                    <option value="dealer">اعتماد مركز خدمة</option>
+                </optgroup>
+            </select>
+
+            <div id="container_unsales" class="script-container">
+                <div class="script-header">
+                    <span class="script-title">الدليل الإرشادي المعتمد للحالة:</span>
+                </div>
+                <div id="unsalesScript" class="script"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ===================== التبويب =====================
+function showTab(tab){
+    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+    document.getElementById(tab).style.display="block";
+
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    document.getElementById("btn-" + tab).classList.add("active");
+}
+
+// ===================== قسم الهندلة الجديد =====================
+let currentHandlingText = "";
+
+function handleHandlingSelection() {
+    const dropdown = document.getElementById('handlingDropdown');
+    const selectedValue = dropdown.value;
+    const followupFields = document.getElementById('followup-fields');
+    const followUpTimeInput = document.getElementById('follow-up-time');
+    const scriptWrapper = document.getElementById('handling-script-wrapper');
+    
+    if (!selectedValue) {
+        followupFields.style.display = 'none';
+        return;
+    }
+
+    followupFields.style.display = 'flex';
+    
+    // تعيين النص الكامل والوقت حسب الاختيار
+    switch(selectedValue) {
+        case 'Field Visit - تأخر زيارة منزلية':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color:#007bff;">📍 الزيارة المنزلية</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #ffc107;">
+                    <strong>⚠️ مواعيد التوجه للعميل:</strong><br>
+                    - محافظات (القاهرة – الجيزة – القليوبية – الأسكندرية) يتم إبلاغ العميل بأن مدة التنفيذ خلال 3 أيام عمل من وقت استلام رسالة الحجز للعميل.<br>
+                    - جميع المحافظات الأخرى يتم إبلاغ العميل بأن مدة التنفيذ خلال 5 أيام عمل من وقت استلام رسالة الحجز للعميل.<br>
+                    (بشرط: لا يتم عمل شكوى نهائياً طالما أن البلاغ حالته Working ولم يتخطى هذه المدد)
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    بمراجعة بيانات حضراتكم وجد حجز زيارة منزلية ستتم في خلال 48 ساعة عمل، برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي، مواعيد العمل من 9 ص وحتى 5 م وممتدة في بعض الأحيان إلى 9 م.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 الفني حاول التواصل والعميل لا يرد</strong><br>
+                    بمراجعة بلاغ حضرتك وجد أن الفني حاول الاتصال بسيادتكم، ولكن الهاتف (لا يرد – مغلق – غير متاح)، وسيتم تجديد الحجز لسيادتكم مرة أخرى واستعجال الزيارة.
+                    كما سيتم تصعيد شكوى بعدم تواصل الفني مع حضرتك، واستعجال الطلب عبر إيميل داخلي يوضح أن حضرتك تنفي التواصل، مع الإشارة إلى استياء حضرتك من التأخير ورغبتك في تنفيذ الزيارة في أسرع وقت.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: Need Delay / Need Cancel وينفي التواصل</strong><br>
+                    تمام يا فندم، بما إن حضرتك بتنفي تواصل الفني معاك، الفني بيبعت رسالة على موبايل حضرتك فيها لينك صالح لمدة 24 ساعة، حضرتك بتضغط عليه وبتختار تجديد الحجز.
+                    في الحالة دي بيتم تسجيل مخالفة على الفني، ويتم رفعها للإدارة للتحقيق في عدم التواصل، وقد يترتب عليها مخالفات مالية وإدارية.
+                    سيتم استعجال تواصل الفني مع سيادتكم لسرعة التوجه.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: Need Delay / Need Cancel وينفي ومش عارف يستخدم اللينك</strong><br>
+                    تمام يا فندم، بما إن حضرتك بتنفي تواصل الفني معاك، الفني بيبعت رسالة على موبايل حضرتك فيها لينك صالح لمدة 24 ساعة، حضرتك بتضغط عليه وبتختار تجديد الحجز.
+                    في الحالة دي بيتم تسجيل مخالفة على الفني، ويتم رفعها للإدارة للتحقيق في عدم التواصل، وقد يترتب عليها مخالفات مالية وإدارية.
+                    وأنا هقوم بإجراء الخطوة دي لحضرتك حالًا. سيتم استعجال تواصل الفني مع سيادتكم لسرعة التوجه.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: مأمورية ولم يتم تحديد موعد</strong><br>
+                    حابب أطمنك إننا هنحدد موعد لتوجه الفني إلى حضرتك للكشف على الجهاز، ولكن موعد حضرتك عبارة عن مأمورية، وبتستغرق بعض الوقت.
+                    ولكن سيتم الاستعجال لسرعة التوجه، وإحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في أقرب وقت ويتم الإصلاح في أسرع وقت ممكن.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز ساعة محددة</strong><br>
+                    حابب أوضح لحضرتك إننا مش بنكون على علم دقيق بخط سير الفني أو الأماكن الأخرى اللي بيزورها قبل حضرتك.
+                    كمان مش بنقدر نحسب بدقة الوقت اللي هياخده في التنقل أو في إصلاح الأجهزة عند العملاء، لأن مدة الإصلاح بتختلف من حالة للتانية.
+                    علشان كده الفني بيتواصل مع حضرتك قبل التوجه بحوالي ساعة.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 ختام/تأكيد دعم</strong><br>
+                    إحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في الموعد المحدد، ونعمل على إصلاح الجهاز في أسرع وقت ممكن.
+                    ولو في أي استفسار أو توضيح إضافي، إحنا في خدمتك في أي وقت..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '3 ايام';
+            break;
+            
+        case 'Tec.Report - تأخر متابعة تقرير فني':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">📋 تقرير فني</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    بمراجعة بلاغ حضرتك، بالفعل تم التوجه لحضراتكم وتم عمل تقرير بحالة المنتج، وجاري التواصل بكم من الإدارة لمتابعة شكواكم.
+                    يرجى الانتظار وسيتم المتابعة في أقرب وقت ممكن… شكرًا لتواصلك بخدمة عملاء يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي بعد التقرير</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لحضرتك لو كان فيه أي تأخير، إحنا مقدرين صبرك وتفهمك معانا.
+                    الجهاز بتاع حضرتك تم عمل تقرير فني كامل عليه، والفنيين انتهوا من التقرير وهو حاليًا معروض على الإدارة.
+                    حاليًا نحن في انتظار رد الإدارة بقرار نهائي بخصوص موقف جهازك.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 تأكيد المتابعة مع الإدارة</strong><br>
+                    إحنا هنتابع مع الإدارة ونؤكد على سرعة الرد على التقرير الفني، وأنا هبعت إيميل حالًا للإدارة أوضح فيه إن حضرتك متضايق جدًا من التأخير ومحتاج رد في أسرع وقت.
+                    إحنا دايمًا هنا لخدمتك.
+                    أنا فاهم تمامًا إنك منتظر رد الإدارة، ومقدر صبرك وتفهمك في الوضع ده.
+                    التقرير الفني تم إعداده بشكل دقيق عشان نقدر نتخذ القرار الصحيح بالنسبة لجهازك، واحنا منتظرين قرار من الإدارة عشان نتحرك في أقرب وقت.
+                    إحنا بنسعى لتقديم أفضل خدمة بأعلى جودة، ودي خطوة لازم تتم عشان نضمن إننا أخدنا القرار الصح في جهاز حضرتك، بحيث يكون مرضي ليك ولينا.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
+                    أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي بدون أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '3 ايام';
+            break;
+            
+        case 'Customer Rejection F.Up - تأخر متابعة اعتراض عميل':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">💰 الاعتراضات على التكلفة</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    بمراجعة بلاغ حضرتك، وجد أنه تم التوجه والكشف على الجهاز، وتبين أن الجهاز به قطع غيار مستهلكات، وتم الاتصال بكم من جانب الإدارة، وحضرتك رفضت الصيانة بالتكلفة.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف على اعتراض التكلفة</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لحضرتك لو موضوع التكلفة سبب أي إزعاج ليك، إحنا مقدرين تمامًا موقف حضرتك.
+                    لكن خليني أوضح لحضرتك إن التكلفة دي ناتجة عن حالة جهازك وفقًا للكشف الفني اللي تم عليه، حيث إن الفنيين قاموا بفحص الجهاز ووجدوا أن هناك أجزاء تحتاج إلى إصلاح أو تغيير، وبالتالي ده بيترتب عليه تكلفة صيانة أو استبدال.
+                    كمان التكلفة مرتبطة بموقف ضمان الجهاز الخاص بحضرتك، وفي حالة إن الجهاز خارج الضمان أو به سوء استخدام، يتم عرض التكلفة بعد مراجعة الإدارة المختصة.
+                    الإدارة بالفعل تواصلت مع حضرتك وبلغتك بالتكلفة بعد مراجعة الحالة، وده قرار صادر من إدارة الشركة بناءً على التقرير الفني.
+                    نعتذر لحضرتك جدًا إذا كان القرار سبب أي إزعاج أو عدم رضا.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '3 ايام';
+            break;
+            
+        case 'Internal Leak Follow.Up - تأخر متابعة اجهزة بها تنفيس':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🔧 تسريب خبيث - متابعة</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    بمراجعة بلاغ حضرتك، بالفعل تم التوجه لحضراتكم وتم عمل تقرير بحالة المنتج، وجاري التواصل بكم من الإدارة لمتابعة شكواكم.
+                    يرجى الانتظار وسيتم المتابعة في أقرب وقت ممكن... شكرا لتواصلك بخدمة عملاء يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لحضرتك لو كان فيه أي تأخير، إحنا مقدرين صبرك معانا وتفهمك.
+                    الجهاز بتاع حضرتك تم عمل تقرير فني كامل عليه، والفنيين انتهوا من التقرير وهو حاليًا معروض على الإدارة.
+                    حاليًا نحن في انتظار رد الإدارة بقرار نهائي بخصوص موقف جهازك.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 تأكيد المتابعة مع الإدارة</strong><br>
+                    إحنا هنتابع مع الإدارة ونؤكد على سرعة الرد على التقرير الفني، وأنا هبعت إيميل حالًا للإدارة أوضح فيه إن حضرتك متضايق جدًا من التأخير ومحتاج رد في أسرع وقت.
+                    إحنا دايمًا هنا لخدمتك.
+                    أنا فاهم تمامًا إنك منتظر رد الإدارة، ومقدر صبرك وتفهمك في الوضع ده.
+                    التقرير الفني تم إعداده بشكل دقيق عشان نقدر نتخذ القرار الصحيح بالنسبة لجهازك، واحنا منتظرين قرار من الإدارة عشان نتحرك في أقرب وقت.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل عاوز يتكلم مع المسؤول</strong><br>
+                    أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، ومقدر موقف حضرتك وشعورك تمامًا.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كأقصى تقدير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل رفض</strong><br>
+                    أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، عشان كده، هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل
+                    لحظات وهحول حضرتك.
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '3 ايام';
+            break;
+            
+        case 'Spare Part Required - تأخر متابعة توفير قطع غيار':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">⚙️ قطع الغيار</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #ffc107;">
+                    <strong>⚠️ يتم عمل شكوى قطع غيار:</strong><br>
+                    - بلاغ توفير قطع الغيار حالته (Open) وعدى عليه 24 ساعة بدون ما يتم الإفادة والتأكيد إذا تم التوفير أم لا.<br>
+                    - بلاغ قطع الغيار حالته (Waiting Stock) وتاريخ تغيير هذه الحالة عدى عليه أكثر من 48 ساعة.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    بمراجعة بيانات حضراتكم، وجد أنه يتم توفير قطع غيار تم طلبها، وسيتم التوفير في أقرب وقت ممكن، يرجى الانتظار وسيتم المتابعة مع حضراتكم.
+                    وسيتم استعجال الأمر من خلالنا إلى القسم المختص لسرعة إنهاء الإجراءات.
+                    سعداء بخدمة حضرتك في يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لك عن تأخير قطع الغيار لجهازك، إحنا مقدرين صبرك معانا وتفهمك.
+                    حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.
+                    إحنا هنتابع الموضوع ونتأكد من حالة القطع المطلوبة لجهازك، سواء كانت متوفرة في المركز أو بيتم طلبها من المصنع الرئيسي، علشان نعرف سبب التأخير ونعمل استعجال لحضرتك.
+                    وأنا هصعد شكوى حضرتك وطلبك في إيميل حالًا إلى الإدارة المختصة، أوضح لهم إن حضرتك متضايق جدًا من التأخير ومحتاج استعجال الأمر.
+                    وفي نفس الوقت، لو الموضوع هياخد وقت أطول من المتوقع، هقدم لك طلب للإدارة ببدائل ممكنة لو متاحة.
+                    وبمجرد وصول القطعة، يتم تحديد موعد التوريد والتركيب لحضرتك في أقرب وقت.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '3 ايام';
+            break;
+            
+        case 'Workshop - تأخر اصلاح جهاز بالورشة':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🏭 الورشة</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 إخطار الحالة</strong><br>
+                    مساء الخير يا فندم، بمراجعة بيانات حضرتك، وجد أنه تم سحب الجهاز للصيانة في الورشة، وبمجرد الانتهاء سيتم تحديد موعد التوريد. سعداء بخدمة حضرتك في يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 إشعار مع اعتذار واستعجال</strong><br>
+                    مساء الخير يا فندم، نعتذر لحضرتك عن التأخير، وسيتم استعجال إصلاح الجهاز بالورشة لسرعة الانتهاء وتحديد موعد للتوريد. سعداء بخدمة حضرتك في يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لك عن التأخير في إصلاح جهازك داخل الورشة، إحنا مقدرين صبرك معانا وتفهمك.
+                    حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.
+                    إحنا هنتابع الموضوع ونتأكد من حالة جهاز حضرتك في الورشة، سواء ما زال تحت الإصلاح، أو متوقف على قطع غيار، أو تم الانتهاء منه وحاليًا تحت الاختبار، أو إذا كان فيه أي سبب آخر للتأخير.
+                    هدفنا إننا نحدد السبب الحقيقي للتأخير ونستعجل الأمر لحضرتك.
+                    وأنا هصعد شكوى حضرتك وطلبك في إيميل حالًا للإدارة المختصة، وأوضح لهم إن حضرتك متضايق جدًا من التأخير ومحتاج استعجال الأمر.
+                    وفي نفس الوقت، لو الموضوع هياخد وقت أطول من المتوقع، هقدم لك طلب للإدارة ببدائل ممكنة لو متاحة.
+                    وبمجرد ما الجهاز يتم إصلاحه، سيتم التواصل مع حضرتك لتحديد موعد التوريد أو الاستلام في أقرب وقت ممكن.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يكلم مسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '10 ايام';
+            break;
+            
+        case 'Product Required - تأخر متابعة توفير استبدال':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🔄 الاستبدال</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 إخطار الحالة</strong><br>
+                    بمراجعة بلاغ حضرتك، وجد أنه جاري توفير المنتج لحضرتك، وسيتم الاستعجال لسرعة تحديد موعد التوريد لسيادتكم. سعداء بخدمتك في يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لك عن التأخير في استبدال جهازك, إحنا مقدرين صبرك معانا وتفهمك.
+                    حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.
+                    إحنا هنتابع الموضوع ونتأكد من حالة طلب استبدال جهاز حضرتك، سواء كان في المرحلة النهائية من الاستبدال أو إذا كان هناك أي تأخير في إجراءات التبديل.
+                    هدفنا إننا نحدد سبب التأخير ونستعجل الأمر لحضرتك.
+                    وأنا هصعد شكوى حضرتك وطلبك في إيميل حالًا إلى الإدارة المختصة، وأوضح لهم إن حضرتك متضايق جدًا من التأخير ومحتاج استعجال الأمر.
+                    وبمجرد ما الجهاز الجديد يكون جاهز للاستبدال، سيتم التواصل معك لتحديد موعد الاستلام في أقرب وقت ممكن.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '15 ايام';
+            break;
+            
+        case 'Refund Product Required - تأخر متابعة رد قيمة':
+            currentHandlingText = `<div style="text-align: right;">
+                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">💰 رد القيمة وصرف الشيك</h3>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 إخطار الحالة</strong><br>
+                    بمراجعة بلاغ حضرتك، وجد أنه جاري صرف الشيك لحضرتك، وسيتم الاستعجال لسرعة إنهاء الإجراءات وتحديد موعد التوريد لسيادتكم. سعداء بخدمتك في يونيون إير.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 رد الموظف الأساسي</strong><br>
+                    أهلاً وسهلاً بحضرتك،
+                    أول حاجة حابب أعتذر لك عن التأخير في (رد القيمة / صرف الشيك)، إحنا مقدرين صبرك معانا وتفهمك.
+                    حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.
+                    إحنا هنتابع الموضوع ونتأكد من حالة طلب رد القيمة لحضرتك، سواء كان في المرحلة النهائية من إصدار أو صرف الشيك، أو إذا كان هناك أي تأخير في إجراءات الصرف.
+                    هدفنا إننا نحدد سبب التأخير ونستعجل الأمر لحضرتك.
+                    وأنا هصعد شكوى حضرتك وطلبك في إيميل حالًا إلى الإدارة المختصة، وأوضح لهم إن حضرتك متضايق جدًا من التأخير ومحتاج استعجال الأمر.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: عاوز يتكلم مع مسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
+                    خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
+                </div>
+                
+                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
+                    أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
+                    لحظات وهحول حضرتك..
+                </div>
+            </div>`;
+            document.getElementById('follow-up-time').value = '15 ايام';
+            break;
+            
+        default:
+            currentHandlingText = "";
+            document.getElementById('follow-up-time').value = '';
+    }
+    
+    document.getElementById('handlingScript').innerHTML = currentHandlingText;
+    updateFollowupFields();
+}
+
+// دوال حساب الأيام
+function calculateWorkDays(startDate, endDate) {
+    let currentDate = new Date(startDate);
+    let workDaysCount = 0;
+    while (currentDate <= endDate) {
+        let dayOfWeek = currentDate.getDay();
+        if (dayOfWeek !== 5 && dayOfWeek !== 6) {
+            workDaysCount++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return workDaysCount;
+}
+
+function calculateCompletionDate(startDate, days) {
+    let date = new Date(startDate);
+    while (days > 0) {
+        date.setDate(date.getDate() + 1);
+        if (date.getDay() !== 5 && date.getDay() !== 6) {
+            days--;
+        }
+    }
+    return date;
+}
+
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function parseDate(dateString) {
+    if (!dateString) return new Date(NaN);
+    const parts = dateString.split('/');
+    if (parts.length !== 3) return new Date(NaN);
+    const [day, month, year] = parts.map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function updateFollowupFields() {
+    const today = new Date();
+    const creationDateInput = document.getElementById('creation-date');
+    const todayDateInput = document.getElementById('today-date');
+    const differenceInput = document.getElementById('difference');
+    const completionDateInput = document.getElementById('completion-date');
+    const overdueInput = document.getElementById('overdue');
+    const followUpTimeInput = document.getElementById('follow-up-time');
+    const scriptWrapper = document.getElementById('handling-script-wrapper');
+    
+    todayDateInput.value = formatDate(today);
+    
+    const creationDate = parseDate(creationDateInput.value);
+    if (isNaN(creationDate.getTime()) || !creationDateInput.value) {
+        differenceInput.value = "";
+        completionDateInput.value = "";
+        overdueInput.value = "";
+        scriptWrapper.style.display = 'none';
+        return;
+    }
+    
+    const followUpTimeStr = followUpTimeInput.value;
+    const followUpDays = parseInt(followUpTimeStr.split(' ')[0]) || 0;
+    
+    let completionDate = calculateCompletionDate(creationDate, followUpDays);
+    completionDateInput.value = formatDate(completionDate);
+    
+    const workDays = calculateWorkDays(creationDate, today);
+    differenceInput.value = `${workDays} ايام عمل`;
+    
+    const isOverdue = workDays > followUpDays;
+    overdueInput.value = isOverdue ? '⚠️ تم تجاوز المدة' : '✓ لم يتم تجاوز المدة';
+    
+    scriptWrapper.style.display = isOverdue ? 'block' : 'none';
+}
+
+// ===================== قسم الشكاوى =====================
+function showComplain(val){
+    let text="";
+    let container = document.getElementById("container_complain");
+    
+    if(!val) { container.style.display = "none"; return; }
+
+    switch(val){
+        case "spare_delay":
+            text=`⚠️ قطع غيار:
+- بلاغ توفير قطع الغيار حالته (Open) وعدى عليه 24 ساعة بدون ما يتم الإفادة والتأكيد إذا تم التوفير أم لا.
+- بلاغ قطع الغيار حالته (Waiting Stock) وتاريخ تغيير هذه الحالة عدى عليه أكثر من 48 ساعة.`;
+            break;
+        case "visit_delay":
+            text=`⚠️ عدم الالتزام بالتوجه للعميل:
+- محافظات (القاهرة – الجيزة – القليوبية – الأسكندرية) يتم إبلاغ العميل بأن مدة التنفيذ خلال 3 أيام عمل من وقت استلام رسالة الحجز للعميل.
+- جميع المحافظات الأخرى يتم إبلاغ العميل بأن مدة التنفيذ خلال 5 أيام عمل من وقت استلام رسالة الحجز للعميل.
+(بشرط: لا يتم عمل شكوى نهائياً طالما أن البلاغ حالته Working ولم يتخطى هذه المدد).`;
+            break;
+        case "cost_wrong":
+            text=`تم تسجيل شكوى "تكلفة صيانة أو قطع غيار غير مستحقة" بنجاح، وسيتم مراجعة التقرير الفني والفحص المالي فوراً من الإدارة.`;
+            break;
+        case "workshop_delay":
+            text=`تأخر إصلاح الجهاز داخل الورشة لأكثر من 10 أيام عمل متتالية، ويتم تصعيد الحالة حالاً للقسم المختص.`;
+            break;
+        case "no_service":
+            text=`عدم وجود أو توافر مركز خدمة معتمد في النطاق الجغرافي الخاص بالعميل، وتم رفع شكوى رسمية للإدارة لتوفير بديل هندسي.`;
+            break;
+        case "unauthorized":
+            text=`بلاغ وإشعار يفيد بإجراء إصلاح خارجي بدون علم الشركة، ويتم تحويل الملف فوراً لرقابة الجودة والإدارة القانونية.`;
+            break;
+        case "employee":
+            text=`تم تسجيل شكوى رسمية ضد الموظف، وجاري تحويلها لمدير القسم وإدارة الموارد البشرية للتحقيق واتخاذ الإجراء اللازم.`;
+            break;
+        case "technician":
+            text=`تم تسجيل شكوى رسمية ضد الفني المختص، وتم تدوين كافة الملاحظات والاعتراضات تمهيداً لرفعها لمدير قطاع الصيانة الميدانية.`;
+            break;
+        case "damage":
+            text=`إساءة الفني للمنتج أو التسبب في تلفيات أثناء الفحص، يتم تسجيل البلاغ كحالة طارئة ويتم فتح تحقيق فوري مع الطاقم الفني.`;
+            break;
+        case "other":
+            text=`تم تسجيل شكوى بنوع (أخرى) بناءً على تفاصيل العميل، وسيتم مراجعتها من قبل فريق الجودة خلال الساعات القادمة.`;
+            break;
+        case "exchange_delay":
+            text=`تأخر إجراءات الاستبدال الرسمي للمنتج لأكثر من 15 يوماً، ويتم الآن عمل تصعيد مباشر لإدارة الاستبدالات لإنهاء المعاملة.`;
+            break;
+    }
+
+    document.getElementById("complainScript").innerText=text;
+    container.style.display = "block";
+}
+
+// ===================== قسم UN Sales =====================
+function showUnsales(val){
+    let text="";
+    let container = document.getElementById("container_unsales");
+    
+    if(!val) { container.style.display = "none"; return; }
+
+    switch(val){
+        case "visit_time":
+            text=`استفسار عن مواعيد زيارة عادية (يتم مراجعة المواعيد الرسمية وتأكيدها للعميل).`;
+            break;
+        case "change_visit":
+            text=`اتصال من العميل وتبين بالبحث أنه قد تم تغيير موعد زيارته مسبقاً على السيستم، يتم توضيح الموعد الجديد واستعجاله.`;
+            break;
+        case "center":
+            text=`استفسار عن موقع أو أرقام مركز خدمة معتمد، وسيتم توجيه وتزويد العميل بأقرب منفذ خدمة متاح جغرافياً.`;
+            break;
+        case "cancel":
+            text=`تم تسجيل وتمرير طلب العميل بـ (إلغاء بلاغ الصيانة المفتوح) بناءً على رغبته.`;
+            break;
+        case "exchange":
+            text=`استفسار عام ومتابعة حول إجراءات الاستبدال المعتمدة أو خطوات رد القيمة المالية.`;
+            break;
+        case "workshop_case":
+            text=`الجهاز متواجد حالياً داخل الورشة الرئيسية وهو قيد الفحص التقني وعمليات الصيانة.`;
+            break;
+        case "spare_case":
+            text=`بلاغ توفير قطع الغيار المطلوبة لا يزال قيد التنفيذ والمتابعة مع المخازن والمصنع.`;
+            break;
+        case "old_case":
+            text=`استعلام عن شكوى سابقة؛ يُخدم في حالة أن العميل لديه بلاغ صيانة مغلق تماماً ولا يوجد بلاغ جديد، أو إذا كان هناك شكوى (Complain) مفتوحة وقيد الدراسة.`;
+            break;
+        case "price":
+            text=`اعتراض على تكلفة؛ يُخدم في حال رفض العميل الحجز نهائياً بسبب التكلفة المحددة، أو أن البلاغ أُغلق مسبقاً بسبب رفض التكلفة والعميل يعاود الاتصال لنفس السبب.`;
+            break;
+        case "support":
+            text=`الدعم الفني:
+- شرح طريقة تشغيل واستخدام الثلاجات والأجهزة.
+- الإجابة على أي استفسارات تقنية عامة من العميل.
+- في حالة وجود بلاغ تقرير فني مفتوح لم يبت فيه بعد.`;
+            break;
+        case "sales":
+            text=`طلب يخص مبيعات الأجهزة الجديدة أو العروض، ويتم تحويل المكالمة أو البيانات إلى قسم المبيعات فوراً.`;
+            break;
+        case "spare_buy":
+            text=`رغبة العميل في شراء قطع غيار مباشرة من الفرع بشكل شخصي (يتم تزويده بالمنافذ المتاحة التي تبيع قطع الغيار).`;
+            break;
+        case "other_product":
+            text=`استفسار من العميل عن منتج أو جهاز غير تابع لشركتنا نهائياً.`;
+            break;
+        case "warranty":
+            text=`طلب تفعيل ضمان المنتج الجديد وبدء احتساب فترة الضمان الرسمية.`;
+            break;
+        case "redirect":
+            text=`تحويل العميل إلى رقم الواتساب الرسمي أو تزويده برابط الحجز الإلكتروني السريع.`;
+            break;
+        case "model":
+            text=`استفسار العميل عن مواصفات الأجهزة، الموديلات المتاحة، أو الأبعاد الفنية للمنتجات.`;
+            break;
+        case "unknown":
+            text=`المعلومة المطلوبة غير موجودة حالياً على السيستم، وسيتم تدوين الاستفسار لرفعه وتوفير الإجابة لاحقاً.`;
+            break;
+        case "dealer":
+            text=`طلب مقدم من جهة أو ورشة خارجية لاعتمادها كمركز خدمة معتمد تابع للشركة، ويتم رفعه لقطاع شبكة الفروع.`;
+            break;
+    }
+
+    document.getElementById("unsalesScript").innerText=text;
+    container.style.display = "block";
+}
+</script>
+
+</body>
+</html>

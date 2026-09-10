@@ -1,0 +1,3663 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGT Booking - يونيون اير</title>
+
+    <!-- Bootstrap & Select2 Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap">
+
+    <!-- jQuery & Bootstrap Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <style>
+        :root {
+            --blue-dark: #1a3a6e;
+            --blue-mid: #2454a4;
+            --blue-light: #3571be;
+            --green: #1e7e34;
+            --green-dark: #176828;
+            --bg-page: #f0f4f8;
+            --bg-panel: #ffffff;
+            --text-main: #1a2533;
+            --text-muted: #6b7c93;
+            --border: #d1dbe8;
+            --input-bg: #f5f8fc;
+            --input-bg-readonly: #eaf0f8;
+            --accent-yellow: #fff8e1;
+            --accent-yellow-border: #f5c518;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --shadow: 0 4px 20px rgba(26,58,110,0.10);
+            --shadow-card: 0 2px 12px rgba(26,58,110,0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Almarai', sans-serif;
+            direction: rtl;
+            background: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ===== HEADER ===== */
+        .ugt-header {
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, #2d6fd4 100%);
+            padding: 28px 0 22px;
+            text-align: center;
+            box-shadow: 0 4px 18px rgba(26,58,110,0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        .ugt-header::before {
+            content: '';
+            position: absolute;
+            top: -40px; left: -40px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .ugt-header::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; right: -30px;
+            width: 250px; height: 250px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 50%;
+        }
+        .ugt-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px; height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+        .ugt-logo-wrap img {
+            width: 56px; height: 56px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        .ugt-header h1 {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 6px;
+            letter-spacing: 0.5px;
+        }
+        .ugt-header p {
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+            margin: 0;
+        }
+        .ugt-header p span {
+            color: rgba(255,255,255,0.95);
+            font-weight: 700;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .ugt-main {
+            max-width: 1200px;
+            margin: 28px auto 40px;
+            padding: 0 16px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        /* ===== PANEL CARDS ===== */
+        .ugt-panel {
+            background: var(--bg-panel);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            flex: 1;
+        }
+        .ugt-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .ugt-panel-header.green { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
+        .ugt-panel-header.blue  { background: linear-gradient(90deg, var(--blue-dark), var(--blue-mid)); }
+        .ugt-panel-header .icon { font-size: 18px; }
+
+        .ugt-panel-body { padding: 20px; }
+
+        /* ===== SECTION HEADERS INSIDE PANEL ===== */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--blue-mid);
+            margin: 18px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border);
+        }
+        .section-label:first-child { margin-top: 0; }
+        .section-label .icon { font-size: 15px; }
+
+        /* ===== FORM CONTROLS ===== */
+        .ugt-form-group { margin-bottom: 12px; }
+        .ugt-form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .ugt-form-group input[type="text"],
+        .ugt-form-group select,
+        .ugt-form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'Almarai', sans-serif;
+            font-size: 13px;
+            color: var(--text-main);
+            background: var(--input-bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .ugt-form-group input[readonly],
+        .ugt-form-group textarea[readonly] {
+            background: var(--input-bg-readonly);
+            color: #3a4a5e;
+        }
+        .ugt-form-group input:focus,
+        .ugt-form-group select:focus,
+        .ugt-form-group textarea:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(53,113,190,0.12);
+        }
+        .ugt-form-group textarea {
+            resize: none;
+            height: 140px;
+            line-height: 1.7;
+        }
+
+        /* ===== INFO BOX (whatsapp message) ===== */
+        .info-box {
+            background: #f5f8ff;
+            border: 1.5px solid #c5d6f0;
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 12.5px;
+            line-height: 1.9;
+            color: #2a3d5e;
+            margin-bottom: 12px;
+        }
+        .info-box a {
+            color: var(--blue-light);
+            word-break: break-all;
+        }
+
+        /* ===== RADIO SERVICE TYPE ===== */
+        .service-type-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .service-type-group label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 8px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--input-bg);
+            transition: all 0.2s;
+            margin: 0;
+        }
+        .service-type-group label:hover {
+            border-color: var(--blue-light);
+            color: var(--blue-mid);
+        }
+        .service-type-group input[type="radio"] {
+            display: none;
+        }
+        .service-type-group input[type="radio"]:checked + span {
+            /* handled by JS below */
+        }
+        .service-btn-active {
+            background: var(--blue-mid) !important;
+            border-color: var(--blue-dark) !important;
+            color: #fff !important;
+        }
+
+        /* ===== CURRENT LOCATION DISPLAY ===== */
+        .current-loc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .current-loc span {
+            font-weight: 700;
+            color: var(--blue-mid);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-copy {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(90deg, var(--blue-mid), var(--blue-light));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Almarai', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: opacity 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+        .btn-copy:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-copy:active { transform: translateY(0); }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--blue-dark), var(--blue-mid));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Almarai', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: opacity 0.2s, transform 0.1s;
+            letter-spacing: 0.5px;
+        }
+        .btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ===== WARRANTY STATUS / FEE FIELDS ===== */
+        .warranty-status-field {
+            background: var(--input-bg-readonly);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 12px;
+            font-size: 13px;
+            color: #2a5298;
+            font-weight: 700;
+            min-height: 38px;
+        }
+        .fee-box {
+            background: var(--accent-yellow);
+            border: 1.5px solid var(--accent-yellow-border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #7a5200;
+            font-weight: 700;
+            min-height: 40px;
+            text-align: center;
+        }
+        .fee-textarea {
+            background: var(--accent-yellow) !important;
+            border-color: var(--accent-yellow-border) !important;
+            color: #7a5200 !important;
+            font-weight: 700 !important;
+            height: 140px !important;
+        }
+
+        /* ===== HYPERMARKETS MSG ===== */
+        #hypermarkets-msg {
+            background: #e8f5e9;
+            border: 1.5px solid #81c784;
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 12px;
+            line-height: 2;
+            color: #1b5e20;
+            margin-bottom: 12px;
+        }
+
+        /* ===== LOADING ===== */
+        #loadingIndicator {
+            text-align: center;
+            color: var(--blue-mid);
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        /* ===== SELECT2 OVERRIDES ===== */
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+            border: 1.5px solid var(--border) !important;
+            border-radius: var(--radius-sm) !important;
+            background: var(--input-bg) !important;
+            font-family: 'Almarai', sans-serif !important;
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            line-height: 36px !important;
+            padding-right: 12px !important;
+            font-size: 13px !important;
+            color: var(--text-main) !important;
+            font-family: 'Almarai', sans-serif !important;
+        }
+        .select2-container .select2-selection__arrow { top: 6px !important; }
+        .select2-dropdown { font-family: 'Almarai', sans-serif !important; font-size: 13px !important; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .ugt-main { flex-direction: column-reverse; }
+            .ugt-header h1 { font-size: 20px; }
+        }
+
+        /* product-options-wrapper */
+        #product-options-wrapper { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="ugt-header">
+        <div class="ugt-logo-wrap">
+            <img src="https://unionaire.com/ct/unionaire.png" alt="Unionaire">
+        </div>
+        <h1>خدمة العملاء - يونيون اير</h1>
+        <p>حجز صيانة &bull; تركيب جديد &bull; تفعيل ضمان &nbsp;|&nbsp; الخط الساخن: <span>19012</span></p>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="ugt-main">
+
+        <!-- LEFT PANEL: Booking Form -->
+        <div class="ugt-panel" style="min-width:0;">
+            <div class="ugt-panel-header green">
+                <span class="icon">📋</span>
+                حجز بلاغ صيانة
+            </div>
+            <div class="ugt-panel-body">
+
+                <!-- Whatsapp Message -->
+                <div class="section-label"><span class="icon">📢</span> رساله اللينك &amp; واتس اب</div>
+                <div class="text-area info-box" id="infoText">
+                    عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى<br>
+                    <a href="http://unionaire.com/ct/" target="_blank">http://unionaire.com/ct/</a><br>
+                    ويمكنكم معرفة طريقة استخدام الحجز الالى من خلال الرابط التالى
+                    <a href="https://youtu.be/R3Z5gVz9OWY" target="_blank">https://youtu.be/R3Z5gVz9OWY</a><br>
+                    ويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى
+                    <a href="https://wa.me/message/TCLIMRXYFJP5H1" target="_blank">https://wa.me/message/TCLIMRXYFJP5H1</a><br>
+                    ويمكنكم معرفة طريقة استخدام خدمة الواتس اب من خلال الرابط التالى
+                    <a href="https://youtu.be/DaydrULq0jI" target="_blank">https://youtu.be/DaydrULq0jI</a>
+                </div>
+                <button id="copyButton" class="btn-copy">📋 نسخ الرسالة</button>
+
+                <form method="post" action="#" id="send">
+
+                    <!-- Service Type -->
+                    <div class="section-label"><span class="icon">⚙️</span> نوع الخدمة</div>
+                    <div class="service-type-group">
+                        <label id="lbl-repair" class="service-btn-active">
+                            <input type="radio" id="repair" name="type_ID" value="repair" checked>
+                            <span>🔧 صيانة</span>
+                        </label>
+                        <label id="lbl-addnew">
+                            <input type="radio" id="addnew" name="type_ID" value="new">
+                            <span>🔨 تركيب جديد</span>
+                        </label>
+                        <label id="lbl-warranty">
+                            <input type="radio" id="warranty" name="type_ID" value="warranty">
+                            <span>🛡️ تفعيل الضمان</span>
+                        </label>
+                    </div>
+                    <input type="hidden" name="type" id="type" value="repair">
+
+                    <!-- Brand & Product -->
+                    <div class="section-label"><span class="icon">🏷️</span> العلامة التجارية والمنتج</div>
+                    <div class="ugt-form-group">
+                        <label>العلامة التجارية</label>
+                        <select class="form-control" id="firstDropdown">
+                            <option value="option1">Unionaire</option>
+                            <option value="option2">Premium</option>
+                            <option value="option3">Supertech</option>
+                        </select>
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>نوع المنتج</label>
+                        <select class="form-control" id="products-list">
+                            <option value="">اختر المنتج</option>
+                            <option value="AC">تكيف</option>
+                            <option value="AC2">تكييف صحراوي</option>
+                            <option value="REF">ثلاجة No Frost</option>
+                            <option value="D-REF">ثلاجة D Frost</option>
+                            <option value="WASH">غسالة</option>
+                            <option value="Cooker">بوتجاز</option>
+                            <option value="TV">شاشة اقل من 55 بوصة</option>
+                            <option value="TV55">شاشة 55 بوصة او اكثر</option>
+                            <option value="H-DF">ديب فريزر افقي</option>
+                            <option value="V-DF">ديب فريزر رأسي</option>
+                            <option value="Dispenser">مبرد مياه</option>
+                            <option value="MiniBar">ميني بار</option>
+                            <option value="G-heater">سخان غاز</option>
+                            <option value="E-heater">سخان كهرباء</option>
+                            <option value="fan">مروحة</option>
+                            <option value="vacum">مكنسة</option>
+                            <option value="hood">شفاط</option>
+                            <option value="warmer">دفاية</option>
+                            <option value="iron">مكوة</option>
+                            <option value="filter">فلتر</option>
+                            <option value="Mini.Oven">الفرن الكهرباء</option>
+                            <option value="Cooker.Built-In">مسطح بلت ان</option>
+                            <option value="Oven.Built-In">فرن بلت ان</option>
+                            <option value="Ventelation Hood">شفاط حائطي</option>
+                            <option value="Food.Proceessor">محضر الطعام</option>
+                        </select>
+                    </div>
+
+                    <!-- Hypermarkets notice -->
+                    <div id="hypermarkets-msg" style="display:none;">
+                        يتم التركيب مجانا من خلالنا مع هذة الهايبرات : <br>
+                        الوكيل : / لتجهيز وادارة Hyper Markets <br>
+                        كارفور <br> شركة بى تك للتجارة والتوزيع - القاهرة <br> المرشدي <br>
+                        المصرية لاسواق شارع عبد العزيز <br> جملة ماركت - الإسكندرية <br>
+                        شركة جوميا ايجيبت - القاهرة <br> طيبة رنين للتجارة والصناعة - الجيزة <br>
+                        هايبر وان للتجاره - 6 اكتوبر <br> التوحيد والنور - عبدالله السيد رجب السويركى - القاهرة <br>
+                        مؤسسة مصر الخير <br> اسواق فتح الله للجملة <br> امان للخدمات المالية - الجيزة <br>
+                        شركة رايه للألكترونيات - القاهرة <br> فاين استون للاستثمارات - القاهرة <br>
+                        شركة المحلاوى ستورز للاستيراد والتصدير - القليوبية <br> اسواق القاهرة للمبيعات <br>
+                        التوحيد والنور - السيد رجب السويركى - القاهرة <br> جمعية رسالة للاعمال الخيرية <br>
+                        التوحيد والنور - احمد السيد رجب رزق السويركى - البحر الأعظم <br> تريد لاين ستورز <br>
+                        كراون للانظمة والتوريدات العمومية <br> باندا للتجارة والتوزيع - عبير عبدالعليم محمد - القليوبية - كاش <br>
+                        راديو طلعت 2000 <br> خاماتو للتجارة الالكترونية <br>
+                        عائلة فتح الله ماركت لتصنيع وتجارة السلع الغذائية <br> شركة عمر افندى <br>
+                        جاليريا ديجيتال للتجارة وخدمات التكنولوجيا - الجيزة <br>
+                        توفير للمواد الغذائية - كازيون - القاهرة <br> نون <br> سوق دوت كوم <br>
+                        شركة مظلوم للتجارة والتوكيلات <br><br>
+                        - في حاله رغبه العميل شراء كابولي من الشركة 870 جنية
+                    </div>
+
+                    <!-- Product options (AC) -->
+                    <div id="product-options-wrapper" class="ugt-form-group">
+                        <label>الموديل</label>
+                        <select class="form-control" id="model-list">
+                            <option value="">اختر الموديل</option>
+                        </select>
+                    </div>
+
+                    <!-- Serial -->
+                    <div class="section-label"><span class="icon">🔢</span> رقم السيريال</div>
+                    <div class="ugt-form-group">
+                        <label>أدخل رقم السيريال</label>
+                        <input type="text" class="form-control input-lg" placeholder="أدخل السيريال"
+                            name="serial" id="serial" maxlength="15" required
+                            oninput="this.value = this.value.trimStart();"
+                            onblur="this.value = this.value.trim();">
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>تاريخ الصرف</label>
+                        <input type="text" name="issueDate" id="issueDate" readonly placeholder="يتم الجلب تلقائياً...">
+                    </div>
+
+                    <!-- Customer Data -->
+                    <div class="section-label"><span class="icon">👤</span> بيانات العميل</div>
+                    <div class="ugt-form-group">
+                        <label>الاسم بالكامل</label>
+                        <input type="text" id="name" name="name" placeholder="اسم العميل">
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="text" id="phone" name="phone" placeholder="01XXXXXXXXX">
+                    </div>
+
+                    <div class="current-loc" id="current-state-wrap" style="display:none;">
+                        المحافظة الحالية: <span id="staten"></span>
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>المحافظة</label>
+                        <select id="state" name="state_id" required style="width:100%">
+                            <option value="">اختار المحافظة</option>
+                            <option value="688">اسوان</option>
+                            <option value="689">اسيوط</option>
+                            <option value="690">الاسكندريه</option>
+                            <option value="691">الاسماعيليه</option>
+                            <option value="692">الاقصر</option>
+                            <option value="693">البحر الاحمر</option>
+                            <option value="694">البحيره</option>
+                            <option value="695">الجيزه</option>
+                            <option value="696">الدقهليه</option>
+                            <option value="697">السويس</option>
+                            <option value="698">الشرقيه</option>
+                            <option value="699">الغربيه</option>
+                            <option value="700">الفيوم</option>
+                            <option value="701">القاهره</option>
+                            <option value="702">القليوبيه</option>
+                            <option value="703">المنوفيه</option>
+                            <option value="704">المنيا</option>
+                            <option value="705">الوادي الجديد</option>
+                            <option value="706">بني سويف</option>
+                            <option value="707">بورسعيد</option>
+                            <option value="708">جنوب سيناء</option>
+                            <option value="709">دمياط</option>
+                            <option value="710">سوهاج</option>
+                            <option value="711">شمال سيناء</option>
+                            <option value="712">قنا</option>
+                            <option value="713">كفر الشــيخ</option>
+                            <option value="714">مرسى مطروح</option>
+                        </select>
+                        <input type="hidden" name="stateid" id="stateid">
+                    </div>
+
+                    <div class="current-loc" id="current-city-wrap" style="display:none;">
+                        المدينة الحالية: <span id="cityn"></span>
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>المدينة</label>
+                        <select id="city" name="city_id" required style="width:100%">
+                            <option value="">اختار المدينة</option>
+                        </select>
+                        <input type="hidden" name="cityid" id="cityid">
+                    </div>
+
+                    <div class="ugt-form-group">
+                        <label>العنوان بالتفصيل</label>
+                        <input type="text" id="address" name="address" required placeholder="الشارع، الحي، المبنى...">
+                    </div>
+                    <div class="ugt-form-group">
+                        <label>وصف المشكلة</label>
+                        <input type="text" id="problem" name="problem" placeholder="اكتب المشكلة" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">إرسال البلاغ ✉️</button>
+                    <div id="loadingIndicator" style="display:none;">جاري الإرسال... ⏳</div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Warranty & Fees Calculator -->
+        <div class="ugt-panel" style="min-width:0; max-width:400px; width:100%;">
+            <div class="ugt-panel-header blue">
+                <span class="icon">🛡️</span>
+                حاسبة الضمان &amp; رسوم الزيارة
+            </div>
+            <div class="ugt-panel-body">
+
+                <!-- Brand & Product -->
+                <div class="section-label"><span class="icon">🏷️</span> اختر العلامة والمنتج</div>
+                <div class="ugt-form-group">
+                    <label>العلامة التجارية</label>
+                    <div class="warranty-status-field" id="brandDisplay">Unionaire</div>
+                </div>
+                <div class="ugt-form-group">
+                    <label>نوع المنتج</label>
+                    <div class="warranty-status-field" id="productDisplay">—</div>
+                </div>
+
+                <!-- Device Info -->
+                <div class="section-label"><span class="icon">🗓️</span> معلومات الجهاز</div>
+                <div class="ugt-form-group">
+                    <label>تاريخ اليوم</label>
+                    <input readonly type="text" name="today_date" id="todayDate">
+                </div>
+                <div class="ugt-form-group">
+                    <label>المدة منذ تاريخ الصرف</label>
+                    <input readonly type="text" name="timeDifference" id="timeDifference">
+                </div>
+                <div class="ugt-form-group">
+                    <label>مدة الضمان الشامل</label>
+                    <input type="text" id="waranty" readonly>
+                </div>
+                <div class="ugt-form-group">
+                    <label>اجمالي مدة الضمان</label>
+                    <input type="text" id="totalWarrantyPeriod" readonly>
+                </div>
+
+                <!-- Warranty Status -->
+                <div class="section-label"><span class="icon">✅</span> حالة الضمان</div>
+                <div class="ugt-form-group">
+                    <div class="warranty-status-field" id="warrantyStatusDisplay">لم يتم تحديد الضمان بعد</div>
+                    <input type="text" id="warrantyStatus" readonly style="display:none;">
+                </div>
+
+                <!-- Visit Fees -->
+                <div class="section-label"><span class="icon">🔥</span> رسوم الزيارة</div>
+                <div class="ugt-form-group">
+                    <div class="fee-box" id="feePlaceholder" style="display:block;">يرجى اختيار المنتج والمحافظة أولاً</div>
+                    <textarea id="serviceCost" class="fee-textarea" readonly style="display:none;"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+    </div><!-- end ugt-main -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+    // ===== SERVICE TYPE BUTTON STYLING =====
+    $('input[name="type_ID"]').on('change', function() {
+        $('.service-type-group label').removeClass('service-btn-active');
+        var val = $(this).val();
+        if (val === 'repair')   $('#lbl-repair').addClass('service-btn-active');
+        if (val === 'new')      $('#lbl-addnew').addClass('service-btn-active');
+        if (val === 'warranty') $('#lbl-warranty').addClass('service-btn-active');
+    });
+
+    // Mirror warranty status to visible div
+    function updateWarrantyStatusDisplay() {
+        var txt = $('#warrantyStatus').val();
+        if (txt && txt !== 'غير متاح') {
+            $('#warrantyStatusDisplay').text(txt);
+            if (txt.indexOf('داخل') !== -1) {
+                $('#warrantyStatusDisplay').css({'background':'#e8f5e9','color':'#1b5e20','border-color':'#81c784'});
+            } else {
+                $('#warrantyStatusDisplay').css({'background':'#fdecea','color':'#7a1010','border-color':'#f5a0a0'});
+            }
+        } else {
+            $('#warrantyStatusDisplay').text('لم يتم تحديد الضمان بعد');
+            $('#warrantyStatusDisplay').css({'background':'var(--input-bg-readonly)','color':'#3a4a5e','border-color':'var(--border)'});
+        }
+    }
+
+    // Mirror service cost to visible element
+    function updateFeeDisplay() {
+        var txt = $('#serviceCost').val();
+        if (txt && txt.trim() !== '') {
+            $('#feePlaceholder').hide();
+            $('#serviceCost').show();
+        } else {
+            $('#feePlaceholder').show();
+            $('#serviceCost').hide();
+        }
+    }
+
+    // Mirror brand and product to right panel
+    function updateRightPanelMirrors() {
+        var brand = $('#firstDropdown option:selected').text();
+        var product = $('#products-list option:selected').text();
+        $('#brandDisplay').text(brand || 'Unionaire');
+        $('#productDisplay').text(product || '—');
+    }
+
+    // Show current state/city if populated
+    function updateCurrentLocDisplay() {
+        var stateText = $('#staten').text();
+        var cityText = $('#cityn').text();
+        if (stateText) $('#current-state-wrap').show(); else $('#current-state-wrap').hide();
+        if (cityText) $('#current-city-wrap').show(); else $('#current-city-wrap').hide();
+    }
+
+    // Watch for warrantyStatus and serviceCost changes
+    var wsObserver = new MutationObserver(function() {
+        updateWarrantyStatusDisplay();
+    });
+
+    // Poll for changes (since values set by val())
+    setInterval(function() {
+        updateWarrantyStatusDisplay();
+        updateFeeDisplay();
+        updateCurrentLocDisplay();
+    }, 300);
+
+    $('#firstDropdown, #products-list').on('change', function() {
+        updateRightPanelMirrors();
+    });
+
+    $(document).ready(function() {
+        updateRightPanelMirrors();
+    });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#serial').on('input', function() {
+                var serialValue = $(this).val().trim();
+                if (serialValue) {
+                    var message = `عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات<br>` +
+                        `<a href="https://unionaire.com/ct/index.php?serial=${serialValue}" target="_blank">https://unionaire.com/ct/index.php?serial=${serialValue}</a><br>` +
+                        `استخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء.<br>` +
+                        `ويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى <a href="https://wa.me/message/TCLIMRXYFJP5H1" target="_blank">https://wa.me/message/TCLIMRXYFJP5H1</a><br>` +
+                        `ويمكنكم معرفة طريقة استخدام خدمة الواتس اب من خلال الرابط التالى <a href="https://youtu.be/DaydrULq0jI" target="_blank">https://youtu.be/DaydrULq0jI</a><br>` +
+                        `ويمكنكم معرفة طريقة استخدام الحجز الالى من خلال الرابط التالى <a href="https://youtu.be/R3Z5gVz9OWY" target="_blank">https://youtu.be/R3Z5gVz9OWY</a>`;
+
+                    $('#infoText').html(message); // Use .html() to render the link
+                } else {
+                    $('#infoText').html(
+                        "عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى<br>\n" +
+                        `<a href="http://unionaire.com/ct/" target="_blank">http://unionaire.com/ct/</a><br>\n` +
+                        "ويمكنكم معرفة طريقة استخدام الحجز الالى من خلال الرابط التالى\n" +
+                        `<a href="https://youtu.be/R3Z5gVz9OWY" target="_blank">https://youtu.be/R3Z5gVz9OWY</a><br>\n` +
+                        "ويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى\n" +
+                        `<a href="https://wa.me/message/TCLIMRXYFJP5H1" target="_blank">https://wa.me/message/TCLIMRXYFJP5H1</a><br>\n` +
+                        "ويمكنكم معرفة طريقة استخدام خدمة الواتس اب من خلال الرابط التالى\n" +
+                        `<a href="https://youtu.be/DaydrULq0jI" target="_blank">https://youtu.be/DaydrULq0jI</a>`
+                    );
+                }
+            });
+        });
+
+        $('#infoText').val(message.replace(/\n/g, "\n"));
+
+
+        $.ajax({
+            url: "https://www.unionaire-tech.com/get_last_date?a_serial=" + serialValue,
+            dataType: 'json',
+            success: function(data) {
+                updateInfoText(serialValue);
+            },
+            error: function() {
+                updateInfoText(serialValue);
+            }
+        });
+
+        // Function to update the text area or div correctly
+        function updateInfoText(serialValue) {
+            var message = `عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات<br>` +
+                        `<a href="https://unionaire.com/ct/index.php?serial=${serialValue}" target="_blank">https://unionaire.com/ct/index.php?serial=${serialValue}</a><br>` +
+                        `استخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء.<br>` +
+                        `ويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى <a href="https://wa.me/message/TCLIMRXYFJP5H1" target="_blank">https://wa.me/message/TCLIMRXYFJP5H1</a><br>` +
+                        `ويمكنكم معرفة طريقة استخدام خدمة الواتس اب من خلال الرابط التالى <a href="https://youtu.be/DaydrULq0jI" target="_blank">https://youtu.be/DaydrULq0jI</a><br>` +
+                        `ويمكنكم معرفة طريقة استخدام الحجز الالى من خلال الرابط التالى <a href="https://youtu.be/R3Z5gVz9OWY" target="_blank">https://youtu.be/R3Z5gVz9OWY</a>`;
+
+            $('#infoText').html(message); // Use .html() to apply line breaks correctly
+        }
+
+        $('#infoText').val(message.replace(/\n/g, "\n"));
+        
+
+
+        $('#infoText').text(serialValue);
+        $('#infoText').val(serialValue);
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Function to check the dropdown values and show/hide the product-options-wrapper
+            function checkDropdownValues() {
+                var firstDropdownValue = $('#firstDropdown').val();
+                var productsListValue = $('#products-list').val();
+
+                console.log('First Dropdown Value:', firstDropdownValue); // Debug log
+                console.log('Products List Value:', productsListValue); // Debug log
+
+                if (firstDropdownValue === 'option1' && productsListValue === 'AC') {
+                    $('#product-options-wrapper').show();
+                } else {
+                    $('#product-options-wrapper').hide();
+                }
+            }
+
+            function checkHypermarketsMsg() {
+                var product = $('#products-list').val();
+                var serviceType = $('input[name="type_ID"]:checked').val();
+                var isAC = (product === 'AC' || product === 'AC2');
+                var isNew = (serviceType === 'new');
+                if (isAC && isNew) {
+                    $('#hypermarkets-msg').show();
+                } else {
+                    $('#hypermarkets-msg').hide();
+                }
+            }
+
+            // Attach the change event to both dropdowns
+            $('#firstDropdown, #products-list').change(checkDropdownValues);
+            $('#products-list').on('change select2:select select2:unselect', checkHypermarketsMsg);
+            $('input[name="type_ID"]').on('change', checkHypermarketsMsg);
+
+            // Initial check in case the values are already set
+            checkDropdownValues();
+            checkHypermarketsMsg();
+
+            // Set today's date by default
+            $('#todayDate').val(formatDate(new Date()));
+
+            // Radio button functionality
+            $('input[name="type_ID"]').change(function() {
+                calculateServiceCost();  // Ensure this is called
+            });
+
+            $('#products-list, #state').on('change', function() {
+                calculateServiceCost();  // Ensure this is called
+            });
+
+            // Function to update all warranty information
+            function updateWarrantyInfo() {
+                // Get warranty period, status, and total warranty period
+                updateWarrantyDisplay();
+                updateTotalWarrantyDisplay();
+                updateWarrantyStatus();
+                calculateServiceCost();
+            }
+
+            // Handling Serial Input and Dynamic Data Fetch
+            $('#serial').on('input', function() {
+                var serialValue = $(this).val().trim();
+                if (!serialValue) {
+                    $('#issueDate, #timeDifference').val();
+                    return;
+                }
+
+
+                // AJAX call to fetch data
+                var url = "https://www.unionaire-tech.com/get_last_date?a_serial=" + serialValue + "&timestamp=" + new Date().getTime();
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    success: function(data) {
+                        // Handle success
+                        var issueDate = new Date(data.issue_date);
+                        var today = new Date();
+                        var diffYears = today.getFullYear() - issueDate.getFullYear();
+                        var diffMonths = today.getMonth() - issueDate.getMonth();
+                        var diffDays = today.getDate() - issueDate.getDate();
+
+                        if (diffMonths < 0) {
+                            diffYears--;
+                            diffMonths += 12;
+                        }
+                        if (diffDays < 0) {
+                            diffMonths--;
+                            diffDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                        }
+
+                        $('#issueDate').val(formatDate(issueDate));
+                        $('#timeDifference').val(diffYears + ' سنوات, ' + diffMonths + ' شهور, ' + diffDays + ' ايام');
+
+                        // Update warranty display and status
+                        updateWarrantyInfo();
+                    },
+                    error: function() {
+                        alert("حدث خطأ أثناء تحميل البيانات");
+                    }
+                });
+            });
+
+            // Update warranty display when product, model, or firstDropdown changes
+            $('#products-list, #model-list, #firstDropdown').on('change', function() {
+                updateWarrantyStatus(); // Update the warranty status
+                updateWarrantyInfo();
+                updateTotalWarrantyDisplay();
+                checkDropdownValues(); // Check dropdown values to show/hide product-options-wrapper
+            });
+
+            // Format date as DD/MM/YYYY
+            function formatDate(date) {
+                var day = date.getDate();
+                var month = date.getMonth() + 1; // Months are zero-based
+                var year = date.getFullYear();
+
+                if (day < 10) day = '0' + day;
+                if (month < 10) month = '0' + month;
+
+                return day + '/' + month + '/' + year;
+            }
+
+            // Function to calculate service cost dynamically based on state, product, and visit type
+            function addAmountToNumbers(text, amount) {
+                if (!text) return text;
+                return text.replace(/(\d+)\s*(ج|جنيه|جنية)/g, function(match, number, unit) {
+                    let newNumber = parseInt(number) + amount;
+                    return newNumber + ' ' + unit;
+                });
+            }
+
+            function getBasePrice(selectedProduct, visitType) {
+                if (visitType === "out-of-warranty") {
+                    if (selectedProduct === 'AC') {
+                        return "أقل من 3 حصان: 500 جنية / 3 حصان أو أكثر: 600 جنية\nغسيل التكييف: 750 جنية";
+                    } else if (selectedProduct === 'TV') {
+                        return "500 جنية (خارج الضمان)";
+                    } else if (selectedProduct === 'TV55') {
+                        return "500 جنية (خارج الضمان)";
+                    } else {
+                        return "450";
+                    }
+                }
+                
+                if (visitType === "new") {
+                    if (selectedProduct === 'AC') {
+                        return "تركيب تكييف جديد/مستعمل (أقل من 3 حصان): 1000 ج\n" +
+                               "تركيب تكييف جديد/مستعمل (أكبر من 3 حصان): 1350 ج\n" +
+                               "فك وتركيب كامل قديم (أقل من 3 حصان): 1400 ج\n" +
+                               "فك وتركيب كامل قديم (أكبر من 3 حصان): 1700 ج\n" +
+                               "فك فانة أو كباس (أقل من 3 حصان): 350 ج / (أكبر من 3): 400 ج\n" +
+                               "فك وتركيب فانة أو كباس (أقل من 3): 750 ج / (أكبر من 3): 950 ج";
+                    } else {
+                        return "250";
+                    }
+                } 
+                else if (visitType === "repair") {
+                    if (selectedProduct === 'G-heater' || selectedProduct === 'E-heater' || selectedProduct === 'filter' || 
+                        selectedProduct === 'hood' || selectedProduct === 'Ventelation Hood') {
+                        return "350";
+                    }
+                    else if (selectedProduct === 'Cooker' || selectedProduct === 'WASH' || selectedProduct === 'Cooker.Built-In' || 
+                             selectedProduct === 'Oven.Built-In') {
+                        return "350";
+                    }
+                    else if (selectedProduct === 'AC') {
+                        return "أقل من 3 حصان: 350 جنية / 3 حصان أو أكثر: 400 جنية\nغسيل التكييف: 650 جنية";
+                    }
+                    else if (selectedProduct === 'REF' || selectedProduct === 'D-REF' || selectedProduct === 'V-DF' || 
+                             selectedProduct === 'H-DF' || selectedProduct === 'Dispenser' || selectedProduct === 'AC2' || selectedProduct === 'MiniBar') {
+                        return "350";
+                    }
+                    else if (selectedProduct === 'TV') {
+                        return "400 جنية داخل الضمان / 500 جنية خارج الضمان";
+                    }
+                    else if (selectedProduct === 'TV55') {
+                        return "لا يتم تحصيل رسوم زيارة داخل الضمان / 500 جنية خارج الضمان";
+                    }
+                    else if (selectedProduct === 'fan' || selectedProduct === 'vacum' || selectedProduct === 'warmer' || 
+                             selectedProduct === 'iron' || selectedProduct === 'Mini.Oven' || selectedProduct === 'Food.Proceessor') {
+                        return "350";
+                    }
+                    else {
+                        return "يرجى التحقق من جدول الصيانة";
+                    }
+                }
+                else if (visitType === "warranty") {
+                    return "خدمة تفعيل الضمان - بدون رسوم";
+                }
+                return "";
+            }
+
+            function calculateServiceCost() {
+                const selectedState = $('#state').val();
+                const selectedProduct = $('#products-list').val();
+                const selectedType = $('input[name="type_ID"]:checked').val();
+                const warrantyStatusText = $('#warrantyStatus').val();
+                
+                if (!selectedProduct || !selectedState) {
+                    $('#serviceCost').val("");
+                    return;
+                }
+                
+                let visitType = selectedType;
+                if (selectedType === 'repair' && warrantyStatusText === 'خارج الضمان') {
+                    visitType = 'out-of-warranty';
+                }
+                
+                let basePrice = getBasePrice(selectedProduct, visitType);
+                const isComplexProduct = (selectedProduct === 'AC' || basePrice.includes("داخل الضمان") || basePrice.includes("لا يتم تحصيل") || basePrice.includes("\n"));
+                
+                const group2States = ['688', '689', '692', '700', '704', '706', '710', '712'];
+                const group3States = ['693', '705', '708', '711', '714'];
+                
+                let normalAdditional = 0;
+                if (group2States.includes(selectedState)) {
+                    normalAdditional = 95;
+                } else if (group3States.includes(selectedState)) {
+                    normalAdditional = 200;
+                }
+                
+                let specialAreas = [];
+                if (selectedState === '688') {
+                    specialAreas = [{ name: "منطقة أبو سمبل", add: 200 }];
+                } else if (selectedState === '690') {
+                    specialAreas = [{ name: "منطقة الساحل الشمالي", add: 200 }];
+                } else if (selectedState === '697') {
+                    specialAreas = [{ name: "منطقة العين السخنة", add: 200 }, { name: "منطقة الجناين", add: 200 }];
+                }
+                
+                function getPrice(additionalAmount) {
+                    if (additionalAmount === 0) {
+                        if (isComplexProduct) {
+                            return basePrice;
+                        } else if (basePrice !== "يرجى التحقق من جدول الصيانة" && basePrice !== "خدمة تفعيل الضمان - بدون رسوم") {
+                            let serviceName = (visitType === "new" || selectedType === "new") ? "التركيب" : "زيارة الصيانة";
+                            return "رسوم " + serviceName + ": " + basePrice + " جنيه";
+                        } else {
+                            return basePrice;
+                        }
+                    } else {
+                        if (isComplexProduct) {
+                            return addAmountToNumbers(basePrice, additionalAmount);
+                        } else if (basePrice !== "يرجى التحقق من جدول الصيانة" && basePrice !== "خدمة تفعيل الضمان - بدون رسوم") {
+                            let priceNum = parseInt(basePrice);
+                            let newPrice = priceNum + additionalAmount;
+                            let serviceName = (visitType === "new" || selectedType === "new") ? "التركيب" : "زيارة الصيانة";
+                            return "رسوم " + serviceName + ": " + newPrice + " جنيه";
+                        } else {
+                            return basePrice;
+                        }
+                    }
+                }
+                
+                let finalText = "";
+                
+                if (normalAdditional > 0) {
+                    finalText = "🏠 المناطق العادية:\n" + getPrice(normalAdditional);
+                } else {
+                    finalText = "🏠 المناطق العادية:\n" + getPrice(0);
+                }
+                
+                if (specialAreas.length > 0) {
+                    finalText += "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 المناطق الخاصة:\n";
+                    for (let area of specialAreas) {
+                        finalText += "\n• " + area.name + ":\n" + getPrice(area.add);
+                    }
+                }
+                
+                $('#serviceCost').val(finalText);
+            }
+            
+            // Example usage of this function when user selects a product or triggers any relevant event
+            $('#products-list, #firstDropdown, #model-list').on('change', function() {
+                updateWarrantyDisplay();
+            });
+            // Trigger the calculation when inputs change
+            $('#toggleBtn, #products-list, #state').on('change input', function() {
+                calculateServiceCost();
+                updateWarrantyStatus(); // Update the warranty status
+                updateWarrantyInfo();
+                updateTotalWarrantyDisplay();
+                
+            });
+            // Function to calculate the warranty status
+            function updateWarrantyStatus() {
+                const warantyText = $('#waranty').val();
+                let warantyInMonths;
+
+                if (warantyText.includes('اشهر')) {
+                    warantyInMonths = parseInt(warantyText.split(' ')[1], 10); // Extract the number of months
+                } else {
+                    warantyInMonths = parseInt(warantyText, 10) * 12; // Convert years to months
+                }
+
+                const timeDifferenceText = $('#timeDifference').val();
+                const timeDifferenceYears = parseInt(timeDifferenceText.split(' ')[0], 10);
+                const timeDifferenceMonths = parseInt(timeDifferenceText.split(' ')[2], 10);
+                const timeDifferenceInMonths = (timeDifferenceYears * 12) + timeDifferenceMonths;
+
+                let warrantyStatus = 'غير متاح'; // Default value
+
+                if (!isNaN(warantyInMonths) && !isNaN(timeDifferenceInMonths)) {
+                    if (warantyInMonths > timeDifferenceInMonths) {
+                        warrantyStatus = ' داخل الضمان / لا يتم تحصيل رسوم زيارة';
+                    } else {
+                        warrantyStatus = 'خارج الضمان / يتم تحصيل رسوم زيارة';
+                    }
+                }
+
+                $('#warrantyStatus').val(warrantyStatus);
+            }
+
+            // Update the display with the warranty period
+            function updateWarrantyDisplay() {
+                const warrantyPeriod = getWarrantyPeriod();
+                $('#warantyDisplay').text(warrantyPeriod); // Update the span in the result-box
+                $('#waranty').val(warrantyPeriod); // Set the value in the input field
+                updateWarrantyStatus(); // Update the warranty status
+            }
+
+
+            // Function to get warranty period based on selected product and year
+            function getWarrantyPeriod() {
+                const selectedProduct = $('#products-list').val();
+                const selectedModel = $('#model-list').val();
+                const issueDate = new Date($('#issueDate').val().split('/').reverse().join('-')); // Convert issue date to Date object
+                const selectedYear = issueDate.getFullYear(); // Get the year from the issue date
+                const firstDropdownValue = $('#firstDropdown').val(); // Get the value of the first dropdown
+                
+                let warrantyPeriod = 'غير متاح'; // Default value if no match is found
+
+                // Conditional check based on firstDropdown value
+                if (firstDropdownValue === 'option1') {
+                    // Use productWarrantyDetails if firstDropdown is 'option1'
+                    if (selectedProduct && productWarrantyDetails[selectedProduct]) {
+                        const productDetails = productWarrantyDetails[selectedProduct];
+                        
+                        // If the product has a year_condition object
+                        if (productDetails.year_condition) {
+                            warrantyPeriod = productDetails.year_condition[selectedYear] || productDetails.default;
+                        }
+                        // If the product has models, check if it's a specific model
+                        else if (productDetails.models && productDetails.models[selectedModel]) {
+                            const modelDetails = productDetails.models[selectedModel];
+                            warrantyPeriod = modelDetails[selectedYear] || modelDetails['default'];
+                        }
+                        else {
+                            warrantyPeriod = productDetails.default;
+                        }
+                    }
+                }
+                else if (firstDropdownValue === 'option2') {
+                    // Use productWarrantyDetails1 if firstDropdown is 'option2'
+                    if (selectedProduct && productWarrantyDetails1[selectedProduct]) {
+                        const productDetails = productWarrantyDetails1[selectedProduct];
+                        
+                        // If the product has a year_condition object
+                        if (productDetails.year_condition) {
+                            warrantyPeriod = productDetails.year_condition[selectedYear] || productDetails.default;
+                        }
+                        // If the product has models, check if it's a specific model
+                        else if (productDetails.models && productDetails.models[selectedModel]) {
+                            const modelDetails = productDetails.models[selectedModel];
+                            warrantyPeriod = modelDetails[selectedYear] || modelDetails['default'];
+                        }
+                        else {
+                            warrantyPeriod = productDetails.default;
+                        }
+                    }
+                }
+                else if (firstDropdownValue === 'option3') {
+                    // Use productWarrantyDetails2 if firstDropdown is 'option2'
+                    if (selectedProduct && productWarrantyDetails2[selectedProduct]) {
+                        const productDetails = productWarrantyDetails2[selectedProduct];
+                        
+                        // If the product has a year_condition object
+                        if (productDetails.year_condition) {
+                            warrantyPeriod = productDetails.year_condition[selectedYear] || productDetails.default;
+                        }
+                        // If the product has models, check if it's a specific model
+                        else if (productDetails.models && productDetails.models[selectedModel]) {
+                            const modelDetails = productDetails.models[selectedModel];
+                            warrantyPeriod = modelDetails[selectedYear] || modelDetails['default'];
+                        }
+                        else {
+                            warrantyPeriod = productDetails.default;
+                        }
+                    }
+                }
+
+                return warrantyPeriod;
+            }
+            
+            const generateYearCondition = (years, defaultValue) => {
+                return Object.fromEntries(years.map(year => [year, defaultValue]));
+            };
+
+            const productWarrantyDetails = {
+                'AC': {
+                    'default': '2',
+                    'year_condition': {
+                        2016: '2',
+                        2017: '2',
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'REF': {
+                    'default': '5',
+                    'year_condition': {
+                        2016: '5',
+                        2017: '5',
+                        2018: '10',
+                        2019: '10',
+                        2020: '10',
+                        2021: '10',
+                        2022: '10',
+                        2023: '10',
+                        2024: '10',
+                        2025: '10'
+                    }
+                },
+                'D-REF': {
+                    'default': '5',
+                    'year_condition': {
+                        2016: '5',
+                        2017: '5',
+                        2018: '10',
+                        2019: '10',
+                        2020: '10',
+                        2021: '5',
+                        2022: '5',
+                        2023: '5',
+                        2024: '5',
+                        2025: '5'
+                    }
+                },
+                'H-DF': {
+                    'default': '5',
+                    'year_condition': {
+                        2016: '5',
+                        2017: '5',
+                        2018: '5',
+                        2019: '5',
+                        2020: '5',
+                        2021: '5',
+                        2022: '5',
+                        2023: '5',
+                        2024: '5',
+                        2025: '5'
+                    }
+                },
+                'V-DF': {
+                    'default': '5',
+                    'year_condition': {
+                        2016: '5',
+                        2017: '5',
+                        2018: '10',
+                        2019: '5',
+                        2020: '10',
+                        2021: '10',
+                        2022: '10',
+                        2023: '10',
+                        2024: '10',
+                        2025: '10'
+                    }
+                },
+                'Dispenser': {
+                    'default': '2',
+                    'year_condition': {
+                        2016: '2',
+                        2017: '2',
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'MiniBar': {
+                    'default': '2',
+                    'year_condition': {
+                        2016: '2', 2017: '2', 2018: '2', 2019: '2', 2020: '2',
+                        2021: '2', 2022: '2', 2023: '2', 2024: '2', 2025: '2'
+                    }
+                },
+                'Cooker': {
+                    'default': '7',
+                    'year_condition': {
+                        2016: '7',
+                        2017: '7',
+                        2018: '7',
+                        2019: '7',
+                        2020: '2',
+                        2021: '7',
+                        2022: '7',
+                        2023: '7',
+                        2024: '7',
+                        2025: '7'
+                    }
+                },
+                'WASH': { 
+                        'default': '2', 
+                        'year_condition': { 
+                            2016: '5',
+                            2017: '5',
+                            2018: '2',
+                            2019: '2',
+                            2020: '2',
+                            2021: '2',
+                            2022: '2',
+                            2023: '2',
+                            2024: '2',
+                            2025: '2'
+                        }
+                    },
+                'TV': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '3',
+                        2017: '3',
+                        2018: '3',
+                        2019: '3',
+                        2020: '3',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'TV55': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '3',
+                        2017: '3',
+                        2018: '3',
+                        2019: '3',
+                        2020: '3',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'G-heater': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '5',
+                        2017: '5',
+                        2018: '3',
+                        2019: '5',
+                        2020: '3 ',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'E-heater': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '5',
+                        2017: '5',
+                        2018: '5',
+                        2019: '5',
+                        2020: '5',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'filter': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '1',
+                        2017: '1',
+                        2018: '1',
+                        2019: '1',
+                        2020: '1',
+                        2021: '1',
+                        2022: '1',
+                        2023: '1',
+                        2024: '1',
+                        2025: '1'
+                    }
+                },
+                'fan': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'vacum': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '5',
+                        2017: '5',
+                        2018: '5',
+                        2019: '5',
+                        2020: '2',
+                        2021: '1',
+                        2022: '1',
+                        2023: '1',
+                        2024: '1',
+                        2025: '1'
+                    }
+                },
+                'warmer': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: '1',
+                        2017: '1',
+                        2018: '1',
+                        2019: '1',
+                        2020: '2',
+                        2021: '1',
+                        2022: '1',
+                        2023: '1',
+                        2024: '1',
+                        2025: '1'
+                    }
+                },
+                'iron': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: '2',
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '1',
+                        2022: '1',
+                        2023: '1',
+                        2024: '1',
+                        2025: '1'
+                    }
+                },
+                'hood': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: '1',
+                         2017: '1',
+                        2018: '1',
+                        2019: '1',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'Mini.Oven': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: '1',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'Cooker.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: '7',
+                        2017: '7',
+                        2018: '7',
+                        2019: '7',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'Oven.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: '7',
+                        2017: '7',
+                        2018: '7',
+                        2019: '7',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+                'Ventelation Hood': { 
+                    'default': '6', 
+                    'year_condition': { 
+                        2016: '2',
+                        2017: '2',
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '6',
+                        2022: '6',
+                        2023: '6',
+                        2024: '6',
+                        2025: '6'
+                    }
+                },
+                'Food.Proceessor': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: '1',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: '1',
+                        2022: '1',
+                        2023: '1',
+                        2024: '1',
+                        2025: '1'
+                    }
+                },
+                'AC2': {
+                    'default': '2',
+                    'year_condition': {
+                        2016: '2', 2017: '2', 2018: '2', 2019: '2', 2020: '2',
+                        2021: '2', 2022: '2', 2023: '2', 2024: '2', 2025: '2'
+                    }
+                },
+                'default': {
+                    'default': '2'
+                }
+            };
+
+            const productWarrantyDetails1 = {
+            'AC': {
+                'default': '2',
+                'year_condition': {
+                    2018: '2',
+                    2019: '2',
+                    2020: '2',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'REF': {
+                'default': '5',
+                'year_condition': {
+                    2018: '10',
+                    2019: '10',
+                    2020: '10',
+                    2021: '10',
+                    2022: '10',
+                    2023: '10',
+                    2024: '10',
+                    2025: '10'
+                }
+            },
+            'D-REF': {
+                'default': '5',
+                'year_condition': {
+                    2018: '10',
+                    2019: '10',
+                    2020: '10',
+                    2021: '5',
+                    2022: '5',
+                    2023: '5',
+                    2024: '5',
+                    2025: '5'
+                }
+            },
+            'H-DF': {
+                'default': '5',
+                'year_condition': {
+                    2018: '10',
+                    2019: '10',
+                    2020: '10',
+                    2021: '5',
+                    2022: '5',
+                    2023: '5',
+                    2024: '5',
+                    2025: '5'
+                }
+            },
+            'V-DF': {
+                'default': '5',
+                'year_condition': {
+                    2018: '10',
+                    2019: '10',
+                    2020: '10',
+                    2021: '10',
+                    2022: '10',
+                    2023: '10',
+                    2024: '10',
+                    2025: '10'
+                }
+            },
+            'Dispenser': {
+                'default': '2',
+                'year_condition': {
+                    2018: '2',
+                    2019: '2',
+                    2020: '2',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'MiniBar': { 'default': '2', 'year_condition': { 2018: '2', 2019: '2', 2020: '2', 2021: '2', 2022: '2', 2023: '2', 2024: '2', 2025: '2' } },
+            'Cooker': {
+                'default': '7',
+                'year_condition': {
+                    2018: '2',
+                    2019: '2',
+                    2020: '2',
+                    2021: '7',
+                    2022: '7',
+                    2023: '7',
+                    2024: '7',
+                    2025: '7'
+                }
+            },
+            'WASH': { 
+                    'default': '2', 
+                    'year_condition': { 
+                        2018: '2',
+                        2019: '2',
+                        2020: '2',
+                        2021: '2',
+                        2022: '2',
+                        2023: '2',
+                        2024: '2',
+                        2025: '2'
+                    }
+                },
+            'TV': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: '3',
+                    2019: '3',
+                    2020: '3',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'TV55': { 
+                'default': '2', 
+                'year_condition': { 
+                    2016: '3',
+                    2017: '3',
+                    2018: '3',
+                    2019: '3',
+                    2020: '3',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'G-heater': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'E-heater': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: '5',
+                    2019: '5',
+                    2020: '5',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'filter': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '1',
+                    2022: '1',
+                    2023: '1',
+                    2024: '1',
+                    2025: '1'
+                }
+            },
+            'fan': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'vacum': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: '5',
+                    2019: '5',
+                    2020: '2',
+                    2021: '1',
+                    2022: '1',
+                    2023: '1',
+                    2024: '1',
+                    2025: '1'
+                }
+            },
+            'warmer': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '1',
+                    2022: '1',
+                    2023: '1',
+                    2024: '1',
+                    2025: '1'
+                }
+            },
+            'iron': { 
+                'default': '2', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '1',
+                    2022: '1',
+                    2023: '1',
+                    2024: '1',
+                    2025: '1'
+                }
+            },
+            'hood': { 
+                'default': '1', 
+                'year_condition': { 
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'Mini.Oven': { 
+                'default': '1', 
+                'year_condition': { 
+                    2016: 'غير متاح',
+                    2017: 'غير متاح',
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'Cooker.Built-In': { 
+                'default': '1', 
+                'year_condition': { 
+                    2016: 'غير متاح',
+                    2017: 'غير متاح',
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'Oven.Built-In': { 
+                'default': '1', 
+                'year_condition': { 
+                    2016: 'غير متاح',
+                    2017: 'غير متاح',
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'Ventelation Hood': { 
+                'default': '1', 
+                'year_condition': { 
+                    2016: 'غير متاح',
+                    2017: 'غير متاح',
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '2',
+                    2022: '2',
+                    2023: '2',
+                    2024: '2',
+                    2025: '2'
+                }
+            },
+            'Food.Proceessor': { 
+                'default': '1', 
+                'year_condition': { 
+                    2016: 'غير متاح',
+                    2017: 'غير متاح',
+                    2018: 'غير متاح',
+                    2019: 'غير متاح',
+                    2020: 'غير متاح',
+                    2021: '1',
+                    2022: '1',
+                    2023: '1',
+                    2024: '1',
+                    2025: '1'
+                }
+            },                                    
+            'AC2': {
+                'default': '2',
+                'year_condition': {
+                    2018: '2', 2019: '2', 2020: '2', 2021: '2', 2022: '2', 2023: '2', 2024: '2', 2025: '2'
+                }
+            },
+            'default': {
+                'default': '2'
+            }
+        };
+
+            const productWarrantyDetails2 = {
+            'AC': {
+                'default': '1'
+            },
+            'REF': {
+                'default': '1'
+            },
+            'D-REF': {
+                'default': '1'
+            },
+            'H-DF': {
+                'default': '1'
+            },
+            'V-DF': {
+                'default': '1'
+            },
+            'Dispenser': {
+                'default': '2'
+            },
+            'MiniBar': { 'default': '2' },
+            'Cooker': {
+                'default': '1'
+            },
+            'WASH': {
+                'default': '1'
+            },
+            'TV': {
+                'default': '0.5'
+            },
+            'G-heater': {
+                'default': '0.5'
+            },
+            'E-heater': {
+                'default': '0.5'
+            },
+            'filter': {
+                'default': '0.5'
+            },
+            'fan': {
+                'default': '0.5'
+            },
+            'vacum': {
+                'default': '0.5'
+            },
+            'warmer': {
+                'default': '0.5'
+            },
+            'iron': {
+                'default': '0.5'
+            },
+            'hood': {
+                'default': '0.5'
+            },
+            'Ventelation Hood': { 
+                'default': '0.5'
+            },
+            'Food.Proceessor': { 
+                'default': '0.5'
+            },
+            'Oven.Built-In': { 
+                'default': '0.5'
+            },
+            'Cooker.Built-In': { 
+                'default': '0.5'
+            },
+            'Mini.Oven': {
+                'default': '0.5'
+            }, 
+            'Food.Proceessor': { 
+                'default': '0.5'
+            },
+            'AC2': {
+                'default': '1'
+            },
+            'default': {
+                'default': '1'
+            }
+        };
+
+            const productWarrantyNotes = {
+                'AC': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2017: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2018: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2019: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2020: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2021: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2022: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2023: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2024: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',
+                        2025: 'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية'                        
+                    }
+                },
+                'REF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: '5 سنوات',
+                        2017: '5 سنوات',
+                        2018: '10 سنوات شامل غير شامل التركيب',
+                        2019: '10 سنوات',
+                        2020: 'ضمان شامل لمدة 10 سنوات',
+                        2021: '10 سنوات',
+                        2022: '10 سنوات',
+                        2023: '10 سنوات',
+                        2024: '10 سنوات',
+                        2025: '10 سنوات'
+                    }
+                },
+                'D-REF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: '5 سنوات',
+                        2017: '5 سنوات',
+                        2018: '10 سنوات شامل غير شامل التركيب',
+                        2019: '10 سنوات',
+                        2020: 'ضمان شامل لمدة 10 سنوات',
+                        2021: '5 سنوات',
+                        2022: '5 سنوات',
+                        2023: '5 سنوات',
+                        2024: '5 سنوات',
+                        2025: '5 سنوات'
+                    }
+                },
+                'H-DF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: '5 سنوات',
+                        2017: '5 سنوات',
+                        2018: '5 سنوات',
+                        2019: '5 سنوات',
+                        2020: '5 سنوات',
+                        2021: '5 سنوات',
+                        2022: '5 سنوات',
+                        2023: '5 سنوات',
+                        2024: '5 سنوات',
+                        2025: '5 سنوات'
+                    }
+                },
+                'V-DF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: '5 سنوات',
+                        2017: '5 سنوات',
+                        2018: '10 سنوات شامل التركيب',
+                        2019: '5 سنوات',
+                        2020: 'ضمان شامل لمدة 10 سنوات',
+                        2021: '10 سنوات',
+                        2022: '10 سنوات',
+                        2023: '10 سنوات',
+                        2024: '10 سنوات',
+                        2025: '10 سنوات'
+                    }
+                },
+                'Dispenser': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'سنتين شامل',
+                        2017: 'سنتين شامل',
+                        2018: 'سنتين شامل',
+                        2019: 'سنتين شامل',
+                        2020: 'سنتين شامل',
+                        2021: 'سنتين شامل',
+                        2022: 'سنتين شامل',
+                        2023: 'سنتين شامل',
+                        2024: 'سنتين شامل',
+                        2025: 'سنتين شامل'
+                    }
+                },
+                'MiniBar': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'سنتين شامل', 2017: 'سنتين شامل', 2018: 'سنتين شامل', 2019: 'سنتين شامل', 2020: 'سنتين شامل',
+                        2021: 'سنتين شامل', 2022: 'سنتين شامل', 2023: 'سنتين شامل', 2024: 'سنتين شامل', 2025: 'سنتين شامل'
+                    }
+                },
+                'Cooker': {
+                    'default': '7 سنوات',
+                    'year_condition': {
+                        2016: '7 سنوات ماعدا اجزاء قابلة للكسر وسوء استخدام',
+                        2017: '7 سنوات',
+                        2018: '7 سنوات ماعدا اجزاء قابلة للكسر - غير شامل التركيب وسوء استخدام',
+                        2019: '7 سنوات',
+                        2020: 'ضمان شامل لمدة سنتين بالاضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان',
+                        2021: '7 سنوات',
+                        2022: '7 سنوات',
+                        2023: '7 سنوات',
+                        2024: '7 سنوات',
+                        2025: '7 سنوات'
+                    }
+                },
+                'WASH': { 
+                        'default': 'سنتين شامل', 
+                        'year_condition': { 
+                            2016: '5 سنوات شاملة غير شامل التركيب',
+                            2017: '5 سنوات شاملة غير شامل التركيب',
+                            2018: 'ضمان سنتين على المكونات الكهربائية و الميكانيكية و 5 سنوات على البلاستيكية',
+                            2019: 'ضمان سنتين على المكونات الكهربائية و الميكانيكية و 5 سنوات على البلاستيكية',
+                            2020: 'ضمان سنتين على المكونات الكهربائية و الميكانيكية و 5 سنوات على البلاستيكية',
+                            2021: 'سنتين',
+                            2022: 'سنتين',
+                            2023: 'سنتين',
+                            2024: 'سنتين',
+                            2025: 'سنتين'
+                        }
+                    },
+                'TV': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: '3 سنوات غير شامل التركيب',
+                        2017: '3 سنوات غير شامل التركيب',
+                        2018: '3 سنوات غير شامل التركيب',
+                        2019: '3 سنوات',
+                        2020: '3 سنوات',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'G-heater': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: '5 سنوات شاملة غير شامل التركيب',
+                        2017: '5 سنوات شاملة غير شامل التركيب',
+                        2018: '3 سنوات على الاجزاء الداخلية و5 سنوات على الجسم الخارجى',
+                        2019: 'ضمان 5 سنوات',
+                        2020: 'ضمان شامل 3 سنوات ',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'E-heater': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: '5 سنوات شاملة غير شامل التركيب',
+                        2017: '5 سنوات شاملة غير شامل التركيب',
+                        2018: '5 سنوات شاملة غير شامل التركيب',
+                        2019: 'ضمان 5 سنوات',
+                        2020: 'ضمان شامل لمدة 5 سنوات',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'filter': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'سنة واحدة شامل',
+                        2017: 'سنة واحدة شامل',
+                        2018: 'سنة واحدة شامل',
+                        2019: 'سنة واحدة شامل',
+                        2020: 'سنة واحدة شامل',
+                        2021: 'سنة واحدة شامل',
+                        2022: 'سنة واحدة شامل',
+                        2023: 'سنة واحدة شامل',
+                        2024: 'سنة واحدة شامل',
+                        2025: 'سنة واحدة شامل'
+                    }
+                },
+                'fan': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'سنتين',
+                        2019: 'سنتين',
+                        2020: 'سنتين',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'vacum': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: '5 سنوات',
+                        2017: '5 سنوات',
+                        2018: '5 سنوات',
+                        2019: '5 سنوات',
+                        2020: 'سنتين',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'warmer': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'سنة واحدة غير شامل زيارات منزلية',
+                        2017: 'سنة واحدة غير شامل زيارات منزلية',
+                        2018: 'سنة واحدة غير شامل زيارات منزلية',
+                        2019: 'سنة واحدة غير شامل زيارات منزلية',
+                        2020: 'سنتين غير شامل زيارات منزلية',
+                        2021: 'سنة واحدة غير شامل زيارات منزلية',
+                        2022: 'سنة واحدة غير شامل زيارات منزلية',
+                        2023: 'سنة واحدة غير شامل زيارات منزلية',
+                        2024: 'سنة واحدة غير شامل زيارات منزلية',
+                        2025: 'سنة واحدة غير شامل زيارات منزلية'
+                    }
+                },
+                'iron': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'سنتين غير شامل زيارات منزلية',
+                        2018: 'سنتين غير شامل زيارات منزلية',
+                        2019: 'سنتين غير شامل زيارات منزلية',
+                        2020: 'سنتين غير شامل زيارات منزلية',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'hood': { 
+                    'default': '3 سنوات ماعدا المكونات الكهربائية سنة واحدة فقط', 
+                    'year_condition': { 
+                        2016: '3 سنوات - ماعدا المكونات الكهربائية سنة واحدة فقط',
+                        2017: '3 سنوات - ماعدا المكونات الكهربائية سنة واحدة فقط',
+                        2018: 'ضمان سنة على المكونات الكهربية و 3 سنوات على باقى المكونات',
+                        2019: 'ضمان 3 سنوات عدا المكونات الكهربية سنه واحدة فقط',
+                        2020: 'ضمان شامل لمدة سنتين',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Mini.Oven': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان سنه',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Cooker.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: '7 سنوات',
+                        2017: '7 سنوات',
+                        2018: '7 سنوات ماعدا اجزاء قابلة للكسر وسوء استخدام غير شامل التركيب',
+                        2019: '7 سنوات',
+                        2020: 'ضمان شامل لمدة سنتين بالاضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان غير شامل التركيب',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Oven.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: '7 سنوات',
+                        2017: '7 سنوات',
+                        2018: '7 سنوات ماعدا اجزاء قابلة للكسر وسوء استخدام غير شامل التركيب',
+                        2019: '7 سنوات',
+                        2020: 'ضمان شامل لمدة سنتين بالاضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان غير شامل التركيب',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Ventelation Hood': { 
+                    'default': '6 سنوات', 
+                    'year_condition': { 
+                        2016: 'سنتين شامل',
+                        2017: 'ضمان سنتين غير شامل الزيارات المنزلية ويشمل تكلفة الاصلاح داخل المراكز المعتمدة',
+                        2018: 'ضمان شامل لمدة سنتين غير شامل الزيارات المنزلية ويشمل تكلفة الاصلاح داخل المركز',
+                        2019: 'ضمان سنتين غير شامل الزيارات المنزلية و يشمل تكلفة الاصلاح داخل المراكز المعتمدة',
+                        2020: 'ضمان شامل لمدة سنتين غير شامل الزيارات المنزلية و يشمل تكلفة الاصلاح داخل المراكز المعتمدة',
+                        2021: '6 سنوات',
+                        2022: '6 سنوات',
+                        2023: '6 سنوات',
+                        2024: '6 سنوات',
+                        2025: '6 سنوات'
+                    }
+                },
+                'Food.Proceessor': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'سنة',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'AC2': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'سنتين شامل', 2017: 'سنتين شامل', 2018: 'سنتين شامل', 2019: 'سنتين شامل', 2020: 'سنتين شامل',
+                        2021: 'سنتين شامل', 2022: 'سنتين شامل', 2023: 'سنتين شامل', 2024: 'سنتين شامل', 2025: 'سنتين شامل'
+                    }
+                },
+                'default': {
+                    'default': 'سنتين'
+                }
+            };
+
+            const productWarrantyNotes1 = {
+                'AC': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للأربع سنوات التالية لفترة الضمان',
+                        2019: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للأربع سنوات التالية لفترة الضمان',
+                        2020: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للأربع سنوات التالية لفترة الضمان',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'REF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: '	ضمان شامل لمدة 10 سنوات',
+                        2019: '	ضمان شامل لمدة 10 سنوات',
+                        2020: '	ضمان شامل لمدة 10 سنوات',
+                        2021: '10 سنوات',
+                        2022: '10 سنوات',
+                        2023: '10 سنوات',
+                        2024: '10 سنوات',
+                        2025: '10 سنوات'
+                    }
+                },
+                'D-REF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان شامل لمدة 10 سنوات',
+                        2019: 'ضمان شامل لمدة 10 سنوات',
+                        2020: 'ضمان شامل لمدة 10 سنوات',
+                        2021: '5 سنوات',
+                        2022: '5 سنوات',
+                        2023: '5 سنوات',
+                        2024: '5 سنوات',
+                        2025: '5 سنوات'
+                    }
+                },
+                'H-DF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: '5 سنوات',
+                        2022: '5 سنوات',
+                        2023: '5 سنوات',
+                        2024: '5 سنوات',
+                        2025: '5 سنوات'
+                    }
+                },
+                'V-DF': {
+                    'default': '5 سنوات شامل',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: '10 سنوات',
+                        2022: '10 سنوات',
+                        2023: '10 سنوات',
+                        2024: '10 سنوات',
+                        2025: '10 سنوات'
+                    }
+                },
+                'Dispenser': {
+                    'default': 'سنتين شامل',
+                    'year_condition': {
+                        2016: 'سنتين شامل',
+                        2017: 'سنتين شامل',
+                        2018: 'سنتين شامل',
+                        2019: 'سنتين شامل',
+                        2020: 'سنتين شامل',
+                        2021: 'سنتين شامل',
+                        2022: 'سنتين شامل',
+                        2023: 'سنتين شامل',
+                        2024: 'سنتين شامل',
+                        2025: 'سنتين شامل'
+                    }
+                },
+                'Cooker': {
+                    'default': '7 سنوات',
+                    'year_condition': {
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان',
+                        2019: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان',
+                        2020: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار مجانا للسنوات الستة التالية لفترة الضمان',
+                        2021: '7 سنوات',
+                        2022: '7 سنوات',
+                        2023: '7 سنوات',
+                        2024: '7 سنوات',
+                        2025: '7 سنوات'
+                    }
+                },
+                'WASH': { 
+                        'default': 'سنتين شامل', 
+                        'year_condition': { 
+                            2016: 'غير متاح',
+                            2017: 'غير متاح',
+                            2018: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار البلاستيكية مجانا للثلاث سنوات التالية لفترة الضمان',
+                            2019: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار البلاستيكية مجانا للثلاث سنوات التالية لفترة الضمان',
+                            2020: 'ضمان شامل لمدة سنتين بالأضافة لتوفير قطع الغيار البلاستيكية مجانا للثلاث سنوات التالية لفترة الضمان',
+                            2021: 'سنتين',
+                            2022: 'سنتين',
+                            2023: 'سنتين',
+                            2024: 'سنتين',
+                            2025: 'سنتين'
+                        }
+                    },
+                'TV': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان شامل لمدة 3 سنوات',
+                        2019: 'ضمان شامل لمدة 3 سنوات',
+                        2020: 'ضمان شامل لمدة 3 سنوات',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'G-heater': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                         2025: 'سنتين'
+                    }
+                },
+                'E-heater': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'ضمان شامل لمدة 5 سنوات',
+                        2019: 'ضمان شامل لمدة 5 سنوات',
+                        2020: 'ضمان شامل لمدة 5 سنوات',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'filter': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة شامل',
+                        2022: 'سنة شامل',
+                        2023: 'سنة شامل',
+                        2024: 'سنة شامل',
+                        2025: 'سنة شامل'
+                    }
+                },
+                'fan': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'vacum': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'warmer': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة غير شامل زيارات منزلية',
+                        2022: 'سنة غير شامل زيارات منزلية',
+                        2023: 'سنة غير شامل زيارات منزلية',
+                        2024: 'سنة غير شامل زيارات منزلية',
+                        2025: 'سنة غير شامل زيارات منزلية'
+                    }
+                },
+                'iron': { 
+                    'default': 'سنتين', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'hood': { 
+                    'default': '3 سنوات ماعدا المكونات الكهربائية سنة واحدة فقط', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Mini.Oven': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Cooker.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Oven.Built-In': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Ventelation Hood': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنتين',
+                        2022: 'سنتين',
+                        2023: 'سنتين',
+                        2024: 'سنتين',
+                        2025: 'سنتين'
+                    }
+                },
+                'Food.Proceessor': { 
+                    'default': '1', 
+                    'year_condition': { 
+                        2016: 'غير متاح',
+                        2017: 'غير متاح',
+                        2018: 'غير متاح',
+                        2019: 'غير متاح',
+                        2020: 'غير متاح',
+                        2021: 'سنة',
+                        2022: 'سنة',
+                        2023: 'سنة',
+                        2024: 'سنة',
+                        2025: 'سنة'
+                    }
+                },
+                'default': {
+                    'default': 'سنتين'
+                }
+            };
+
+            const productWarrantyNotes2 = {
+                'AC': {
+                    'default': 'سنه'
+                },
+                'REF': {
+                    'default': 'سنه'
+                },
+                'D-REF': {
+                    'default': 'سنه'
+                },
+                'H-DF': {
+                    'default': 'سنه'
+                },
+                'V-DF': {
+                    'default': 'سنه'
+                },
+                'Dispenser': {
+                    'default': 'سنتين شامل'
+                },
+                'Cooker': {
+                    'default': 'سنه'
+                },
+                'WASH': { 
+                    'default': 'سنه'
+                },
+                'TV': { 
+                    'default': '6 شهور'
+                },
+                'G-heater': { 
+                    'default': '6 شهور'
+                },
+                'E-heater': { 
+                    'default': '6 شهور'
+                },
+                'filter': { 
+                    'default': '6 شهور'
+                },
+                'fan': { 
+                    'default': '6 شهور'
+                },
+                'vacum': { 
+                    'default': '6 شهور'
+                },
+                'warmer': { 
+                    'default': '6 شهور'
+                },
+                'iron': { 
+                    'default': '6 شهور'
+                },
+                'hood': { 
+                    'default': 'سنة'
+                },
+                'Ventelation Hood': { 
+                    'default': '6 شهور'
+                },
+                'Food.Proceessor': { 
+                    'default': '6 شهور'
+                },
+                'Oven.Built-In': { 
+                    'default': '6 شهور'
+                },
+                'Cooker.Built-In': { 
+                    'default': '6 شهور'
+                },
+                'Mini.Oven': {
+                    'default': '6 شهور'
+                }, 
+                'Food.Proceessor': { 
+                    'default': '6 شهور'
+                },
+                'default': {
+                    'default': 'سنة'
+                }
+            };
+
+            // Function to get total warranty period based on selected product and year
+            function getTotalWarrantyPeriod() {
+                const selectedProduct = $('#products-list').val();
+                const selectedModel = $('#model-list').val();
+                const issueDateStr = $('#issueDate').val();
+                console.log('Issue Date String:', issueDateStr); // Debug log
+
+                const issueDate = new Date(issueDateStr.split('/').reverse().join('-')); // Convert issue date to Date object
+                console.log('Parsed Issue Date:', issueDate); // Debug log
+
+                const selectedYear = issueDate.getFullYear(); // Get the year from the issue date
+                const firstDropdownValue = $('#firstDropdown').val(); // Get the value of the first dropdown
+                
+                let totalWarrantyPeriod = 'غير متاح'; // Default value if no match is found
+
+                if (firstDropdownValue === 'option1' && selectedProduct && productWarrantyNotes[selectedProduct]) {
+                    const productDetails = productWarrantyNotes[selectedProduct];
+                    totalWarrantyPeriod = productDetails.year_condition ? 
+                        (productDetails.year_condition[selectedYear] || productDetails.default) :
+                        productDetails.default;
+                } else if (firstDropdownValue === 'option2' && selectedProduct && productWarrantyDetails1[selectedProduct]) {
+                    const productDetails = productWarrantyNotes1[selectedProduct];
+                    totalWarrantyPeriod = productDetails.year_condition ? 
+                        (productDetails.year_condition[selectedYear] || productDetails.default) :
+                        productDetails.default;
+                } else if (firstDropdownValue === 'option3' && selectedProduct && productWarrantyDetails2[selectedProduct]) {
+                    const productDetails = productWarrantyNotes2[selectedProduct];
+                    totalWarrantyPeriod = productDetails.year_condition ? 
+                        (productDetails.year_condition[selectedYear] || productDetails.default) :
+                        productDetails.default;
+                }
+
+                console.log('Selected Product:', selectedProduct); // Debug log
+                console.log('Selected Model:', selectedModel); // Debug log
+                console.log('Selected Year:', selectedYear); // Debug log
+                console.log('First Dropdown Value:', firstDropdownValue); // Debug log
+                console.log('Product Details:', productWarrantyNotes[selectedProduct]); // Debug log
+
+                return totalWarrantyPeriod;
+            }
+
+            // Update the display with the total warranty period
+            function updateTotalWarrantyDisplay() {
+                const totalWarrantyPeriod = getTotalWarrantyPeriod();
+                console.log('Total Warranty Period:', totalWarrantyPeriod); // Debug log
+                $('#totalWarrantyPeriod').val(totalWarrantyPeriod); // Set the value in the input field
+            }
+
+            // Handling Serial Input and Dynamic Data Fetch
+            $('#serial').on('input', function() {
+
+
+
+                var url = "https://www.unionaire-tech.com/get_last_date?a_serial=" + serialValue + "&timestamp=" + new Date().getTime();
+
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    success: function(data) {
+                        var issueDate = new Date(data.issue_date);
+                        var today = new Date();
+
+                        var diffYears = today.getFullYear() - issueDate.getFullYear();
+                        var diffMonths = today.getMonth() - issueDate.getMonth();
+                        var diffDays = today.getDate() - issueDate.getDate();
+
+                        if (diffMonths < 0) {
+                            diffYears--;
+                            diffMonths += 12;
+                        }
+
+                        if (diffDays < 0) {
+                            diffMonths--;
+                            diffDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                        }
+
+                        // Update dates to DD/MM/YYYY format
+                        $('#issueDate').val(formatDate(issueDate));
+                        $('#timeDifference').val(diffYears + ' سنوات, ' + diffMonths + ' شهور, ' + diffDays + ' ايام');
+
+                        // Update additional fields
+                        $('#warantyDisplay').text(data.warranty_period);
+                        $('#timeDisplay').text(diffYears + ' سنوات, ' + diffMonths + ' شهور, ' + diffDays + ' ايام');
+
+                        // Dynamically calculate the service cost based on conditions
+                        calculateServiceCost();
+
+                        // Update warranty status
+                        updateWarrantyStatus();
+
+                        // Update warranty period display
+                        updateWarrantyDisplay();
+
+                        // Update total warranty period display
+                        updateTotalWarrantyDisplay();
+                    },
+                    error: function() {
+                        alert("حدث خطأ أثناء تحميل البيانات");
+                    }
+                });
+            });
+
+            // Update warranty status when timeDifference changes
+            $('#timeDifference').on('change', function() {
+                updateWarrantyStatus();
+            });
+
+            // Example usage of this function when user selects a product or triggers any relevant event
+            $('#products-list, #firstDropdown, #model-list').on('change', function() {
+                updateWarrantyDisplay();
+                updateTotalWarrantyDisplay();
+            });
+            $('#products-list, #firstDropdown, #model-list').on('change input', function() {
+                updateWarrantyDisplay();
+                updateTotalWarrantyDisplay();
+            });
+
+            // Trigger the calculation when inputs change
+            $('#toggleBtn, #products-list, #state').on('change input', function() {
+                calculateServiceCost();
+            });
+
+            // Initial call to set the total warranty period on page load
+            updateTotalWarrantyDisplay();
+        });
+
+        $(document).ready(function() {
+            // Initial call to set the total warranty period on page load
+            updateTotalWarrantyDisplay();
+
+            // Attach the change event to relevant elements
+            $('#firstDropdown, #products-list, #model-list').change(function() {
+                updateTotalWarrantyDisplay();
+            });
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Initialize Select2 for dropdowns
+        $("#state").select2({
+            placeholder: "اختار المحافظة",
+            allowClear: true
+        });
+
+        $("#city").select2({
+            placeholder: "اختار المدينة",
+            allowClear: true
+        });
+
+        $("input[name='type_ID']").click(function () {
+            if ($(this).val() === 'new') {
+                $("#problem").val('تركيب جديد').prop('readonly', true);
+            } else if ($(this).val() === 'warranty') {
+                $("#problem").val('تفعيل ضمان').prop('readonly', true);
+            } else {
+                $("#problem").val('').prop('readonly', false); // Clear and make editable for other options
+            }
+        });
+
+        $('#copyButton').click(function() {
+            const textAreaContent = $('#infoText').text();
+            navigator.clipboard.writeText(textAreaContent).then(function() {
+                alert('تم نسخ النص بنجاح!');
+            }, function(err) {
+                console.error('Error copying text: ', err);
+            });
+        });
+
+        $('#whatsappcopyButton').click(function() {
+            const textAreaContent = $('#whatsappText').text();
+            navigator.clipboard.writeText(textAreaContent).then(function() {
+                alert('تم نسخ النص بنجاح!');
+            }, function(err) {
+                console.error('Error copying text: ', err);
+            });
+        });
+
+        // Update hidden fields and city options when dropdowns change
+        $("#state").on("change", function () {
+            const stateValue = $(this).val();
+            $("#stateid").val(stateValue);
+            console.log("Selected state ID:", stateValue); // Debugging log
+
+            let cities = [];
+
+            if (stateValue === "688") { // اسوان
+                cities = [
+                    {value: "6", text: "كوم أمبو"},
+                    {value: "7", text: "كلابشة"},
+                    {value: "8", text: "دراو"},
+                    {value: "9", text: "نصر النوبة"},
+                    {value: "10", text: "مدينة توشكي"},
+                    {value: "11", text: "مدينة اسوان الجديدة"},
+                    {value: "12", text: "أدفو"},
+                    {value: "13", text: "أسوان"},
+                    {value: "14", text: "أبوسنبل السياحي"},
+                    {value: "15", text: "السباعية عرب"},
+                    {value: "16", text: "الرديسية قبلي"},
+                    {value: "17", text: "البصيلية بحري"}
+                ];
+            } else if (stateValue === "689") { // اسيوط
+                cities = [
+                    {value: "18", text: "ساحل سليم"},
+                    {value: "19", text: "ديروط"},
+                    {value: "20", text: "القوصية"},
+                    {value: "21", text: "منفلوط"},
+                    {value: "22", text: "مدينة أسيوط الجديدة"},
+                    {value: "23", text: "صدفا"},
+                    {value: "24", text: "الفتح"},
+                    {value: "25", text: "أسيوط/أسيوط حي شرق"},
+                    {value: "26", text: "أبو تيج"},
+                    {value: "27", text: "أبنوب"},
+                    {value: "28", text: "الغنايم"},
+                    {value: "29", text: "البداري"},
+                    {value: "30", text: "أسيوط/أسيوط حي غرب"}
+                ];
+            } else if (stateValue === "690") { // الاسكندريه
+                cities = [  
+                    { value: "31", text: "جليم" },
+                    { value: "32", text: "جنكليز" },
+                    { value: "33", text: "بولينو" },
+                    { value: "34", text: "ثروت" },
+                    { value: "35", text: "رأس التين" },
+                    { value: "36", text: "رشدي" },
+                    { value: "37", text: "حجر النواتية" },
+                    { value: "38", text: "خورشيد" },
+                    { value: "39", text: "بوكلي" },
+                    { value: "40", text: "المندرة" },
+                    { value: "41", text: "المنشية" },
+                    { value: "42", text: "المكس" },
+                    { value: "43", text: "المنتزة" },
+                    { value: "44", text: "باكوس" },
+                    { value: "45", text: "برج العرب" },
+                    { value: "46", text: "الورديان" },
+                    { value: "47", text: "باب سدرة" },
+                    { value: "48", text: "فلمنج" },
+                    { value: "49", text: "فيكتوريا" },
+                    { value: "50", text: "غبريال" },
+                    { value: "51", text: "غيط العنب" },
+                    { value: "52", text: "كليوباترا" },
+                    { value: "53", text: "كينج مريوط" },
+                    { value: "54", text: "كامب شيزار" },
+                    { value: "55", text: "كرموز" },
+                    { value: "56", text: "طريق اسكندرية مصر" },
+                    { value: "57", text: "سان ستيفنو" },
+                    { value: "58", text: "سبورتنج" },
+                    { value: "59", text: "زيزنيا" },
+                    { value: "60", text: "سابا باشا" },
+                    { value: "61", text: "سيدي بشر" },
+                    { value: "62", text: "سيدي جابر" },
+                    { value: "63", text: "ستالنى" },
+                    { value: "64", text: "سموحة" },
+                    { value: "65", text: "الدخيلة" },
+                    { value: "66", text: "الرأس السوداء" },
+                    { value: "67", text: "الجمرك" },
+                    { value: "68", text: "الحضرة" },
+                    { value: "71", text: "الرمل" },
+                    { value: "73", text: "الاصلاح" },
+                    { value: "74", text: "أبوقير" },
+                    { value: "75", text: "ابو سليمان" },
+                    { value: "76", text: "أبو تلات" },
+                    { value: "77", text: "أبو يوسف" },
+                    { value: "78", text: "الأزريطة" },
+                    { value: "79", text: "الأنفوشي" },
+                    { value: "80", text: "ابيس" },
+                    { value: "81", text: "الأبراهيمية" },
+                    { value: "82", text: "العوايد" },
+                    { value: "83", text: "الفلكى" },
+                    { value: "84", text: "العصافرة" },
+                    { value: "85", text: "العطارين" },
+                    { value: "86", text: "المراغى" },
+                    { value: "87", text: "المعمورة" },
+                    { value: "88", text: "القبارى" },
+                    { value: "89", text: "اللبان" },
+                    { value: "90", text: "العجمي" },
+                    { value: "91", text: "السيوف" },
+                    { value: "92", text: "الشاطبى" },
+                    { value: "93", text: "الساعة" },
+                    { value: "94", text: "السلسلة" },
+                    { value: "95", text: "العجمى البيطاش" },
+                    { value: "96", text: "العجمى الهانوفيل" },
+                    { value: "97", text: "الظاهرية" },
+                    { value: "98", text: "العامرية" },
+                    { value: "99", text: "راغب" },
+                    { value: "100", text: "بحري" },
+                    { value: "101", text: "الذوايده" },
+                    { value: "102", text: "طوسون" },
+                    { value: "103", text: "ونجت" },
+                    { value: "104", text: "6أكتوبر/وادى النخيل" },
+                    { value: "105", text: "محطة صفر" },
+                    { value: "106", text: "الحضرة الجديدة" },
+                    { value: "107", text: "المنشية البحرية" },
+                    { value: "108", text: "السيوف بحري" },
+                    { value: "109", text: "السيوف سباهي" },
+                    { value: "110", text: "مينا البصل" },
+                    { value: "111", text: "السيوف ترام" },
+                    { value: "112", text: "المنشية (النزهة)" },
+                    { value: "113", text: "كوم الدكه" },
+                    { value: "114", text: "السيوف شماعه" },
+                    { value: "115", text: "غربال" },
+                    { value: "116", text: "محطة الرمل" },
+                    { value: "117", text: "وادى القمر" },
+                    { value: "118", text: "ميامي" },
+                    { value: "119", text: "مصطفي كامل" },
+                    { value: "120", text: "لوران" },
+                    { value: "121", text: "محرم بك" },
+                    { value: "1227", text: "الساحل قبل الكيلو 100" },
+                    { value: "1228", text: "الساحل الكيلو 101 الى 200" },
+                    { value: "1229", text: "الساحل بعد الكيلو 200" }
+                ];
+            } else if (stateValue === "691") { // الاسماعيليه
+                cities = [
+                    { value: "122", text: "القنطرة شرق" },
+                    { value: "123", text: "التل الكبير/القصاصين الجديدة" },
+                    { value: "124", text: "أبو صوير المحطة" },
+                    { value: "125", text: "الاسماعلية/حى أول" },
+                    { value: "126", text: "التل الكبير" },
+                    { value: "127", text: "القنطرة غرب" },
+                    { value: "128", text: "فايد" },
+                    { value: "129", text: "الاسماعلية/حى ثانى" },
+                    { value: "130", text: "الاسماعلية/حى ثالث" }
+                ];
+            } else if (stateValue === "692") { // الاقصر
+                cities = [
+                    { value: "131", text: "البياضية" },
+                    { value: "132", text: "الأقصر" },
+                    { value: "133", text: "مدينة طيبة الجديدة" },
+                    { value: "134", text: "اسنا" },
+                    { value: "135", text: "ارمنت" }
+                ];
+            } else if (stateValue === "693") { // البحر الاحمر
+                cities = [
+                    { value: "136", text: "القصير" },
+                    { value: "137", text: "الغردقة" },
+                    { value: "138", text: "الشلاتين" },
+                    { value: "139", text: "رأس غارب" },
+                    { value: "140", text: "منطقة خليج السويس" },
+                    { value: "141", text: "مرسى علم" },
+                    { value: "142", text: "سفاجا" }
+                ];
+            } else if (stateValue === "694") { // البحيره
+                cities = [
+                    { text: "143", text: "وادى النطرون" },
+                    { text: "144", text: "الرحمانية" },
+                    { text: "145", text: "المحمودية" },
+                    { text: "146", text: "ايتاى البارود" },
+                    { text: "147", text: "الدلنجات" },
+                    { text: "148", text: "ابو المطامير" },
+                    { text: "149", text: "ابو حمص" },
+                    { text: "150", text: "ادكو" },
+                    { text: "151", text: "بدر" },
+                    { text: "152", text: "كفر الدوار" },
+                    { text: "153", text: "كوم حمادة" },
+                    { text: "154", text: "مدينة النوبارية الجديدة" },
+                    { text: "155", text: "شبراخيت" },
+                    { text: "156", text: "حوش عيسى" },
+                    { text: "157", text: "دمنهور" },
+                    { text: "158", text: "رشيد" },
+                    { text: "1149", text: "كفر الدوار/ شرق ترعة المحمودية" },
+                    { text: "1150", text: "كفر الدوار/ غرب ترعة المحمودية" }
+                ];
+            } else if (stateValue === "695") { // الجيزه
+                cities = [
+                    { value: "159", text: "طريق مصر اسكندرية" },
+                    { value: "160", text: "صفط اللبن" },
+                    { value: "161", text: "فيصل/المريوطية" },
+                    { value: "162", text: "فيصل الرئيسى" },
+                    { value: "163", text: "بين السرايات" },
+                    { value: "164", text: "بولاق الدكرور" },
+                    { value: "165", text: "ساقية مكى" },
+                    { value: "166", text: "ترعة الزمر" },
+                    { value: "167", text: "الهرم/نزلة السمان" },
+                    { value: "168", text: "إمبابة/بشتيل" },
+                    { value: "169", text: "إمبابة /الوراق" },
+                    { value: "170", text: "إمبابة /أوسيم" },
+                    { value: "171", text: "البدرشين" },
+                    { value: "172", text: "ارض اللواء" },
+                    { value: "173", text: "ابو رواش" },
+                    { value: "174", text: "إمبابة" },
+                    { value: "175", text: "6أكتوبر/حى الفردوس" },
+                    { value: "176", text: "6أكتوبر/حى الاشجار" },
+                    { value: "177", text: "6أكتوبر/حدائق المهندسين" },
+                    { value: "178", text: "أبو النمرس" },
+                    { value: "179", text: "6أكتوبر/زايد2000" },
+                    { value: "180", text: "6أكتوبر/دريم لاند" },
+                    { value: "181", text: "الهرم/العمرانية" },
+                    { value: "182", text: "الهرم / الطالبية" },
+                    { value: "183", text: "الهرم" },
+                    { value: "184", text: "الهرم/ترسا" },
+                    { value: "185", text: "الهرم/المنصورية" },
+                    { value: "186", text: "الهرم/المريوطية" },
+                    { value: "187", text: "المهندسين" },
+                    { value: "188", text: "الدقي" },
+                    { value: "189", text: "الحوامدية" },
+                    { value: "190", text: "الجيزة" },
+                    { value: "191", text: "المنيب" },
+                    { value: "192", text: "العياط" },
+                    { value: "193", text: "العجوزة" },
+                    { value: "194", text: "إمبابة / جزيرة الوراق" },
+                    { value: "195", text: "إمبابة / وردان" },
+                    { value: "196", text: "إمبابة / المناشي" },
+                    { value: "197", text: "إمبابة / الجلاتمة" },
+                    { value: "198", text: "إمبابة / منشية رضوان" },
+                    { value: "199", text: "إمبابة / سقيل" },
+                    { value: "200", text: "إمبابة / نكلا" },
+                    { value: "201", text: "إمبابة / شنباري" },
+                    { value: "202", text: "إمبابة / برطس" },
+                    { value: "203", text: "6أكتوبر/الشيخ زايد" },
+                    { value: "204", text: "6أكتوبر/القرية الذكية" },
+                    { value: "206", text: "6أكتوبر/الاحياء السكنية" },
+                    { value: "207", text: "6أكتوبر/حدائق الاهرام" },
+                    { value: "208", text: "إمبابة / طناش" },
+                    { value: "209", text: "6أكتوبر/المناطق الصناعية" },
+                    { value: "210", text: "6أكتوبر/بفرلى هيلز" },
+                    { value: "211", text: "إمبابة / الكوم الاحمر" },
+                    { value: "212", text: "الهرم/الكوم الاخضر" },
+                    { value: "213", text: "الهرم/المطبعة" },
+                    { value: "214", text: "الهرم/مشعل" },
+                    { value: "215", text: "الهرم/الوفاء والامل" },
+                    { value: "216", text: "منشأة القناطر" },
+                    { value: "217", text: "كرداسة" },
+                    { value: "218", text: "الزمالك" },
+                    { value: "219", text: "كرداسة / كفر حكيم" },
+                    { value: "220", text: "الهرم / شبرامنت" },
+                    { value: "221", text: "إمبابة / برقاش" },
+                    { value: "222", text: "إمبابة / البراجيل" },
+                    { value: "223", text: "إمبابة / ذات الكوم" },
+                    { value: "224", text: "إمبابة / أبو غالب" },
+                    { value: "225", text: "الهرم / طموه" },
+                    { value: "226", text: "الهرم / سقارة" },
+                    { value: "227", text: "إمبابة / جزيرة محمد" },
+                    { value: "228", text: "الهرم / الحرانية" },
+                    { value: "553", text: "6أكتوبر" },
+                    { value: "1224", text: "6اكتوبر/حدائق اكتوبر" }
+                ];
+            } else if (stateValue === "696") { // الدقهليه
+                cities = [
+                    { value: "229", text: "شربين" },
+                    { value: "230", text: "طلخا" },
+                    { value: "231", text: "دكرنس" },
+                    { value: "232", text: "طناح" },
+                    { value: "233", text: "جمصة" },
+                    { value: "234", text: "ميت غمر" },
+                    { value: "235", text: "نبروه" },
+                    { value: "236", text: "ميت ساسيل" },
+                    { value: "237", text: "منية النصر" },
+                    { value: "238", text: "منية النصر/الكردي" },
+                    { value: "239", text: "المطرية دقهلية" },
+                    { value: "240", text: "المنزلة" },
+                    { value: "241", text: "السنبلاوين" },
+                    { value: "242", text: "أجا" },
+                    { value: "243", text: "الجمالية" },
+                    { value: "244", text: "بني عبيد" },
+                    { value: "245", text: "تمى الأمديد" },
+                    { value: "246", text: "بلقاس" },
+                    { value: "247", text: "المنصورة/حى شرق" },
+                    { value: "248", text: "المنصورة/حى غرب" },
+                    { value: "1147", text: "صهرجت الكبرى/ميت غمر" },
+                    { value: "1148", text: "صهرجت الصغرى/ميت غمر" },
+                    { value: "1225", text: "كفر الغاب" }
+                ];
+            } else if (stateValue === "697") { // السويس
+                cities = [
+                    { value: "249", text: "الأربعين" },
+                    { value: "250", text: "عتاقة" },
+                    { value: "251", text: "فيصل /ميناء السويس" },
+                    { value: "252", text: "العين السخنة" },
+                    { value: "253", text: "الجناين" },
+                    { value: "254", text: "السويس" },
+                    { value: "1153", text: "بورتو السخنة" },
+                    { value: "1154", text: "طريق الزعفرانة" },
+                    { value: "1226", text: "الجلالة" }
+                ];
+            } else if (stateValue === "698") { // الشرقيه
+                cities = [
+                    { value: "255", text: "فاقوس" },
+                    { value: "256", text: "ديرب نجم" },
+                    { value: "257", text: "بلبيس" },
+                    { value: "258", text: "كفر صقر" },
+                    { value: "259", text: "هيها" },
+                    { value: "260", text: "منيا القمح" },
+                    { value: "261", text: "مشتول السوق" },
+                    { value: "262", text: "أبو كبير" },
+                    { value: "263", text: "أبو حماد/القرين" },
+                    { value: "264", text: "أبو حماد" },
+                    { value: "265", text: "أولاد صقر" },
+                    { value: "266", text: "الصالحية الجديدة" },
+                    { value: "267", text: "الزقازيق" },
+                    { value: "268", text: "الحسينية" },
+                    { value: "269", text: "الابراهيمية" }
+                ];
+            } else if (stateValue === "699") { // الغربيه
+                cities = [
+                    { value: "270", text: "سمنود" },
+                    { value: "271", text: "زفتى" },
+                    { value: "272", text: "طنطا/حى ثانى طنطا" },
+                    { value: "273", text: "طنطا/حى اول طنطا" },
+                    { value: "274", text: "المحلة الكبرى/حى اول" },
+                    { value: "275", text: "السنطة" },
+                    { value: "276", text: "بسيون" },
+                    { value: "277", text: "المحلة الكبرى/حى ثانى المحلة" },
+                    { value: "278", text: "كفر الزيات" },
+                    { value: "279", text: "قطور" }
+                ];
+            } else if (stateValue === "700") { // الفيوم
+                cities = [
+                    { value: "280", text: "طامية" },
+                    { value: "281", text: "مدينة الفيوم الجديدة" },
+                    { value: "282", text: "يوسف الصديق" },
+                    { value: "283", text: "سنورس" },
+                    { value: "284", text: "ابشواي" },
+                    { value: "285", text: "اطسا" },
+                    { value: "286", text: "الفيوم" }
+                ];
+            } else if (stateValue === "701") { // القاهره
+                cities = [
+                    { value: "287", text: "المعادى القديمة" },
+                    { value: "288", text: "المعادى/صقر قريش" },
+                    { value: "289", text: "المقطم" },
+                    { value: "290", text: "المطرية" },
+                    { value: "291", text: "المعادى" },
+                    { value: "292", text: "المعادى الجديدة" },
+                    { value: "293", text: "النعام" },
+                    { value: "294", text: "حدائق القبة" },
+                    { value: "295", text: "حدائق المعادى" },
+                    { value: "296", text: "حدائق حلوان" },
+                    { value: "297", text: "الوايلي" },
+                    { value: "298", text: "جزيرة بدران" },
+                    { value: "299", text: "جسر السويس" },
+                    { value: "300", text: "الجبل الاصفر" },
+                    { value: "301", text: "الدويقة" },
+                    { value: "302", text: "الزاوية الحمراء" },
+                    { value: "303", text: "الالف مسكن" },
+                    { value: "304", text: "البساتين" },
+                    { value: "305", text: "التبين" },
+                    { value: "306", text: "الزيتون" },
+                    { value: "307", text: "القطامية" },
+                    { value: "308", text: "القلج" },
+                    { value: "309", text: "المرج" },
+                    { value: "310", text: "الشرابية" },
+                    { value: "311", text: "الصف" },
+                    { value: "312", text: "الفسطاط" },
+                    { value: "313", text: "حلوان" },
+                    { value: "314", text: "م.الجديدة/ ميدان الحجاز" },
+                    { value: "315", text: "م.الجديدة/ ميدان تريومف" },
+                    { value: "316", text: "م.الجديدة/ارض الجولف" },
+                    { value: "317", text: "عين شمس" },
+                    { value: "318", text: "كوتسيكا" },
+                    { value: "319", text: "م.الجديدة/ ميدان الجامع" },
+                    { value: "320", text: "م.الجديدة/الخليفة المأمون" },
+                    { value: "321", text: "م.الجديدة/العروبة" },
+                    { value: "322", text: "م.الجديدة/الكلية الحربية" },
+                    { value: "323", text: "م.الجديدة/الكوربة" },
+                    { value: "324", text: "م.الجديدة/السبع عمارات" },
+                    { value: "325", text: "م.الجديدة/الشروق" },
+                    { value: "326", text: "م.الجديدة/العبور" },
+                    { value: "327", text: "سراى القبة" },
+                    { value: "328", text: "شبرا" },
+                    { value: "329", text: "شبرا/الساحل" },
+                    { value: "330", text: "دار السلام" },
+                    { value: "331", text: "زهراء المعادى" },
+                    { value: "332", text: "زهراء مدينة نصر" },
+                    { value: "333", text: "شبرا/روض الفرج" },
+                    { value: "334", text: "طره الاسمنت" },
+                    { value: "335", text: "طره البلد" },
+                    { value: "336", text: "عزبة النخل" },
+                    { value: "337", text: "شبرا/عزبة عثمان" },
+                    { value: "338", text: "شبرا/منية السرج" },
+                    { value: "339", text: "طره" },
+                    { value: "340", text: "الإمام الشافعى" },
+                    { value: "341", text: "وسط البلد/الخليفة" },
+                    { value: "342", text: "وسط البلد/السيدة زينب" },
+                    { value: "343", text: "وسط البلد/الظاهر" },
+                    { value: "344", text: "مسطرد" },
+                    { value: "345", text: "مدينة بدر" },
+                    { value: "346", text: "مدينة السلام" },
+                    { value: "347", text: "العاشر من رمضان" },
+                    { value: "348", text: "م.نصر/غرب مدينة نصر" },
+                    { value: "349", text: "م.نصر/عمارات العبور" },
+                    { value: "350", text: "م.نصر/صقر قريش" },
+                    { value: "351", text: "مدينة الحرفيين" },
+                    { value: "352", text: "مدينة 15 مايو" },
+                    { value: "353", text: "م.نصر/مدينة التوفيق" },
+                    { value: "354", text: "م.نصر/دارالدفاع الجوي" },
+                    { value: "355", text: "وسط البلد/العباسية" },
+                    { value: "356", text: "وسط البلد/الدرب الأحمر" },
+                    { value: "357", text: "السيدة عائشة" },
+                    { value: "358", text: "م.نصر/التجمع الأول" },
+                    { value: "359", text: "م.نصر/التجمع الثالث" },
+                    { value: "360", text: "وسط البلد/الدراسة" },
+                    { value: "361", text: "ميدان ابن الحكم" },
+                    { value: "362", text: "منشأة ناصر" },
+                    { value: "363", text: "مصر القديمة" },
+                    { value: "364", text: "وسط البلد/الجمالية" },
+                    { value: "365", text: "وسط البلد/التحرير" },
+                    { value: "366", text: "وسط البلد" },
+                    { value: "367", text: "م.نصر/حى السفارات" },
+                    { value: "368", text: "وسط البلد/باب اللوق" },
+                    { value: "369", text: "وسط البلد/باب الشعرية" },
+                    { value: "370", text: "وسط البلد/الموسكي" },
+                    { value: "371", text: "وسط البلد/رمسيس" },
+                    { value: "372", text: "وسط البلد/جاردن سيتي" },
+                    { value: "373", text: "وسط البلد/بولاق ابو العلا" },
+                    { value: "374", text: "وسط البلد/المنيل" },
+                    { value: "375", text: "وسط البلد/قصر النيل" },
+                    { value: "376", text: "أطفيح" },
+                    { value: "377", text: "الأميرية" },
+                    { value: "378", text: "وسط البلد/القصر العينى" },
+                    { value: "379", text: "وسط البلد/العتبة" },
+                    { value: "380", text: "جسر السويس / جمعية احمد عرابي" },
+                    { value: "381", text: "م.نصر" },
+                    { value: "382", text: "م.الجديدة/ميدان هليوبليس" },
+                    { value: "383", text: "دار السلام / الملاءة" },
+                    { value: "384", text: "م.نصر/الرحاب" },
+                    { value: "385", text: "م.نصر/الحى العاشر" },
+                    { value: "386", text: "م.نصر/التجمع الخامس" },
+                    { value: "387", text: "المعصرة" },
+                    { value: "388", text: "جسر السويس / هايكستب" },
+                    { value: "389", text: "وسط البلد/غمرة" },
+                    { value: "390", text: "وسط البلد/عابدين" },
+                    { value: "391", text: "الشروق/ مدينة المستقبل" },
+                    { value: "392", text: "طريق مصر الاسماعيلية الصحراوي" },
+                    { value: "393", text: "مدينتي" },
+                    { value: "394", text: "م.الجديدة/الماظة" },
+                    { value: "395", text: "م.الجديدة/ميدان روكسي" },
+                    { value: "396", text: "م.الجديدة/ميدان المحكمة" },
+                    { value: "397", text: "م.الجديدة/ميدان الاسماعيلية" },
+                    { value: "398", text: "م.الجديدة/ميدان صلاح الدين" },
+                    { value: "399", text: "م.الجديدة/ميدان سفير" },
+                    { value: "400", text: "م.الجديدة/ميدان سانت فاتيما" },
+                    { value: "401", text: "م.الجديدة/منشية البكري" },
+                    { value: "402", text: "م.الجديدة/النزهة الجديدة" },
+                    { value: "403", text: "م.الجديدة/النزهة" },
+                    { value: "404", text: "م.الجديدة/الميرغني" },
+                    { value: "405", text: "م.الجديدة/مطار القاهرة" },
+                    { value: "406", text: "م.الجديدة/مساكن شيراتون" },
+                    { value: "407", text: "م.الجديدة/كلية البنات" },
+                    { value: "550", text: "مدينة قباء" },
+                    { value: "561", text: "حلمية الزيتون" },
+                    { value: "1146", text: "العاصمة الادارية الجديدة" }
+                ];
+            } else if (stateValue === "702") { // القليوبيه
+                cities = [
+                    { value: "408", text: "شبرا الخيمة/حي غرب" },
+                    { value: "409", text: "شبلنجا" },
+                    { value: "410", text: "شبين القناطر" },
+                    { value: "411", text: "جمجرة الجديدة" },
+                    { value: "412", text: "جمجرة القديمة" },
+                    { value: "413", text: "شبرا الخيمة/حي شرق" },
+                    { value: "414", text: "قها" },
+                    { value: "415", text: "كفر شكر" },
+                    { value: "416", text: "ميت العطار" },
+                    { value: "417", text: "طنط الجزيزة" },
+                    { value: "418", text: "طوخ" },
+                    { value: "419", text: "قليوب" },
+                    { value: "420", text: "القناطر الخيرية / باسوس" },
+                    { value: "421", text: "قليوب / طحا نوب" },
+                    { value: "422", text: "قليوب / نوة" },
+                    { value: "423", text: "شبين القناطر / عرب العراني" },
+                    { value: "424", text: "قليوب / ميت حلفا" },
+                    { value: "425", text: "قليوب / ميت نما" },
+                    { value: "426", text: "الخصوص" },
+                    { value: "427", text: "القناطر الخيرية" },
+                    { value: "428", text: "بنها" },
+                    { value: "429", text: "شبرا الخيمة / بهتيم" },
+                    { value: "430", text: "ابو زعبل" },
+                    { value: "431", text: "الخانكة" },
+                    { value: "1230", text: "قليوب / منطي" }
+                ];
+            } else if (stateValue === "703") { // المنوفيه
+                cities = [
+                    { value: "432", text: "شبين الكوم/حى شرق شبين" },
+                    { value: "433", text: "سرس الليان" },
+                    { value: "434", text: "قويسنا" },
+                    { value: "435", text: "منوف" },
+                    { value: "436", text: "كفر المصيلحة" },
+                    { value: "437", text: "تلا" },
+                    { value: "438", text: "الباجور" },
+                    { value: "439", text: "أشمون" },
+                    { value: "440", text: "السادات" },
+                    { value: "441", text: "بركة السبع" },
+                    { value: "442", text: "الشهداء" }
+                ];
+            } else if (stateValue === "704") { // المنيا
+                cities = [
+                    { value: "443", text: "سمالوط" },
+                    { value: "444", text: "ديرمواس" },
+                    { value: "445", text: "مطاي" },
+                    { value: "446", text: "مدينة المنيا الجديدة" },
+                    { value: "447", text: "العدوة" },
+                    { value: "448", text: "أبو قرقاص/الفكرية" },
+                    { value: "449", text: "بني مزار" },
+                    { value: "450", text: "المنيا" },
+                    { value: "451", text: "ملوي" },
+                    { value: "452", text: "مغاغة" }
+                ];
+            } else if (stateValue === "705") { // الوادي الجديد
+                cities = [
+                    { value: "453", text: "باريس" },
+                    { value: "454", text: "موط" },
+                    { value: "455", text: "منطقة شرق العوينات" },
+                    { value: "456", text: "الفرافرة" },
+                    { value: "457", text: "الوادي الجديد" },
+                    { value: "458", text: "الواحات البحرية" },
+                    { value: "459", text: "الخارجة" }
+                ];
+            } else if (stateValue === "706") { // بني سويف
+                cities = [
+                    { value: "460", text: "بني سويف" },
+                    { value: "461", text: "بني سويف الجديدة" },
+                    { value: "462", text: "ناصر" },
+                    { value: "463", text: "سمسطا" },
+                    { value: "464", text: "الفشن" },
+                    { value: "465", text: "أهناسيا" },
+                    { value: "466", text: "ببا" },
+                    { value: "467", text: "الواسطى" }
+                ];
+            } else if (stateValue === "707") { // بورسعيد
+                cities = [
+                    { value: "468", text: "الزهور/المناصرة غرب بورسعيد" },
+                    { value: "469", text: "الشرق" },
+                    { value: "470", text: "الزهور/الزهور" },
+                    { value: "471", text: "الجنوب" },
+                    { value: "472", text: "الجنوب /ثان جنوب" },
+                    { value: "473", text: "بور فؤاد/بورفؤاد ثان" },
+                    { value: "474", text: "بور فؤاد/مبارك شرق التفريعة" },
+                    { value: "475", text: "بورسعيد" },
+                    { value: "476", text: "المناخ" },
+                    { value: "477", text: "الشرق /ميناء بور سعيد" },
+                    { value: "478", text: "الضواحي" },
+                    { value: "479", text: "العرب" }
+                ];
+            } else if (stateValue === "708") { // جنوب سيناء
+                cities = [
+                    { value: "480", text: "شرم الشيخ/سانت كاترين" },
+                    { value: "481", text: "شرم الشيخ/دهب" },
+                    { value: "482", text: "شرم الشيخ/طور سيناء" },
+                    { value: "483", text: "نويبع" },
+                    { value: "484", text: "شرم الشيخ" },
+                    { value: "485", text: "أبو زنيمة" },
+                    { value: "486", text: "أبو رديس" },
+                    { value: "487", text: "رأس محمد" },
+                    { value: "488", text: "رأس سدر" }
+                ];
+            } else if (stateValue === "709") { // دمياط
+                cities = [
+                    { value: "489", text: "مدينة دمياط الجديدة" },
+                    { value: "490", text: "كفر سعد/ميت أبو غالب" },
+                    { value: "491", text: "دمياط/عزبة البرج" },
+                    { value: "492", text: "دمياط/رأس البرج" },
+                    { value: "493", text: "كفر سعد" },
+                    { value: "494", text: "فارسكور" },
+                    { value: "495", text: "الروضة" },
+                    { value: "496", text: "الزرقا" },
+                    { value: "497", text: "دمياط" },
+                    { value: "498", text: "الزرقا/السرو" },
+                    { value: "499", text: "كفر سعد/كفر البطيخ" }
+                ];
+            } else if (stateValue === "710") { // سوهاج
+                cities = [
+                    { value: "500", text: "المنشاة" },
+                    { value: "501", text: "جرجا" },
+                    { value: "502", text: "جهينة" },
+                    { value: "503", text: "المراغة" },
+                    { value: "504", text: "أخميم" },
+                    { value: "505", text: "مدينة سوهاج الجديدة" },
+                    { value: "506", text: "البلينا" },
+                    { value: "507", text: "سوهاج /سوهاج حي غرب" },
+                    { value: "508", text: "سوهاج/دار السلام" },
+                    { value: "509", text: "سوهاج /سوهاج حي شرق" },
+                    { value: "510", text: "سوهاج /سوهاج حي الكوثر" },
+                    { value: "511", text: "مدينة أخميم الجديدة" },
+                    { value: "512", text: "ساقلتة" },
+                    { value: "513", text: "طما" },
+                    { value: "514", text: "طهطا" },
+                    { value: "1151", text: "طهطا / اولاد هارون" },
+                    { value: "1152", text: "طهطا / البواريك" }
+                ];
+            } else if (stateValue === "711") { // شمال سيناء
+                cities = [
+                    { value: "515", text: "رفح" },
+                    { value: "516", text: "نخل" },
+                    { value: "517", text: "الشيخ زويد" },
+                    { value: "518", text: "الحسنة" },
+                    { value: "519", text: "بئر العبد" },
+                    { value: "520", text: "العريش" }
+                ];
+            } else if (stateValue === "712") { // قنـــا
+                cities = [
+                    { value: "521", text: "مدينة قنا الجديدة" },
+                    { value: "522", text: "قوص" },
+                    { value: "523", text: "نقادة" },
+                    { value: "524", text: "نجع حمادي" },
+                    { value: "525", text: "دشنا" },
+                    { value: "526", text: "أبو طشت" },
+                    { value: "527", text: "الوقف" },
+                    { value: "528", text: "قنا" },
+                    { value: "529", text: "فقط" },
+                    { value: "530", text: "فرشوط" }
+                ];
+            } else if (stateValue === "713") { // كفر الشــيخ
+                cities = [
+                    { value: "531", text: "دسوق" },
+                    { value: "532", text: "سيدي سالم" },
+                    { value: "533", text: "كفر الشيخ" },
+                    { value: "534", text: "قلين" },
+                    { value: "535", text: "فوه" },
+                    { value: "536", text: "الرياض" },
+                    { value: "537", text: "الحامول" },
+                    { value: "538", text: "مطوبس" },
+                    { value: "539", text: "بيلا" },
+                    { value: "540", text: "بلطيم" }
+                ];
+            } else if (stateValue === "714") { // مرسى مطروح
+                cities = [
+                    { value: "541", text: "سيدي براني" },
+                    { value: "542", text: "النجيلة" },
+                    { value: "543", text: "مرسى مطروح" },
+                    { value: "544", text: "سيوة" },
+                    { value: "545", text: "السلوم" },
+                    { value: "546", text: "الحمام" },
+                    { value: "547", text: "العلمين" },
+                    { value: "548", text: "الضبعة" }
+                ];
+            }
+
+            // Clear the city dropdown and append new options
+            $("#city").empty().append(new Option("اختار المدينة", ""));
+            cities.forEach(function(city) {
+                $("#city").append(new Option(city.text, city.value));
+            });
+
+            // Reset city selection
+            $("#city").val("").trigger('change');
+        });
+
+        $("#city").on("change", function () {
+            const cityValue = $(this).val();
+            $("#cityid").val(cityValue);
+            console.log("Selected city ID:", cityValue); // Debugging log
+        });
+
+        // Update hidden "type" input when selecting service type
+        $("input[name='type_ID']").click(function () {
+            $("#type").val($(this).val());
+        });
+
+        // Fetch issue date based on serial input
+        $("#serial").on("keyup", function () {
+            let serial = $(this).val();
+            if (serial) {
+                $("#issueDate").val('جاري التحميل...'); // Show loading message
+                $.getJSON(`https://www.unionaire-tech.com/get_last_date?a_serial=${serial}`, function (data) {
+                    $("#issueDate").val(data.issue_date); // Set the retrieved issue date
+                }).fail(function() {
+                    $("#issueDate").val('حدث خطأ أثناء التحميل'); // Handle error
+                });
+            } else {
+                $("#issueDate").val(''); // Clear if serial is empty
+            }
+        });
+
+        // Fetch customer data when serial number is entered
+        $("#serial").on("keyup", function () {
+            if (!$("#warranty").is(":checked")) {
+                let serial = $(this).val();
+                $.getJSON(`https://www.unionaire-tech.com/get_customer_data_from_serial?serial_name=${serial}`, function (data) {
+                    if (data.data) {
+                        $("#name").val(data.data.name);
+                        $("#customer_id").val(data.data.customer_id);
+                        $("#address").val(data.data.another_details);
+                        $("#phone").val(data.data.main_mobile_number);
+                        $("#cityn").text(data.data.city_name);
+                        $("#staten").text(data.data.state_name);
+                        $("#stateid").val(data.data.state_id);
+                        $("#cityid").val(data.data.city_id);
+                        
+                        // Make state and city fields optional if customer data exists
+                        $("#state").prop("required", false);
+                        $("#city").prop("required", false);
+                    } else {
+                        // Ensure state and city fields are required if no data found
+                        $("#state").prop("required", true);
+                        $("#city").prop("required", true);
+                    }
+                });
+            }
+        });
+
+        // Handle form submission with AJAX
+        $('#send').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Show loading indicator and disable the submit button
+            $('#submitButton').prop('disabled', true).html('جاري الإرسال...');
+            $('#loadingIndicator').show();
+
+            var formData = {
+                'name': $('#name').val(),
+                'phone': $('#phone').val(),
+                'state_id': $('#stateid').val(),
+                'city_id': $('#cityid').val(),
+                'address': $('#address').val(),
+                'problem': $('#problem').val(),
+                'serial_name': $('#serial').val(),
+                'x_studio_install_date': $('#issueDate').val(),
+                'type': $('#type').val(),
+                'voice_url': '' // Placeholder if needed
+            };
+
+            console.log("Form data to submit:", formData); // Debugging log
+
+            $.ajax({
+                type: 'GET',
+                url: 'https://www.unionaire-tech.com/create_ticket_from_mobile_r',
+                data: formData,
+                dataType: 'json',
+                encode: false,
+                beforeSend: function() {
+                    $('#loadingIndicator').show(); // Ensure loading indicator is visible
+                }
+            })
+            .done(function(data) {
+                alert('تم ارسال البيانات وسوف يتم ارسال رساله قصيرة للتأكيد');
+                window.location.reload();
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                alert("حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.");
+            })
+            .always(function() {
+                // Hide loading indicator and re-enable the submit button
+                $('#submitButton').prop('disabled', false).html('إرسال');
+                $('#loadingIndicator').hide();
+            });
+        });
+
+    });
+    </script>
+</body>
+</html>

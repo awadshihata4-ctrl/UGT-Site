@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handling — Unionaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { height: 100%; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: #f0f3f9;
+    color: #1e293b;
+    min-height: 100%;
+    min-width: 700px;
+    direction: rtl;
+  }
+
+  /* ── Header ── */
+  .top-bar {
+    background: #1f3c88;
+    color: #fff;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  .top-bar img { width: 44px; height: 44px; border-radius: 8px; background: #fff; padding: 3px; }
+  .top-bar-title { font-size: 18px; font-weight: 700; flex: 1; }
+  .serial-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .serial-wrap input {
+    padding: 7px 12px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    width: 160px;
+    outline: none;
+    transition: border-color .15s;
+    text-transform: uppercase;
+  }
+  .serial-wrap input::placeholder { color: rgba(255,255,255,.5); }
+  .serial-wrap input:focus { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.15); }
+  #issue-date {
+    font-size: 12px;
+    color: rgba(255,255,255,.75);
+    min-width: 80px;
+  }
+  .btn-wa {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: #25d366;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .btn-wa:hover { background: #1ebe5d; }
+  .btn-wa:disabled { opacity: .4; cursor: not-allowed; }
+  .clock {
+    font-size: 13px;
+    color: rgba(255,255,255,.6);
+    white-space: nowrap;
+    margin-right: auto;
+  }
+
+  /* ── Tabs ── */
+  .tabs-bar {
+    background: #fff;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    position: sticky;
+    top: 73px;
+    z-index: 99;
+  }
+  .tab-btn {
+    padding: 12px 18px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+    margin-bottom: -2px;
+  }
+  .tab-btn:hover { color: #1f3c88; background: #f8fafc; }
+  .tab-btn.active { color: #1f3c88; border-bottom-color: #1f3c88; }
+
+  /* ── Content ── */
+  .tab-content { display: none; padding: 24px; }
+  .tab-content.active { display: block; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f3c88;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .sub-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #64748b;
+    margin: 18px 0 8px;
+    text-transform: none;
+    background: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border-right: 3px solid #1f3c88;
+  }
+
+  /* ── Script cards ── */
+  .scripts { display: flex; flex-direction: column; gap: 8px; }
+  .script-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: box-shadow .15s;
+  }
+  .script-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .script-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .btn-copy {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    background: #1f3c88;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+    min-width: 64px;
+    justify-content: center;
+  }
+  .btn-copy:hover { background: #162d6a; }
+  .btn-copy.copied { background: #16a34a; }
+  .btn-copy svg { width: 14px; height: 14px; }
+
+  /* ── Zoom-safe ── */
+  @media (max-width: 900px) {
+    .top-bar { padding: 10px 14px; gap: 10px; }
+    .tab-content { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="top-bar">
+  <img src="https://unionaire.com/ct/unionaire.png" alt="Unionaire" onerror="this.style.display='none'">
+  <span class="top-bar-title">Handling — Unionaire</span>
+
+  <div class="serial-wrap">
+    <input type="text" id="serial-input" placeholder="Serial Number" maxlength="20">
+    <span id="issue-date"></span>
+    <button class="btn-wa" id="btn-wa" onclick="copyWALink()" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.563 4.14 1.537 5.874L0 24l6.304-1.513A11.956 11.956 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.373l-.36-.213-3.72.892.933-3.625-.234-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+      نسخ رابط واتساب
+    </button>
+  </div>
+
+  <span class="clock" id="clock"></span>
+</div>
+
+<!-- ── TABS BAR ── -->
+<div class="tabs-bar" id="tabs-bar">
+  <button class="tab-btn active" data-tab="t1">Script</button>
+  <button class="tab-btn" data-tab="t2">الزيارات</button>
+  <button class="tab-btn" data-tab="t3">التقرير الفني</button>
+  <button class="tab-btn" data-tab="t5">الاعتراضات</button>
+  <button class="tab-btn" data-tab="t6">قطع الغيار</button>
+  <button class="tab-btn" data-tab="t7">الورشة</button>
+  <button class="tab-btn" data-tab="t8">الاستبدال</button>
+  <button class="tab-btn" data-tab="t9">رد القيمة</button>
+  <button class="tab-btn" data-tab="t10">تعليمات الثلاجة</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 1 — Script
+══════════════════════════════════════════ -->
+<div id="t1" class="tab-content active">
+  <p class="section-title">Scripts</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">صباح الخير مع حضرتك خدمة عملاء يونيون اير اقدر اساعد حضرتك ازاي</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير مع حضرتك خدمة عملاء يونيون اير اقدر اساعد حضرتك ازاي</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير يا فندم حضرتك محتاج تفعيل ضمان ولا صيانه للجهاز عند حضرتك</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير يا فندم فيما يخص تفعيل الضمان ضمان حضرتك مفعل بالفعل من تاريخ الشراء المتواجد علي الفاتورة الضريبية المعتمدة</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير مع حضرتك خدمة العملاء اتمني لحضرتك يوم سعيد برجاء توضيح استفسار او طلب حضرتك ويفضل ارسال صورة من شهاده الضمان او رقم مسلسل الجهاز عشان اقدر اساعد حضرتك ستيكرز ابيض ملزوق ع الشهادة او علي ظهر المنتج عشان نقدر نساعد حضرتك</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">محتاج صورة اوضح للاستيكر الموجود علي شهادة الضمان</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">تمام يا فندم ممكن حضرتك تبعته في أي وقت مناسب لحضرتك ولو وقت الشات انتهي ممكن حضرتك تطلب التواصل مع خدمة العملاء مرة تانيه سعداء بخدمة حضرتك في يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">يا فندم هحول حضرتك دلوقتي وبعدين حضرتك تضغط علي اللينك اللي انا بعته واستكمل اجراءات الحجز</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بخصوص صيانة السخان الكهربائي: في طريقتين نقدر نساعد حضرتك بيهم:
+1- ممكن حضرتك تروح لأقرب مركز خدمة تابع لينا.
+2- نرتبلك زيارة فني لحد البيت، وبيكون في رسوم للزيارة.
+قولّي حضرتك تفضّل أي اختيار علشان نبدأ نرتب معاك على طول</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">حضرتك هتتوجة للفرع بالسخان لتغير حلة بالتكلفة، او متاح زيارة منزليه برسوم + تكلفة تغير الحلة</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">حضرتك ممكن يتم تغير السخان الحالي بسخان جديد مع دفع فرق تكلفة ومتاح ان حضرتك تتوجة للفرع بالسخان القديم وتستلم السخان الجديد او متاح توريد الجهاز الجديد لحضرتك برسوم + ثمن فرق السخان الجديد</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">جهاز حضرتك خارج الضمان ومتاح استبدال بمنتج جديد بخصم 10% لان حضرتك من عملائنا المميزين ممكن حضرتك تتوجه للفرع لتسليم الجهاز القديم واستلام الجديد او متاح توريد الجهاز الجديد لحضرك برسوم + ثمن الجهاز الجديد مع خصم 10% من التكلفة</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير مع حضرتك خدمة العملاء يفضل ارسال الاسم ثلاثي - رقم الهاتف - المحافظه - المدينه - عنوان تفصيلي - العطل المتواجد بالجهاز</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بيتم تحديد موقف رسوم الزيارة بعد توجه الفني والاطلاع علي الفاتورة وشهادة الضمان</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بيتم تحديد الاسعار من خلال الفني بعد توجه الفني والاطلاع علي الفاتورة وشهادة الضمان</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بمراجعة بيانات حضرتك وجد انه تم الانتهاء من الاصلاح هل مازل هناك مشكله متواجدة</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير يا فندم ...لا يتم اصلاح كسر الشاشة ...يفضل حضرتك تشتري جهاز جديد بضمان جديد ..يرجي التواصل مع إدارة المبيعات من خلال الاتصال بهذا الرقم او واتس اب 01050704716 شكرا لاختيارك يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بخصوص البوتاجاز لو هيتم التركيب علي غاز طبيعي تتواصل مع شركه الغاز بتوصله لحضرتك لو انبوبه يتم التركيب من طرف حضرتك علما بأن ضمان حضرتك الفعلي بيبدا من فاتورة الشراء الضريبية من تاريخه وليس من تاريخ التشغيل</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بالفعل متواجد طلب لحضراتكم وجارى تنسيق الموعد وفي اقرب وقت اداره المتابعه هتكلم حضرتك لتنفيذ الزياره</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير مع حضرتك خدمة العملاء حابب اوضح لحضرتك انه سيتم التواصل من خلال القسم المسؤل خلال اليوم لمتابعه شكوى بلاغ حضراتكم</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">في حاله تواجد بيانات سابقه يرجي توضيح رقم الهاتف او رقم شكوى للاطلاع علي البيانات وتقديم المساعده</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">تم انتظار حضرتك لفترة كافية لمعرفة طلب حضرتك او استفسارك ممكن حضرتك تطلب التواصل مع خدمة العملاء مرة اخري شرفتنا يا فندم وشكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">بالضغط علي AQSET بيبدا تشغيل اضاءة ال UV داخل الكابينه وتظل تعمل لمدة 20 دقيقة متواصلة ثم يفصل ويعمل كل 8 ساعات</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">اهلا وسهلا بحضرتك يا فندم ..يرجي التواصل مع إدارة المبيعات من خلال الاتصال بهذا الرقم او واتس اب 01050704716 شكرا لاختيارك يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 2 — الزيارات
+══════════════════════════════════════════ -->
+<div id="t2" class="tab-content">
+  <p class="section-title">الزيارات</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">تم تسجيل الطلب وسيقوم فريقنا بالتواصل معكم خلال 72 ساعة بحد اقصي برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي مواعيد العمل من 9 ص وحتي 5 م وممتدة في بعض الأحيان الي 9 م في حين تواجد أي استفسار اخر ممكن تتواصل معانا مره أخرى شكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير مع حضرتك خدمة العملاء بمراجعه بيانات حضراتكم وجد حجز زياره منزليه ستتم في خلال 48 ساعه عمل برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي مواعيد العمل من 9 ص وحتي 5 م وممتدة في بعض الأحيان الي 9 م شكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير يا فندم بمراجعة بلاغ حضرتك وجد ان الفني حاول الاتصال بسيادتكم والهاتف لم يتم الرد وسيتم تجديد الحجز لسيادتكم مره اخري واستعجال الزيارة مرة اخري سعداء بخدمتك يا فندم</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">صباح الخير مع حضرتك خدمة العملاء سيتم استعجال تواصل الفني مع سيادتكم لسرعه التوجه سعداء بخدمتك حضرتك في يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير مع حضرتك خدمة العملاء بمراجعه بيانات حضراتكم وجد حجز زياره لتوريد قطع الغيار ستتم في خلال 48 ساعه برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي مواعيد العمل من 9 ص وحتي 5 م وممتدة في بعض الأحيان الي 9 م شكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير مع حضرتك خدمة العملاء بمراجعه بيانات حضراتكم وجد حجز زياره لتوريد المنتج برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي مواعيد العمل من 9 ص وحتي 5 م وممتدة في بعض الأحيان الي 9 م شكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك، حابب أطمنك إننا حددنا موعد لتوجه الفني إلى حضرتك للكشف على الجهاز. الفني هيكون موجود في الموعد المحدد خلال 48 ساعه، وده عشان نتأكد من حالة الجهاز ونبدأ في التشخيص الكامل لأي مشكلة والفني هيكلم حضرتك قبل التوجه بساعة.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">العميل عاوز ساعه محددة</p>
+    <div class="script-card"><span class="script-text">حابب أوضح لحضرتك إننا مش بنكون على علم دقيق بخط سير الفني أو الأماكن الأخرى اللي بيزورهم قبل حضرتك. كمان مش بنقدر نحسب بالضبط الوقت اللي هياخده الفني في التنقل من مكان لمكان، وكمان مش بنقدر نحدد الوقت اللي هيستغرقه في إصلاح كل جهاز عند العملاء. ممكن يكون الإصلاح سريع في بعض الأحيان، وفي أوقات أخرى ممكن ياخد وقت أطول. علي شان كده الفني بيكلم حضرتك قبل التوجه بساعه.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — استفسارات إضافية</p>
+    <div class="script-card"><span class="script-text">إذا كان عند حضرتك أي استفسار أو لو في حاجة تود توضيحها قبل وصول الفني، إحنا هنا في خدمتك في أي وقت.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — التأكيد على المساعدة</p>
+    <div class="script-card"><span class="script-text">إحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في الموعد المحدد ونعمل على إصلاح الجهاز في أسرع وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 3 — التقرير الفني
+══════════════════════════════════════════ -->
+<div id="t3" class="tab-content">
+  <p class="section-title">التقرير الفني</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">بمراجعة بلاغ حضرتك بالفعل تم التوجه لحضراتكم وتم عمل تقرير بحاله المنتج وجاري التواصل بكم من الإدارة لمتابعه شكواكم يرجي الانتظار وسيتم المتابعة في اقرب وقت ممكن... شكرا لتواصلك بخدمه عملاء يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف</p>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك،
+أول حاجة حابب أعتذر لحضرتك لو كان فيه أي تأخير علي حضرتك إحنا مقدرين صبرك معانا وتفهمك. الجهاز الخاص بحضرتك تم عمل تقرير فني كامل عليه، والفنيين خلصوا التقرير وهو حاليا معروض علي الإدارة. حاليًا نحن في انتظار رد الإدارة بقرار نهائي بموقف جهازك.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — بعد الاعتذار</p>
+    <div class="script-card"><span class="script-text">احنا هنتابع مع الإدارة وناكد علي سرعة الرد على التقرير الفني. وانا هبعت ميل حالا للإدارة أوضح في ان حضرتك مضايق جدا من التأخير ومحتاج رد في اسرع وقت. إحنا دايمًا هنا لخدمتك</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أنا فاهم تمامًا إنك منتظر الرد من الإدارة، ومقدر صبرك وتفهمك في الوضع ده. التقرير الفني تم إعداده بشكل دقيق عشان نقدر نتخذ القرار الصحيح بالنسبة لجهازك، واحنا منتظرين قرار من الإدارة عشان نتحرك في أقرب وقت. إحنا دايمًا بنسعي لتقديم أفضل خدمة بأعلى جودة، ودي خطوة لازم تتم عشان نضمن إننا اخدنا قرار صح في جهاز حضرتك. علي شان القرار يكون مرضي لحضرتك ولينا.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 5 — الاعتراضات
+══════════════════════════════════════════ -->
+<div id="t5" class="tab-content">
+  <p class="section-title">الاعتراضات على التكلفة</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">بمراجعه بلاغ حضرتك وجد انه تم التوجه والكشف علي الجهاز ووجد ان الجهاز به قطع غيار مستهلكات..وتم الاتصال بكم من جانب الادارة وحضرتك رفضت الصيانة بالتكلفة.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك،
+أولا حاجة حابب أعتذر لك عن موضوع التكلفة لو ده ضايق حضرتك إحنا مقدرين تمامًا موقف حضرتك لكن خليني أوضح لحضرتك أن التكلفة دي جت نتيجة لحالة جهازك وفقًا للكشف الفني اللي تم علي الجهاز.
+الفنيين قاموا بالكشف علي الجهاز ووجدوا إن فيه أجزاء تحتاج الي إصلاح أو تغيير القطعة، وده بيترتب عليه تكلفة.
+كمان، التكلفة مرتبطة بموقف ضمان الجهاز الخاص بحضرتك. لو كان الجهاز خارج الضمان أو فيه سوء استخدام وإدارة المتابعة اتصلت بحضرتك وبلغتك بالتكلفة دي بعد عرض الامر علي إدارة الشركة علي شان كده هو للأسف القرار اللي بلغتك بيه إدارة المتابعة هو قرار إدارة الشركة. واحنا بنعتزر لحضرتك جدا اذا كان القرار ضايق حضرتك.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 6 — قطع الغيار
+══════════════════════════════════════════ -->
+<div id="t6" class="tab-content">
+  <p class="section-title">قطع الغيار</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">بمراجعه بيانات حضراتكم وجد انه يتم توفير قطع غيار تم طلبها وسيتم التوفير في اقرب وقت ممكن يرجي الانتظار وسيتم المتابعة مع حضراتكم وسيتم استعجال الامر من خلالنا الي القسم المختص لسرعه انهاء الإجراءات سعداء بخدمة حضرتك في يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك، أول حاجة حابب أعتذر لك عن تأخير قطع الغيار لجهازك. إحنا مقدرين صبرك معانا وتفهمك حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن. احنا هنتابع الموضوع ونتأكد من حالة القطع المطلوبة لجهازك، سواء كانت في المركز او بيتم طلبها من المصنع الرئيسي. علي شان نعرف أي سبب التأخير ونستعجل الامر لحضرتك وانا هصعد شكوي حضرتك وتطلبك بميل حالا الي الإدارة المختصة أوضح لهم ان حضرتك مضايق جدا من التأخير ومحتاج استعجال الامر. وفي نفس الوقت لو الموضوع هياخد وقت أطول من المتوقع، هقدم لك طلب للإدارة بحلول بديله لو ممكن وبمجرد وصول القطعة، يتم تحديد موعد لتوريدها لحضرتك في اقرب وقت.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 7 — الورشة
+══════════════════════════════════════════ -->
+<div id="t7" class="tab-content">
+  <p class="section-title">الورشة</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">مساء الخير يا فندم ...بمراجعة بيانات حضرتك وجد انه تم سحب الجهاز للصيانة في الورشة ..وبمجرد الانتهاء سيتم تحديد موعد التوريد ...سعداء بخدمة حضرتك</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">مساء الخير يا فندم ..نعتذر لحضرتك عن التأخير وسيتم استعجال اصلاح الجهاز بالورشة لسرعه الانتهاء وتحديد موعد للتوريد ..سعداء بخدمة حضرتك</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك، أول حاجة حابب أعتذر لك عن التأخير في إصلاح جهازك في الورشة. إحنا مقدرين صبرك معانا وتفهمك. حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — بعد الاعتذار</p>
+    <div class="script-card"><span class="script-text">احنا هنتابع الموضوع ونتأكد من حالة جهاز حضرتك في الورشة، عشان نعرف موقفه من الإصلاح هل مازال تحت الإصلاح ولا متوقف علي قطع غيار معينه ولا تم الانتهاء وحاليا تحت الاختبار أو لو فيه تأخير في إصلاحه. عشان نعرف سبب التأخير ونستعجل الأمر لحضرتك. وهصعد شكوى حضرتك وطلبك بميل حالًا للإدارة المختصة، وأوضح لهم إن حضرتك مضايق جدًا من التأخير ومحتاج استعجال الأمر.
+وفي نفس الوقت، لو الموضوع هياخد وقت أطول من المتوقع، هقدم لك طلب للإدارة بحلول بديلة لو ممكن، وبمجرد ما الجهاز يتم إصلاحه، هنتواصل معاك لتحديد موعد لاستلامه في أقرب وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 8 — الاستبدال
+══════════════════════════════════════════ -->
+<div id="t8" class="tab-content">
+  <p class="section-title">الاستبدال</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">بمراجعة بلاغ حضرتك وجد انه جاري توفير المنتج لحضرتك وسيتم الاستعجال لسرعه تحديد موعد التوريد لسيادتكم
+سعداء بخدمتك في يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك،
+أول حاجة حابب أعتذر لك عن التأخير في استبدال جهازك. إحنا مقدرين صبرك معانا وتفهمك. حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — بعد الاعتذار</p>
+    <div class="script-card"><span class="script-text">احنا هنتابع الموضوع وأتأكد من حالة طلب استبدال جهاز حضرتك، سواء كانت في المرحلة النهائية من الاستبدال أو لو فيه تأخير في عملية التبديل. عشان نعرف سبب التأخير ونستعجل الأمر لحضرتك. وهصعد شكوى حضرتك وطلبك بميل حالًا للإدارة المختصة، وأوضح لهم إن حضرتك مضايق جدًا من التأخير ومحتاج استعجال الأمر.
+
+وبمجرد ما الجهاز الجديد يكون جاهز للاستبدال، هنتواصل معاك لتحديد موعد لاستلامه في أقرب وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 9 — رد القيمة
+══════════════════════════════════════════ -->
+<div id="t9" class="tab-content">
+  <p class="section-title">رد القيمة</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">بمراجعة بلاغ حضرتك وجد انه جاري صرف الشيك لحضرتك وسيتم الاستعجال لسرعه تحديد موعد التوريد لسيادتكم
+سعداء بخدمتك في يونيون اير</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+    <div class="script-card"><span class="script-text">أهلاً وسهلاً بحضرتك،
+أول حاجة حابب أعتذر لك عن التأخير في ( رد القيمة او صرف الشيك ) لحضرتك. إحنا مقدرين صبرك معانا وتفهمك. حاجة زي دي مش مفروض تحصل، وحابب أطمنك إننا بنشتغل على حل الموضوع في أسرع وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <p class="sub-title">الموظف — بعد الاعتذار</p>
+    <div class="script-card"><span class="script-text">احنا هنتابع الموضوع وأتأكد من حالة طلب رد القيمة لحضرتك، سواء كانت في المرحلة النهائية من توريد الشيك أو لو فيه تأخير في اجرائات صرف الشيك. عشان نعرف سبب التأخير ونستعجل الأمر لحضرتك. وهصعد شكوى حضرتك وطلبك بميل حالًا للإدارة المختصة، وأوضح لهم إن حضرتك مضايق جدًا من التأخير ومحتاج استعجال الأمر.
+
+وبمجرد ما الجهاز الجديد يكون جاهز للاستبدال، هنتواصل معاك لتحديد موعد لاستلامه في أقرب وقت ممكن.</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 10 — تعليمات الثلاجة
+══════════════════════════════════════════ -->
+<div id="t10" class="tab-content">
+  <p class="section-title">تعليمات تشغيل الثلاجة والأعطال</p>
+  <div class="scripts">
+    <div class="script-card"><span class="script-text">تعليمات بداية التشغيل:
+
+- لا يتم تشغيل الثلاجة الا بعد مرور 8 ساعة من وضعها في المكان المخصص بها ويجب ترك مسافة 5سم خلف الثلاجة
+- لا يتم وضع أي مأكولات في الثلاجة الا بعد مرور 3 ساعات من التشغيل وعدم وضع الاكل مرة واحدة، بل علي دفعات
+- لموديلات الديجيتال تحكم فريزر وكابينه: افضل وضع مثالي للتبريد 18- للفريزر و4 للكابينة
+- موديلات الديجيتال تحكم كابينه: يتم ضبط درجة حرارة الكابينة علي الدرجة المثالية 4 اما الفريزر بيتم التحكم التجميد عن طريق المؤشر الموجود في الفريزر (colder-cold) حيث انه يتم تحريك المؤشر COLD اقل تجميد بالفريزر وcolder اعلي تجمد في الفريزر ويفضل ضبطه في الوسط
+- موديلات الميكانيكال ثرموستات يتم ضبط التبريد عن طريق الثرموستات ويفضل ضبط علي 3
+- التأكد من غلق الباب جيدا ووجود ميل بالثلاجة للخلف عن طريق ضبط ارجل الثلاجة ليسمح بأغلاق الباب جيدا
+- التأكد من فولت الكهرباء لان اقل من 200فولت سيودي الي ضعف التبريد
+- يتم توزيع الأطعمة في الفريزر والكابينة بطريقة جيده وبعيدة عن فتحات التهوية في الفريزر</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+
+    <div class="script-card"><span class="script-text">شكوى العميل من ان التبريد ضعيف:
+
+- لابد من ضبط درجة حرارة الثلاجة (اعلي تبريد 2 واقل تبريد 8)
+- التأكد من ابعاد الأطعمة عن فتحة التهوية في الفريزر والكابينة لضمان التبريد الجيد
+- التأكد من غلق الباب جيدا ووجود ميل بالثلاجة للخلف عن طريق ضبط ارجل الثلاجة ليسمح بأغلاق الباب جيدا
+- التأكد من ان جوان الباب يغلق جيد وفي حالة وجود تسريب من الجوان يتم استخدام ماء ساخن لعودة المرونة للجوان واحكام الغلق
+- عدم فتح وغلق الباب بشكل مستمر وخاصة في فصل الصيف لأنه سيؤدي الي ضعف التبريد
+- عدم ادخال الأطعمة الساخنة في الكابينة
+- التأكد من وجود مسافة كافية وخاصة خلف الثلاجة وعدم وجود بجانب حمل حراري
+- التأكد من ان الفولت لان اقل من 200فولت سيودي الي ضعف التبريد</span><button class="btn-copy" onclick="copyScript(this)">نسخ</button></div>
+  </div>
+</div>
+
+<script>
+// ── Copy script card ──
+function copyScript(btn) {
+  const text = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ تم';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── Copy WhatsApp link ──
+function copyWALink() {
+  const serial = document.getElementById('serial-input').value.trim();
+  const link = 'اضغط فقط على هذا الرابط او اللينك المرفق بالاسفل👇 وسيظهر السريال تلقائيا لاستكمال خطوات تسجيل البلاغ \nhttps://api.whatsapp.com/send/?phone=20219012&text=' + encodeURIComponent(serial) + '&type=phone_number&app_absent=0';
+  navigator.clipboard.writeText(link).then(() => {
+    const btn = document.getElementById('btn-wa');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20 6 9 17l-5-5"/></svg> تم النسخ';
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  });
+}
+
+// ── Serial input ──
+const serialInput = document.getElementById('serial-input');
+const issueDate = document.getElementById('issue-date');
+const btnWa = document.getElementById('btn-wa');
+
+serialInput.addEventListener('input', function() {
+  const val = this.value.toUpperCase().replace(/[_\s]/g, '-').replace(/\s/g, '');
+  this.value = val;
+  btnWa.disabled = !val;
+
+  if (!val) { issueDate.textContent = ''; return; }
+  issueDate.textContent = '...';
+  fetch('https://www.unionaire-tech.com/get_last_date?a_serial=' + val)
+    .then(r => r.json())
+    .then(d => { issueDate.textContent = d.issue_date || '—'; })
+    .catch(() => { issueDate.textContent = '—'; });
+});
+
+// ── Tabs ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById(this.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Clock + صباح/مساء auto-replace ──
+function updateClock() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ar-EG', { year:'numeric', month:'numeric', day:'numeric', weekday:'long' });
+  const timeStr = now.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true });
+  document.getElementById('clock').textContent = timeStr + '  ' + dateStr;
+
+  // auto صباح/مساء in script cards
+  const hour = now.getHours();
+  document.querySelectorAll('.script-text').forEach(el => {
+    if (hour < 12) {
+      el.textContent = el.textContent.replace(/مساء الخير/g, 'صباح الخير');
+    } else {
+      el.textContent = el.textContent.replace(/صباح الخير/g, 'مساء الخير');
+    }
+  });
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+</body>
+</html>

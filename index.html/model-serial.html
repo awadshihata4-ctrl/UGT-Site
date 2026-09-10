@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IVR SERVICE SYSTEM</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Cairo',sans-serif;
+}
+
+body{
+
+    background:
+    radial-gradient(circle at top right,#0d47a1 0%,#021b4d 40%,#010b23 100%);
+
+    min-height:100vh;
+
+    padding:20px;
+
+    color:#fff;
+}
+
+.main-title{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.main-title h1{
+
+    font-size:54px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    margin-bottom:5px;
+}
+
+.main-title p{
+
+    font-size:20px;
+
+    color:#dbeafe;
+
+    font-weight:600;
+}
+
+.line{
+
+    width:400px;
+
+    height:2px;
+
+    background:rgba(255,255,255,0.3);
+
+    margin:15px auto;
+}
+
+.card{
+
+    background:rgba(255,255,255,0.95);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    margin-bottom:28px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,0.35);
+
+    border:1px solid rgba(255,255,255,0.2);
+}
+
+.table-wrapper{
+
+    overflow:auto;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:1200px;
+}
+
+thead{
+
+    background:linear-gradient(90deg,#0d47a1,#1456b8);
+}
+
+thead th{
+
+    color:#fff;
+
+    padding:16px;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    text-align:center;
+}
+
+tbody td{
+
+    padding:14px 16px;
+
+    color:#1e293b;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    border-bottom:1px solid #e2e8f0;
+
+    vertical-align:middle;
+}
+
+tbody tr:nth-child(even){
+
+    background:#f8fafc;
+}
+
+tbody tr:hover{
+
+    background:#eff6ff;
+
+    transition:0.3s;
+}
+
+.center{
+
+    text-align:center;
+}
+
+.right{
+
+    text-align:right;
+}
+
+.left{
+
+    text-align:left;
+}
+
+.filter-box{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:25px;
+}
+
+select{
+
+    width:420px;
+
+    padding:14px 18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    outline:none;
+
+    color:#0f172a;
+
+    background:#fff;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.note{
+
+    padding:20px;
+
+    background:#f1f5f9;
+
+    color:#0f172a;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:800;
+}
+
+.section-title{
+
+    background:#e2e8f0;
+
+    text-align:center;
+
+    color:#0f172a;
+
+    font-size:18px;
+
+    font-weight:800;
+}
+
+.badge{
+
+    background:#0d47a1;
+
+    color:#fff;
+
+    padding:7px 14px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+@media(max-width:768px){
+
+    body{
+
+        padding:10px;
+    }
+
+    .main-title h1{
+
+        font-size:34px;
+    }
+
+    .line{
+
+        width:200px;
+    }
+
+    select{
+
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="main-title">
+
+<h1>IVR SERVICE SYSTEM</h1>
+
+<div class="line"></div>
+
+<p>دليل المنتجات والخدمات</p>
+
+</div>
+
+<!-- البلاغات -->
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>نوع البلاغ</th>
+
+<th>Service Center</th>
+
+<th>New Repair Status</th>
+
+<th>Repair Type</th>
+
+<th>Ticket Status</th>
+
+<th>Ticket Type</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td class="right"><span class="badge">تركيب جديد</span></td>
+
+<td class="center">-</td>
+
+<td class="center">-</td>
+
+<td class="left">New Product Installation</td>
+
+<td class="center">-</td>
+
+<td class="left">New Product Installation</td>
+
+</tr>
+
+<tr>
+
+<td class="right"><span class="badge">صيانة داخلية</span></td>
+
+<td class="center">-</td>
+
+<td class="right">انتظار اتصال من العميل Wait Customer</td>
+
+<td class="left">Internal Cust. Receive</td>
+
+<td class="center">Open</td>
+
+<td class="left">Internal Service</td>
+
+</tr>
+
+<tr>
+
+<td class="right"><span class="badge">بلاغ متابعة</span></td>
+
+<td class="center">-</td>
+
+<td class="right">مطلوب متابعة من المركز In Planning >> Wait Center</td>
+
+<td class="left">Field Visit</td>
+
+<td class="center">Open</td>
+
+<td class="left">Field Service</td>
+
+</tr>
+
+<tr>
+
+<td class="right"><span class="badge">دعم فني شاشات</span></td>
+
+<td class="left">TS_TV_SolvePhone</td>
+
+<td class="right">انتظار قرار الدعم الفني Wait TS</td>
+
+<td class="left">Technical Support</td>
+
+<td class="center">Open</td>
+
+<td class="left">Field Service</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- الفلتر -->
+
+<div class="filter-box">
+
+<select id="productFilter" onchange="filterTable()">
+
+<option value="">الكل</option>
+
+<option value="التكيف">التكيف</option>
+
+<option value="الثلاجة">الثلاجة</option>
+
+<option value="الغسالة">الغسالة</option>
+
+<option value="البوتجاز">البوتجاز</option>
+
+<option value="الشاشة">الشاشة</option>
+
+<option value="الديب فريزر">الديب فريزر</option>
+
+<option value="مبرد المياه">مبرد المياه</option>
+
+<option value="السخان الغاز">السخان الغاز</option>
+
+<option value="السخان الكهرباء">السخان الكهرباء</option>
+
+<option value="المروحة">المروحة</option>
+
+<option value="المكنسة">المكنسة</option>
+
+<option value="الشفاط">الشفاط</option>
+
+<option value="الدفاية">الدفاية</option>
+
+<option value="المكواة">المكواة</option>
+
+<option value="فلتر المياه">فلتر المياه</option>
+
+<option value="محضر الطعام">محضر الطعام</option>
+
+<option value="شفاط حائطي">شفاط حائطي</option>
+
+<option value="فرن بلت ان">فرن بلت ان</option>
+
+<option value="مسطح بلت ان">مسطح بلت ان</option>
+
+<option value="التكييف الصحراوي">التكييف الصحراوي</option>
+
+</select>
+
+</div>
+
+<!-- المنتجات -->
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table id="productTable">
+
+<thead>
+
+<tr>
+
+<th>المنتج</th>
+
+<th>SERIAL NU</th>
+
+<th>MODEL</th>
+
+<th>الموديل</th>
+
+</tr>
+
+</thead>
+<!-- استبدل الـ tbody بتاع جدول المنتجات بالجزء ده بالكامل -->
+
+<tbody>
+
+<tr>
+<td class="right">(1) التكيف</td>
+<td class="center">S-00000</td>
+<td class="left">
+ARTI012HR5NW0FR<br>
+ARTI018CR50S0FR<br>
+ARTI024CR50LDFR<br>
+ARTI030HV50NCFR<br>
+ARTI036CR50NBFR
+</td>
+<td class="right">
+1.5 حصان<br>
+2.25 حصان<br>
+3 حصان<br>
+4 حصان<br>
+5 حصان
+</td>
+</tr>
+
+<tr>
+<td class="right">(2) الثلاجة</td>
+<td class="center">R-00000 / RV-00000 / Y-00000</td>
+<td class="left">
+UR-370WGNA-C10<br>
+RD-320VM-C2H<br>
+URN-400DLBG1A-DTH<br>
+URN-700CEPBLG1A-DXHRBXLS
+</td>
+<td class="right">
+No Frost<br>
+D Frost<br>
+Dual Cooling<br>
+ثلاجة كومبي
+</td>
+</tr>
+
+<tr>
+<td class="right">(3) الغسالة</td>
+<td class="center">
+U-000000 / MW-00000 / 10WT0000 /
+13WT00000 / 8WT00000
+</td>
+<td class="left">
+UW130TPL-A2SL<br>
+UW105T
+</td>
+<td class="right">
+غسالة فوق اتوماتيك<br>
+غسالة عادية
+</td>
+</tr>
+
+<tr>
+<td class="right">(4) البوتجاز</td>
+<td class="center">
+G-00000 / K-00000 / SF-0000 / Y-00000
+</td>
+<td class="left">
+C6090SS-AC-443<br>
+C6060SS-AC-447
+</td>
+<td class="right">
+بوتجاز 5 شعلة<br>
+بوتجاز 4 شعلة
+</td>
+</tr>
+
+<tr>
+<td class="right">(5) الشاشة</td>
+<td class="center">V- / VS-00000</td>
+<td class="left">
+LD-24UN-PA671-EXD<br>
+L32UR460<br>
+M39UV600<br>
+M-LD-40UN-PB801-EXD<br>
+ML43UT600<br>
+ML49US450<br>
+LE50K6600UG<br>
+ML55US780<br>
+LE65K6600UG<br>
+75UR860<br>
+86UR860
+</td>
+<td class="right">
+شاشة 24 بوصة - صيانة داخل المركز<br>
+شاشة 32 بوصة - صيانة داخل المركز<br>
+شاشة 39 بوصة - صيانة داخل المركز<br>
+شاشة 40 بوصة - صيانة داخل المركز<br>
+شاشة 43 بوصة - صيانة داخل المركز<br>
+شاشة 49 بوصة - صيانة داخل المركز<br>
+شاشة 50 بوصة - صيانة داخل المركز<br>
+شاشة 55 بوصة<br>
+شاشة 65 بوصة<br>
+شاشة 75 بوصة<br>
+شاشة 86 بوصة
+</td>
+</tr>
+
+<tr>
+<td colspan="4" class="section-title">
+6) أجهزة اخرى
+</td>
+</tr>
+
+<tr>
+<td class="right">(1) الديب فريزر</td>
+<td class="center">R-00000 / RV-00000</td>
+<td class="left">
+UC-210BV-DH<br>
+UF-205BGN-C10
+</td>
+<td class="right">
+ديب فريزر افقي<br>
+ديب فريزر رأسي
+</td>
+</tr>
+
+<tr>
+<td class="right">(2) مبرد المياه</td>
+<td class="center">W-00000</td>
+<td class="left">WS-60-2W</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td class="right">(3) السخان الغاز</td>
+<td class="center">
+U-000000 / MH-00000 /
+10H00000 / 06H00000
+</td>
+<td class="left">
+UGH100DG-BK<br>
+UGH060DG-BK
+</td>
+<td class="right">
+سخان غاز 10 لتر<br>
+سخان غاز 6 لتر
+</td>
+</tr>
+
+<tr>
+<td class="right">(4) السخان الكهرباء</td>
+<td class="center">E-000000</td>
+<td class="left">EWH30-C100-V-P-R-3</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td class="right">(5) المروحة</td>
+<td class="center">F-000000</td>
+<td class="left">UFS18-BM-B</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">(6) المكنسة</td>
+<td class="center">U-000000</td>
+<td class="left">UVC-1800B-R</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">(7) الشفاط</td>
+<td class="center">H-000000 / HO-000000</td>
+<td class="left">CLASSICO90</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td class="right">(8) الدفاية</td>
+<td class="center">N-000000</td>
+<td class="left">EFH2000-M</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">(9) المكواة</td>
+<td class="center">B-00</td>
+<td class="left">HG2043</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">(0) فلتر المياه</td>
+<td class="center">
+Ho-000000 / U-000000 /
+01P00000 / 04P00000 / 05P00000
+</td>
+<td class="left">TECH007DG-IP</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td colspan="4" class="note">
+
+بيتم طلب ادخال السريال بيتم ادخاله من بعد الاصفار ثم الضغط #
+ولابد من اختيار نوع المنتج
+
+</td>
+</tr>
+
+<tr>
+<td colspan="4" class="section-title">
+موديلات اخري
+</td>
+</tr>
+
+<tr>
+<td class="right">الفرن الكهرباء</td>
+<td class="center">G-00000</td>
+<td class="left">MO39E-32</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">مسطح بلت ان</td>
+<td class="center">G-000000</td>
+<td class="left">BH5060C-F</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td class="right">فرن بلت ان</td>
+<td class="center">G-00000</td>
+<td class="left">BO66S1-119-SF-AL</td>
+<td class="right"></td>
+</tr>
+
+<tr>
+<td class="right">شفاط حائطي</td>
+<td class="center">H-000000 / HO-000000</td>
+<td class="left">VFW-30</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">محضر الطعام</td>
+<td class="center">0-00000000</td>
+<td class="left">GS-504</td>
+<td class="right">صيانة داخل المركز</td>
+</tr>
+
+<tr>
+<td class="right">التكييف الصحراوي</td>
+<td class="center">A-000000</td>
+<td class="left">UA90MS</td>
+<td class="right"></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+function filterTable(){
+
+    let filter =
+    document.getElementById("productFilter")
+    .value
+    .toLowerCase();
+
+    let table =
+    document.getElementById("productTable");
+
+    let rows =
+    table.getElementsByTagName("tr");
+
+    for(let i = 1; i < rows.length; i++){
+
+        let cell =
+        rows[i].getElementsByTagName("td")[0];
+
+        if(cell){
+
+            let text =
+            cell.textContent.toLowerCase();
+
+            if(filter === "" || text.includes(filter)){
+
+                rows[i].style.display = "";
+
+            }else{
+
+                rows[i].style.display = "none";
+
+            }
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

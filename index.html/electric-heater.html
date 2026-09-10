@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>سخان الكهرباء</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 15px;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .container {
+            max-width: 1400px; /* تم توسيع الحاوية لتناسب عدد الأعمدة الإضافية */
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* لوحة البيانات السريعة العلوية */
+        .info-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 280px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border-right: 5px solid #2e7d32;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .info-card h4 {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* شريط التنقل والأزرار العصرية */
+        .tabs-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tabs-nav button {
+            padding: 12px 24px;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            border-radius: 8px;
+            background: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .tabs-nav button:hover {
+            background: #f8fafc;
+            border-color: #2e7d32;
+            color: #2e7d32;
+        }
+
+        .tabs-nav button.active {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+        }
+
+        /* تصميم الجداول الاحترافي */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+            overflow-x: auto; /* لدعم التصفح الأفقي على الشاشات الصغيرة */
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .table-container.visible {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            padding: 16px 12px;
+            font-size: 15px;
+            border-bottom: 2px solid #cbd5e1;
+            border-left: 1px solid var(--border-color);
+        }
+
+        th:last-child {
+            border-left: none;
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+            font-size: 15px;
+            color: #334155;
+            vertical-align: top;
+        }
+
+        td:last-child {
+            border-left: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">دليل إجراءات استبدال سخان الكهرباء</div>
+
+<div class="container">
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>الاستبدال هيكون بالموديل دا:</h4>
+            <p style="font-family: sans-serif; letter-spacing: 0.5px;">EWH50-C310-V-P-3</p>
+        </div>
+        <div class="info-card" style="border-right-color: #0284c7;">
+            <h4>سعر الجهاز الجديد:</h4>
+            <p>سيتم ابلاغه من خلال الادارة </p>
+        </div>
+    </div>
+
+    <p class="tabs-title">اختر موقف الضمان لعرض التفاصيل:</p>
+    <div class="tabs-nav">
+        <button id="btn-firstYear" onclick="showTable('firstYear')">السنة الأولى</button>
+        <button id="btn-afterFirstYear" onclick="showTable('afterFirstYear')">بعد السنة الأولى</button>
+        <button id="btn-outOfWarranty" onclick="showTable('outOfWarranty')">خارج الضمان</button>
+    </div>
+
+    <div id="firstYear" class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">الإجراء</th>
+                    <th style="width: 25%;">العطل اللي يتكب في odoo</th>
+                    <th style="width: 15%;">نوع البلاغ</th>
+                    <th style="width: 20%;">الحجز</th>
+                    <th style="width: 20%;">إجراء القطاعات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>كشف علي  الجهاز داخل الفرع</td>
+                    <td>عميل السنة الأولى - تسريب مياه - زيارة للفرع</td>
+                    <td>Internal Service</td>
+                    <td>على الكباستي الموجودة وعدم إبلاغ العميل بأي عنوان، وسيتم إبلاغه بانتظار متابعة بحد أقصى 48 ساعة</td>
+                    <td>الاتصال بالعميل للحصول على الأوراق المطلوبة للاستبدال مع فيديو بالعطل</td>
+                </tr>
+                <tr>
+                    <td>كشف علي الجهاز لدى العميل</td>
+                    <td>عميل السنة الأولى - تسريب مياه - زيارة منزلية 350ج رسوم زيارة</td>
+                    <td>Field Service</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجود او اللي يختاره العميل </td>
+                    <td>المركز سيقوم بكتابة تقرير ويتم عمل الاستبدال والتوريد للعميل من خلالنا</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="afterFirstYear" class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>الإجراء</th>
+                    <th>العطل اللي يتكب في odoo</th>
+                    <th>نوع البلاغ</th>
+                    <th>الحجز</th>
+                    <th>إجراء القطاعات</th>
+                    <th> من 30لتر الي 50لتر فرق سعر المنتج جديد</th>
+                    <th> من 40لتر الي 50لتر فرق سعر المنتج جديد</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>تغيير حلة داخل الفرع</td>
+                    <td>عميل بعد السنة الأولى - تسريب مياه - زيارة للفرع لغير الحالة 950ج</td>
+                    <td>Internal Service</td>
+                    <td>الحجز على الكباستي الموجودة وإبلاغ العميل بعنوان المركز</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>تغيير حلة لدى العميل</td>
+                    <td>عميل بعد السنة الأولى - تسريب مياه - زيارة منزلية 350ج + ثمن تغيير الحلة</td>
+                    <td>Field Service</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>المركز سيغير الحلة في منزل العميل</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td> تغير منتج جديد للعميل داخل الفرع بدلا من تغير الحلة </td>
+                    <td>عميل بعد السنة الأولى - تسريب مياه - زيارة للفرع لاستبدال المنتج ثمن فرق المنتج الجديد من 1200ج الي 1550ج</td>
+                    <td>Internal Service</td>
+                    <td>عدم إبلاغ العميل بعنوان، وسيتم إبلاغه بانتظار متابعة بحد أقصى 48 ساعة</td>
+                    <td>الاتصال بالعميل للحصول على الأوراق المطلوبة مع فيديو بالعطل</td>
+                    <td>في حاله ان الجهاز عند العميل30لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 350ج + 1200ج</td>
+                    <td>في حاله ان الجهاز عند العميل40لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 250ج + 1200ج</td>
+                </tr>
+                <tr>
+                    <td> تغير منتج جديد لدى العميل بدلا من تغير الحلة </td>
+                    <td> عميل بعد السنة الأولى - تسريب مياه - زيارة منزلية 350ج + ثمن فرق المنتج الجديد من 1200ج الي 1550ج </td>
+                    <td>Field Service</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>المركز سيكتب تقرير ويتم الاستبدال والتوريد من خلالنا</td>
+                    <td>في حاله ان الجهاز عند العميل30لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 350ج + 1200ج</td>
+                    <td>في حاله ان الجهاز عند العميل40لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 250ج + 1200ج</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="outOfWarranty" class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">الإجراء</th>
+                    <th style="width: 25%;">العطل اللي يتكب في odoo</th>
+                    <th style="width: 15%;">نوع البلاغ</th>
+                    <th style="width: 20%;">الحجز</th>
+                    <th style="width: 20%;">إجراء القطاعات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>شراء جهاز جديد من الفرع</td>
+                    <td>عميل خارج الضمان - تسريب مياه - زيارة للفرع بخصم 10%علي سعر الجهاز الجديد</td>
+                    <td>Internal Service</td>
+                    <td>عدم إبلاغ العميل بعنوان، وسيتم إبلاغه بانتظار متابعة بحد أقصى 48 ساعة</td>
+                    <td>الاتصال بالعميل للحصول على الأوراق المطلوبة مع فيديو بالعطل</td>
+                </tr>
+                <tr>
+                    <td>توريد الجهاز الجديد للعميل</td>
+                    <td>عميل خارج الضمان - تسريب مياه - زيارة منزلية 350ج + خصم 10%علي سعر الجهاز الجديد</td>
+                    <td>Field Service</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>Wait Center</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+function showTable(tableId) {
+    const tables = ['firstYear', 'afterFirstYear', 'outOfWarranty'];
+
+    tables.forEach(id => {
+        document.getElementById(id).classList.remove('visible');
+        document.getElementById('btn-' + id).classList.remove('active');
+    });
+
+    if(tableId) {
+        document.getElementById(tableId).classList.add('visible');
+        document.getElementById('btn-' + tableId).classList.add('active');
+    }
+}
+
+// فتح جدول (السنة الأولى) تلقائياً عند فتح الصفحة كمظهر افتراضي بدئي
+window.onload = function() {
+    showTable('firstYear');
+};
+</script>
+
+</body>
+</html>

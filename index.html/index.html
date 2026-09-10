@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>UGT Dashboard | النظام المتكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: linear-gradient(145deg, #e8f4f8 0%, #d9eaf0 100%);
+        min-height: 100vh;
+        padding: 24px;
+    }
+
+    /* ========== الحاوية الرئيسية ========== */
+    .dashboard {
+        max-width: 1600px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 44px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    /* ========== رأس الصفحة ========== */
+    .header {
+        background: linear-gradient(105deg, #2c7da0 0%, #3fa7c9 100%);
+        padding: 18px 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+    .logo-img {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 18px;
+        padding: 8px;
+        object-fit: contain;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+    .logo-text h1 {
+        font-size: 26px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.3px;
+    }
+    .logo-text p {
+        font-size: 13px;
+        color: #ffdea4;
+        font-weight: 600;
+        margin-top: 4px;
+    }
+
+    /* ========== زر العودة (في الأعلى بجانب الإصدار) ========== */
+    .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .back-home-btn {
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 10px 22px;
+        border-radius: 60px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.25s ease;
+        color: white;
+        font-family: 'Cairo', sans-serif;
+        backdrop-filter: blur(4px);
+    }
+    .back-home-btn:hover {
+        background: #ffb347;
+        color: #1e2a3e;
+        border-color: #ffb347;
+        transform: translateY(-2px);
+    }
+    .version-badge {
+        background: rgba(255,255,255,0.15);
+        padding: 8px 22px;
+        border-radius: 60px;
+        color: #fff2e0;
+        font-weight: 600;
+        font-size: 13px;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    /* ========== المحتوى الرئيسي ========== */
+    .main-content {
+        padding: 36px;
+    }
+
+    /* ========== شبكة الأزرار الموحدة ========== */
+    .unified-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 22px;
+        margin-bottom: 40px;
+    }
+    
+    .premium-card {
+        background: #ffffff;
+        border-radius: 28px;
+        padding: 24px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+        position: relative;
+        overflow: hidden;
+    }
+    .premium-card:nth-child(1) { border-top: 4px solid #FFB347; }
+    .premium-card:nth-child(2) { border-top: 4px solid #6C63FF; }
+    .premium-card:nth-child(3) { border-top: 4px solid #4CAF50; }
+    .premium-card:nth-child(4) { border-top: 4px solid #FF6B6B; }
+    .premium-card:nth-child(5) { border-top: 4px solid #20B2AA; }
+    .premium-card:nth-child(6) { border-top: 4px solid #FF8C42; }
+    .premium-card:nth-child(7) { border-top: 4px solid #8855FF; }
+    .premium-card:nth-child(8) { border-top: 4px solid #E91E63; }
+    .premium-card:nth-child(9) { border-top: 4px solid #00ACC1; }
+    .premium-card:nth-child(10) { border-top: 4px solid #FFA000; }
+    .premium-card:nth-child(11) { border-top: 4px solid #8BC34A; }
+    .premium-card:nth-child(12) { border-top: 4px solid #F06292; }
+    .premium-card:nth-child(13) { border-top: 4px solid #5C6BC0; }
+    .premium-card:nth-child(14) { border-top: 4px solid #FF7043; }
+    .premium-card:nth-child(15) { border-top: 4px solid #26A69A; }
+
+    .premium-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
+        border-color: transparent;
+    }
+    .card-icon {
+        font-size: 46px;
+        margin-bottom: 15px;
+        display: inline-block;
+        transition: 0.2s;
+    }
+    .premium-card:nth-child(1) .card-icon { color: #FFB347; }
+    .premium-card:nth-child(2) .card-icon { color: #6C63FF; }
+    .premium-card:nth-child(3) .card-icon { color: #4CAF50; }
+    .premium-card:nth-child(4) .card-icon { color: #FF6B6B; }
+    .premium-card:nth-child(5) .card-icon { color: #20B2AA; }
+    .premium-card:nth-child(6) .card-icon { color: #FF8C42; }
+    .premium-card:nth-child(7) .card-icon { color: #8855FF; }
+    .premium-card:nth-child(8) .card-icon { color: #E91E63; }
+    .premium-card:nth-child(9) .card-icon { color: #00ACC1; }
+    .premium-card:nth-child(10) .card-icon { color: #FFA000; }
+    .premium-card:nth-child(11) .card-icon { color: #8BC34A; }
+    .premium-card:nth-child(12) .card-icon { color: #F06292; }
+    .premium-card:nth-child(13) .card-icon { color: #5C6BC0; }
+    .premium-card:nth-child(14) .card-icon { color: #FF7043; }
+    .premium-card:nth-child(15) .card-icon { color: #26A69A; }
+
+    .premium-card:hover .card-icon {
+        transform: scale(1.08);
+    }
+    .card-title {
+        font-weight: 800;
+        font-size: 17px;
+        color: #1e2a3e;
+        margin-top: 6px;
+    }
+    .card-sub {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    /* ========== كارد التعليمات ========== */
+    .pro-instructions {
+        background: #fefcf5;
+        border-radius: 36px;
+        padding: 32px;
+        margin-top: 15px;
+        border: 1px solid #fce4c1;
+        box-shadow: 0 10px 25px -8px rgba(0,0,0,0.05);
+    }
+    .pro-instructions h3 {
+        font-size: 24px;
+        font-weight: 800;
+        color: #c97e00;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .instruction-row {
+        background: white;
+        border-radius: 20px;
+        padding: 18px 24px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        transition: 0.2s;
+        border-right: 6px solid;
+    }
+    .instruction-row:nth-child(1) { border-right-color: #FF6B6B; }
+    .instruction-row:nth-child(2) { border-right-color: #4CAF50; }
+    .instruction-row:nth-child(3) { border-right-color: #FFB347; }
+    .instruction-row:nth-child(4) { border-right-color: #6C63FF; }
+
+    .instruction-row:hover {
+        transform: translateX(-5px);
+        background: #fffaf2;
+    }
+    .ins-icon {
+        font-size: 28px;
+        min-width: 50px;
+        text-align: center;
+    }
+    .ins-text strong {
+        display: block;
+        font-size: 16px;
+        color: #2d3748;
+        margin-bottom: 6px;
+    }
+    .ins-text p {
+        color: #5a6c7e;
+        line-height: 1.65;
+        font-size: 14px;
+    }
+
+    /* ========== iframe ========== */
+    .iframe-modern {
+        width: 100%;
+        min-height: 70vh;
+        border: none;
+        border-radius: 28px;
+        background: #fefefe;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    @media (max-width: 768px) {
+        .main-content { padding: 20px; }
+        .unified-grid { gap: 14px; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
+        .premium-card { padding: 18px 10px; }
+        .card-icon { font-size: 34px; }
+        .card-title { font-size: 13px; }
+        .instruction-row { flex-direction: column; gap: 8px; }
+        .header { padding: 15px 20px; }
+        .top-actions { margin-top: 5px; }
+        .back-home-btn { padding: 6px 16px; font-size: 12px; }
+        .version-badge { padding: 6px 16px; font-size: 11px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="dashboard" id="dashboardRoot">
+    <!-- الهيدر مع زر العودة في الأعلى -->
+    <div class="header">
+        <div class="logo-area">
+            <img src="https://unionaire.com/ct/unionaire.png" alt="UGT" class="logo-img" onerror="this.src='https://via.placeholder.com/60?text=UGT'">
+            <div class="logo-text">
+                <h1>UGT Call Center Dashboard</h1>
+                <p>منصة الخدمات المتكاملة | أداء احترافي</p>
+            </div>
+        </div>
+        <div class="top-actions">
+            <button class="back-home-btn" id="backToHomeBtn">
+                <i class="fas fa-home"></i> العودة للقائمة الرئيسية
+            </button>
+            <div class="version-badge">
+                <i class="fas fa-chart-line"></i> الإصدار الاحترافي-Awad shihata v4
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content" id="dynamicContent"></div>
+</div>
+
+<script>
+    const pages = {
+        main: {
+            title: "الرئيسية",
+            content: `
+                <div class="unified-grid">
+                    <div class="premium-card" data-page="sms.html"><div class="card-icon">💬</div><div class="card-title">SMS</div><div class="card-sub">إرسال رسائل</div></div>
+                    <div class="premium-card" data-page="model-serial.html"><div class="card-icon">🔍</div><div class="card-title">الموديل والسريال</div><div class="card-sub">بحث متقدم</div></div>
+                    <div class="premium-card" data-page="visit-fees.html"><div class="card-icon">💰</div><div class="card-title">رسوم الزيارة</div><div class="card-sub">الأسعار والتكاليف</div></div>
+                    <div class="premium-card" data-page="ac-install.html"><div class="card-icon">🔧</div><div class="card-title">فك وتركيب التكييف</div><div class="card-sub">خدمات متخصصة</div></div>
+                    <div class="premium-card" data-page="faults.html"><div class="card-icon">⚠️</div><div class="card-title">اختيار الأعطال</div><div class="card-sub">تشخيص دقيق</div></div>
+                    <div class="premium-card" data-page="electric-heater.html"><div class="card-icon">🔥</div><div class="card-title">سخان كهرباء</div><div class="card-sub">استبدال وإصلاح</div></div>
+                    <div class="premium-card" data-page="misuse.html"><div class="card-icon">❌</div><div class="card-title">سوء الاستخدام</div><div class="card-sub">سياسات الضمان</div></div>
+                    <div class="premium-card" data-page="Hande -UNsales-compalin.html"><div class="card-icon">📋</div><div class="card-title">Handling & UN Sales</div><div class="card-sub">متابعة الشكاوى</div></div>
+                    <div class="premium-card" data-page="mail.html"><div class="card-icon">📧</div><div class="card-title">Mail System</div><div class="card-sub">إيميلات احترافية</div></div>
+                    <div class="premium-card" data-page="fridges.html"><div class="card-icon">❄️</div><div class="card-title">حجز الثلاجات</div><div class="card-sub">Troubleshooting</div></div>
+                    <div class="premium-card" data-page="spare-parts.html"><div class="card-icon">⚙️</div><div class="card-title">فروع قطع الغيار</div><div class="card-sub">توفير القطع</div></div>
+                    <div class="premium-card" data-page="service-centers.html"><div class="card-icon">🏢</div><div class="card-title">مراكز الخدمة</div><div class="card-sub">المعتمدة</div></div>
+                    <div class="premium-card" data-page="3cx-odoo.html"><div class="card-icon">💻</div><div class="card-title">3CX & Odoo</div><div class="card-sub">روابط النظام</div></div>
+                    <div class="premium-card" data-page="whatsapp-scripts.html"><div class="card-icon">📱</div><div class="card-title">WhatsApp Scripts</div><div class="card-sub">نصوص جاهزة</div></div>
+                </div>
+
+                <div class="pro-instructions">
+                    <h3><i class="fas fa-clipboard-list"></i> توجيهات وإرشادات للموظفين</h3>
+                    <div class="instruction-row"><div class="ins-icon">⚠️</div><div class="ins-text"><strong>مشاكل الشيكات والرصيد</strong><p>شيك غير مطابق أو إمضاء: يتم إبلاغ العميل بالتواصل مع الفرع الرئيسي (18757) لدعم الشيك. • لا يوجد رصيد: يعني حد السحب اليومي انتهى، يُفضل التوجه في اليوم التالي باكراً أو إيداع الشيك بحساب العميل.</p></div></div>
+                    <div class="instruction-row"><div class="ins-icon">❄️</div><div class="ins-text"><strong>أرفف الثلاجات (مستندات 400 أو 420)</strong><p>يأتي معها رف واحد للفريزر + رفين في الكابينة. إذا رغب العميل في الشراء: 350جنيه رسوم + 250 جنيه ثمن الرف، أو الشراء من منافذ قطع غيار UGT.</p></div></div>
+                    <div class="instruction-row"><div class="ins-icon">🔧</div><div class="ins-text"><strong>كابولي التكييف</strong><p>سعره 870 جنيهاً ولا يشمل التركيب. أسعار التركيب لا تشمل الكابولي.</p></div></div>
+                    <div class="instruction-row"><div class="ins-icon">🧼</div><div class="ins-text"><strong>غسيل التكييف بالماكينة</strong><p>يتم تحصيل 650 جنيهاً + فرق المسافة حسب المحافظة.</p></div></div>
+                </div>
+            `
+        },
+        "sms.html": { title: "SMS - رسائل", url: "sms.html" },
+        "model-serial.html": { title: "الموديل والسريال", url: "model-serial.html" },
+        "visit-fees.html": { title: "رسوم الزيارة", url: "visit-fees.html" },
+        "ac-install.html": { title: "فك وتركيب التكييف", url: "ac-install.html" },
+        "faults.html": { title: "اختيار الأعطال", url: "faults.html" },
+        "electric-heater.html": { title: "سخان كهرباء", url: "electric-heater.html" },
+        "misuse.html": { title: "سوء الاستخدام", url: "misuse.html" },
+        "Hande -UNsales-compalin.html": { title: "Handling & UN Sales", url: "Hande -UNsales-compalin.html" },
+        "mail.html": { title: "نظام Mail", url: "mail.html" },
+        "fridges.html": { title: "حجز الثلاجات", url: "fridges.html" },
+        "spare-parts.html": { title: "فروع قطع الغيار", url: "spare-parts.html" },
+        "service-centers.html": { title: "مراكز الخدمة", url: "service-centers.html" },
+        "3cx-odoo.html": { title: "3CX & Odoo", url: "3cx-odoo.html" },
+        "whatsapp-scripts.html": { title: "WhatsApp Scripts", url: "whatsapp-scripts.html" },
+        "followup.html": { title: "Follow UP", url: "follow up .html" }
+    };
+
+    const contentDiv = document.getElementById('dynamicContent');
+    const backBtn = document.getElementById('backToHomeBtn');
+
+    function loadPage(pageId) {
+        if (pageId === 'main') {
+            contentDiv.innerHTML = pages.main.content;
+            attachCardEvents();
+            return;
+        }
+        const page = pages[pageId];
+        if (!page) return loadPage('main');
+        
+        contentDiv.innerHTML = `<iframe src="${page.url}" class="iframe-modern" title="${page.title}"></iframe>`;
+    }
+
+    function attachCardEvents() {
+        document.querySelectorAll('.premium-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const target = card.getAttribute('data-page');
+                if (target && pages[target]) loadPage(target);
+                else alert('الصفحة غير متوفرة حالياً');
+            });
+        });
+    }
+
+    backBtn.addEventListener('click', () => loadPage('main'));
+    loadPage('main');
+</script>
+
+</body>
+</html>
