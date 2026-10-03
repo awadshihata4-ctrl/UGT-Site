@@ -145,43 +145,7 @@ select:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ستايلات قسم الهندلة الجديد */
-.followup-fields {
-    display: none;
-    flex-wrap: wrap;
-    gap: 20px;
-    background-color: #f8fafc;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    border: 1px solid #e2e8f0;
-}
-
-.form-row {
-    flex: 1 1 calc(33.333% - 20px);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-row label {
-    font-weight: 700;
-    color: #1e293b;
-    font-size: 14px;
-}
-
-.form-row input {
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: #fff;
-}
-
-.form-row input:read-only {
-    background-color: #f1f5f9;
-}
-
+/* ستايلات نص الهندلة */
 .handling-script-box {
     width: 100%;
     margin-top: 10px;
@@ -200,7 +164,7 @@ select:focus {
     overflow-y: auto;
 }
 
-.handling-script-box .script-header {
+.script-header {
     background: #f1f5f9;
     padding: 10px 15px;
     border-radius: 8px 8px 0 0;
@@ -208,16 +172,13 @@ select:focus {
     border-bottom: none;
 }
 
-.handling-script-box .script-title {
+.script-title {
     font-weight: 700;
     color: #475569;
     font-size: 14px;
 }
 
 @media (max-width: 768px) {
-    .form-row {
-        flex: 1 1 100%;
-    }
     .nav button {
         padding: 8px 16px;
         font-size: 13px;
@@ -238,7 +199,7 @@ select:focus {
         <button id="btn-unsales" onclick="showTab('unsales')">UN Sales</button>
     </div>
 
-    <!-- قسم الهندلة (تم استبداله بالكود الجديد) -->
+    <!-- قسم الهندلة -->
     <div id="handling" class="section" style="display:block">
         <div class="box">
             <h3>اختر نوع الحالة لمتابعة البلاغ</h3>
@@ -254,40 +215,12 @@ select:focus {
                 <option value="Refund Product Required - تأخر متابعة رد قيمة">تأخر متابعة رد قيمة (Refund)</option>
             </select>
 
-            <!-- حقول المتابعة -->
-            <div id="followup-fields" class="followup-fields">
-                <div class="form-row">
-                    <label>📅 تاريخ انشاء طلب الاستكمال</label>
-                    <input type="text" id="creation-date" placeholder="مثال: 01/01/2024" oninput="updateFollowupFields()">
+            <!-- نص الهندلة (يظهر مباشرة عند الاختيار) -->
+            <div id="handling-script-wrapper" class="handling-script-box" style="display: none;">
+                <div class="script-header">
+                    <span class="script-title">📋 نص الرد الجاهز المعتمد (الهندلة):</span>
                 </div>
-                <div class="form-row">
-                    <label>⏱️ زمن المتابعة</label>
-                    <input type="text" id="follow-up-time" readonly>
-                </div>
-                <div class="form-row">
-                    <label>📆 تاريخ اليوم</label>
-                    <input type="text" id="today-date" readonly>
-                </div>
-                <div class="form-row">
-                    <label>📊 ايام العمل منذ انشاء طلب الاستكمال</label>
-                    <input type="text" id="difference" readonly>
-                </div>
-                <div class="form-row">
-                    <label>📅 تاريخ انهاء الاستكمال</label>
-                    <input type="text" id="completion-date" readonly>
-                </div>
-                <div class="form-row">
-                    <label>⚠️ موقف زمن المتابعة</label>
-                    <input type="text" id="overdue" readonly>
-                </div>
-
-                <!-- نص الهندلة (يظهر فقط عند تجاوز المدة) -->
-                <div id="handling-script-wrapper" class="handling-script-box" style="display: none;">
-                    <div class="script-header">
-                        <span class="script-title">📋 نص الرد الجاهز المعتمد (الهندلة):</span>
-                    </div>
-                    <div id="handlingScript" class="script"></div>
-                </div>
+                <div id="handlingScript" class="script"></div>
             </div>
         </div>
     </div>
@@ -373,24 +306,18 @@ function showTab(tab){
     document.getElementById("btn-" + tab).classList.add("active");
 }
 
-// ===================== قسم الهندلة الجديد =====================
-let currentHandlingText = "";
-
+// ===================== قسم الهندلة =====================
 function handleHandlingSelection() {
     const dropdown = document.getElementById('handlingDropdown');
     const selectedValue = dropdown.value;
-    const followupFields = document.getElementById('followup-fields');
-    const followUpTimeInput = document.getElementById('follow-up-time');
     const scriptWrapper = document.getElementById('handling-script-wrapper');
-    
+    let currentHandlingText = "";
+
     if (!selectedValue) {
-        followupFields.style.display = 'none';
+        scriptWrapper.style.display = 'none';
         return;
     }
 
-    followupFields.style.display = 'flex';
-    
-    // تعيين النص الكامل والوقت حسب الاختيار
     switch(selectedValue) {
         case 'Field Visit - تأخر زيارة منزلية':
             currentHandlingText = `<div style="text-align: right;">
@@ -414,20 +341,6 @@ function handleHandlingSelection() {
                 </div>
                 
                 <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
-                    <strong>📌 العميل: Need Delay / Need Cancel وينفي التواصل</strong><br>
-                    تمام يا فندم، بما إن حضرتك بتنفي تواصل الفني معاك، الفني بيبعت رسالة على موبايل حضرتك فيها لينك صالح لمدة 24 ساعة، حضرتك بتضغط عليه وبتختار تجديد الحجز.
-                    في الحالة دي بيتم تسجيل مخالفة على الفني، ويتم رفعها للإدارة للتحقيق في عدم التواصل، وقد يترتب عليها مخالفات مالية وإدارية.
-                    سيتم استعجال تواصل الفني مع سيادتكم لسرعة التوجه.
-                </div>
-                
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
-                    <strong>📌 العميل: Need Delay / Need Cancel وينفي ومش عارف يستخدم اللينك</strong><br>
-                    تمام يا فندم، بما إن حضرتك بتنفي تواصل الفني معاك، الفني بيبعت رسالة على موبايل حضرتك فيها لينك صالح لمدة 24 ساعة، حضرتك بتضغط عليه وبتختار تجديد الحجز.
-                    في الحالة دي بيتم تسجيل مخالفة على الفني، ويتم رفعها للإدارة للتحقيق في عدم التواصل، وقد يترتب عليها مخالفات مالية وإدارية.
-                    وأنا هقوم بإجراء الخطوة دي لحضرتك حالًا. سيتم استعجال تواصل الفني مع سيادتكم لسرعة التوجه.
-                </div>
-                
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: مأمورية ولم يتم تحديد موعد</strong><br>
                     حابب أطمنك إننا هنحدد موعد لتوجه الفني إلى حضرتك للكشف على الجهاز، ولكن موعد حضرتك عبارة عن مأمورية، وبتستغرق بعض الوقت.
                     ولكن سيتم الاستعجال لسرعة التوجه، وإحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في أقرب وقت ويتم الإصلاح في أسرع وقت ممكن.
@@ -446,7 +359,6 @@ function handleHandlingSelection() {
                     ولو في أي استفسار أو توضيح إضافي، إحنا في خدمتك في أي وقت..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '3 ايام';
             break;
             
         case 'Tec.Report - تأخر متابعة تقرير فني':
@@ -487,7 +399,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '3 ايام';
             break;
             
         case 'Customer Rejection F.Up - تأخر متابعة اعتراض عميل':
@@ -520,7 +431,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '3 ايام';
             break;
             
         case 'Internal Leak Follow.Up - تأخر متابعة اجهزة بها تنفيس':
@@ -560,7 +470,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك.
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '3 ايام';
             break;
             
         case 'Spare Part Required - تأخر متابعة توفير قطع غيار':
@@ -602,7 +511,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '3 ايام';
             break;
             
         case 'Workshop - تأخر اصلاح جهاز بالورشة':
@@ -643,7 +551,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '10 ايام';
             break;
             
         case 'Product Required - تأخر متابعة توفير استبدال':
@@ -678,7 +585,6 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '15 ايام';
             break;
             
         case 'Refund Product Required - تأخر متابعة رد قيمة':
@@ -712,92 +618,14 @@ function handleHandlingSelection() {
                     لحظات وهحول حضرتك..
                 </div>
             </div>`;
-            document.getElementById('follow-up-time').value = '15 ايام';
             break;
             
         default:
             currentHandlingText = "";
-            document.getElementById('follow-up-time').value = '';
     }
     
     document.getElementById('handlingScript').innerHTML = currentHandlingText;
-    updateFollowupFields();
-}
-
-// دوال حساب الأيام
-function calculateWorkDays(startDate, endDate) {
-    let currentDate = new Date(startDate);
-    let workDaysCount = 0;
-    while (currentDate <= endDate) {
-        let dayOfWeek = currentDate.getDay();
-        if (dayOfWeek !== 5 && dayOfWeek !== 6) {
-            workDaysCount++;
-        }
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
-    return workDaysCount;
-}
-
-function calculateCompletionDate(startDate, days) {
-    let date = new Date(startDate);
-    while (days > 0) {
-        date.setDate(date.getDate() + 1);
-        if (date.getDay() !== 5 && date.getDay() !== 6) {
-            days--;
-        }
-    }
-    return date;
-}
-
-function formatDate(date) {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-
-function parseDate(dateString) {
-    if (!dateString) return new Date(NaN);
-    const parts = dateString.split('/');
-    if (parts.length !== 3) return new Date(NaN);
-    const [day, month, year] = parts.map(Number);
-    return new Date(year, month - 1, day);
-}
-
-function updateFollowupFields() {
-    const today = new Date();
-    const creationDateInput = document.getElementById('creation-date');
-    const todayDateInput = document.getElementById('today-date');
-    const differenceInput = document.getElementById('difference');
-    const completionDateInput = document.getElementById('completion-date');
-    const overdueInput = document.getElementById('overdue');
-    const followUpTimeInput = document.getElementById('follow-up-time');
-    const scriptWrapper = document.getElementById('handling-script-wrapper');
-    
-    todayDateInput.value = formatDate(today);
-    
-    const creationDate = parseDate(creationDateInput.value);
-    if (isNaN(creationDate.getTime()) || !creationDateInput.value) {
-        differenceInput.value = "";
-        completionDateInput.value = "";
-        overdueInput.value = "";
-        scriptWrapper.style.display = 'none';
-        return;
-    }
-    
-    const followUpTimeStr = followUpTimeInput.value;
-    const followUpDays = parseInt(followUpTimeStr.split(' ')[0]) || 0;
-    
-    let completionDate = calculateCompletionDate(creationDate, followUpDays);
-    completionDateInput.value = formatDate(completionDate);
-    
-    const workDays = calculateWorkDays(creationDate, today);
-    differenceInput.value = `${workDays} ايام عمل`;
-    
-    const isOverdue = workDays > followUpDays;
-    overdueInput.value = isOverdue ? '⚠️ تم تجاوز المدة' : '✓ لم يتم تجاوز المدة';
-    
-    scriptWrapper.style.display = isOverdue ? 'block' : 'none';
+    scriptWrapper.style.display = currentHandlingText ? 'block' : 'none';
 }
 
 // ===================== قسم الشكاوى =====================
