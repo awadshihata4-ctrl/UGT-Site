@@ -195,7 +195,6 @@ select:focus {
 
     <div class="nav">
         <button id="btn-handling" class="active" onclick="showTab('handling')">الهندلة</button>
-        <button id="btn-complain" onclick="showTab('complain')">Complain (الشكاوى)</button>
         <button id="btn-unsales" onclick="showTab('unsales')">UN Sales</button>
     </div>
 
@@ -221,34 +220,6 @@ select:focus {
                     <span class="script-title">📋 نص الرد الجاهز المعتمد (الهندلة):</span>
                 </div>
                 <div id="handlingScript" class="script"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- قسم الشكاوى -->
-    <div id="complain" class="section">
-        <div class="box">
-            <h3>أنواع الشكاوي وتصنيفاتها</h3>
-            <select onchange="showComplain(this.value)">
-                <option value="">-- اضغط للاختيار --</option>
-                <option value="spare_delay">قطع غيار</option>
-                <option value="visit_delay">عدم الالتزام بالتوجه للعميل</option>
-                <option value="cost_wrong">تكلفة غير مستحقة</option>
-                <option value="workshop_delay">تأخر اصلاح بالورشة</option>
-                <option value="no_service">عدم توافر منفذ خدمة</option>
-                <option value="unauthorized">اصلاح بدون علم الشركة</option>
-                <option value="employee">شكوى من موظف</option>
-                <option value="technician">شكوى من الفني</option>
-                <option value="damage">اساءة الفني للمنتج</option>
-                <option value="other">أخرى</option>
-                <option value="exchange_delay">تأخر إجراءات الاستبدال</option>
-            </select>
-
-            <div id="container_complain" class="script-container">
-                <div class="script-header">
-                    <span class="script-title">تفاصيل الشكوى والتوجيه الإداري:</span>
-                </div>
-                <div id="complainScript" class="script"></div>
             </div>
         </div>
     </div>
@@ -626,58 +597,6 @@ function handleHandlingSelection() {
     
     document.getElementById('handlingScript').innerHTML = currentHandlingText;
     scriptWrapper.style.display = currentHandlingText ? 'block' : 'none';
-}
-
-// ===================== قسم الشكاوى =====================
-function showComplain(val){
-    let text="";
-    let container = document.getElementById("container_complain");
-    
-    if(!val) { container.style.display = "none"; return; }
-
-    switch(val){
-        case "spare_delay":
-            text=`⚠️ قطع غيار:
-- بلاغ توفير قطع الغيار حالته (Open) وعدى عليه 24 ساعة بدون ما يتم الإفادة والتأكيد إذا تم التوفير أم لا.
-- بلاغ قطع الغيار حالته (Waiting Stock) وتاريخ تغيير هذه الحالة عدى عليه أكثر من 48 ساعة.`;
-            break;
-        case "visit_delay":
-            text=`⚠️ عدم الالتزام بالتوجه للعميل:
-- محافظات (القاهرة – الجيزة – القليوبية – الأسكندرية) يتم إبلاغ العميل بأن مدة التنفيذ خلال 3 أيام عمل من وقت استلام رسالة الحجز للعميل.
-- جميع المحافظات الأخرى يتم إبلاغ العميل بأن مدة التنفيذ خلال 5 أيام عمل من وقت استلام رسالة الحجز للعميل.
-(بشرط: لا يتم عمل شكوى نهائياً طالما أن البلاغ حالته Working ولم يتخطى هذه المدد).`;
-            break;
-        case "cost_wrong":
-            text=`تم تسجيل شكوى "تكلفة صيانة أو قطع غيار غير مستحقة" بنجاح، وسيتم مراجعة التقرير الفني والفحص المالي فوراً من الإدارة.`;
-            break;
-        case "workshop_delay":
-            text=`تأخر إصلاح الجهاز داخل الورشة لأكثر من 10 أيام عمل متتالية، ويتم تصعيد الحالة حالاً للقسم المختص.`;
-            break;
-        case "no_service":
-            text=`عدم وجود أو توافر مركز خدمة معتمد في النطاق الجغرافي الخاص بالعميل، وتم رفع شكوى رسمية للإدارة لتوفير بديل هندسي.`;
-            break;
-        case "unauthorized":
-            text=`بلاغ وإشعار يفيد بإجراء إصلاح خارجي بدون علم الشركة، ويتم تحويل الملف فوراً لرقابة الجودة والإدارة القانونية.`;
-            break;
-        case "employee":
-            text=`تم تسجيل شكوى رسمية ضد الموظف، وجاري تحويلها لمدير القسم وإدارة الموارد البشرية للتحقيق واتخاذ الإجراء اللازم.`;
-            break;
-        case "technician":
-            text=`تم تسجيل شكوى رسمية ضد الفني المختص، وتم تدوين كافة الملاحظات والاعتراضات تمهيداً لرفعها لمدير قطاع الصيانة الميدانية.`;
-            break;
-        case "damage":
-            text=`إساءة الفني للمنتج أو التسبب في تلفيات أثناء الفحص، يتم تسجيل البلاغ كحالة طارئة ويتم فتح تحقيق فوري مع الطاقم الفني.`;
-            break;
-        case "other":
-            text=`تم تسجيل شكوى بنوع (أخرى) بناءً على تفاصيل العميل، وسيتم مراجعتها من قبل فريق الجودة خلال الساعات القادمة.`;
-            break;
-        case "exchange_delay":
-            text=`تأخر إجراءات الاستبدال الرسمي للمنتج لأكثر من 15 يوماً، ويتم الآن عمل تصعيد مباشر لإدارة الاستبدالات لإنهاء المعاملة.`;
-            break;
-    }
-
-    document.getElementById("complainScript").innerText=text;
-    container.style.display = "block";
 }
 
 // ===================== قسم UN Sales =====================
