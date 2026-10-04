@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> توجيهات وإرشادات للموظفين</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#0b4fb3;
+    --sky:#1fb5e8;
+    --green:#22c58b;
+    --ink:#12263f;
+    --muted:#5b6b82;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Cairo','Segoe UI',Tahoma,sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background:transparent;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  /* خلفية جريدينت ثابتة أثناء النزول */
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:-2;
+    background:linear-gradient(160deg,var(--blue) 0%,var(--sky) 50%,var(--green) 100%);
+  }
+  .orb{
+    position:fixed;z-index:-1;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.28),rgba(255,255,255,0) 70%);
+    animation:drift 18s ease-in-out infinite alternate;
+    pointer-events:none;
+  }
+  .orb.o1{width:420px;height:420px;top:-80px;right:-80px}
+  .orb.o2{width:520px;height:520px;bottom:-140px;left:-120px;animation-duration:24s}
+  .orb.o3{width:300px;height:300px;top:45%;right:35%;animation-duration:21s}
+  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,-30px) scale(1.12)}}
+
+  /* الهيدر: شفاف */
+  header{
+    background:transparent;
+    text-align:center;
+    padding:56px 20px 28px;
+    display:flex;flex-direction:column;align-items:center;gap:18px;
+    color:#fff;
+    animation:fadeDown 1.6s ease both;
+  }
+  .logo-wrap{display:flex;align-items:center;justify-content:center;min-height:84px}
+  .logo-wrap img{max-height:84px;max-width:260px;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
+  .logo-fallback{
+    display:none;align-items:center;gap:12px;direction:ltr;
+    font-weight:900;font-size:2rem;letter-spacing:3px;color:#fff;
+    text-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  .brand{display:flex;align-items:center;justify-content:center;gap:22px;direction:ltr;flex-wrap:wrap}
+  .brand-item{display:flex;align-items:center}
+  .wordmark{
+    display:none;align-items:center;
+    font-weight:900;font-size:clamp(2rem,5vw,2.8rem);letter-spacing:1px;color:#fff;
+    text-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  .ugt-mark{
+    display:none;align-items:center;justify-content:center;
+    font-weight:900;font-size:1.5rem;letter-spacing:2px;color:var(--blue);
+    background:#fff;padding:6px 20px;border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,.22);
+  }
+  .divider{width:2px;height:44px;background:rgba(255,255,255,.55);border-radius:2px}
+  @keyframes fly{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(10px,-8px) rotate(4deg)}}
+  header h1{
+    font-size:clamp(1.8rem,4.2vw,2.9rem);font-weight:900;
+    text-shadow:0 4px 18px rgba(0,0,0,.25);
+  }
+  header .sub{
+    font-size:clamp(1rem,2vw,1.25rem);font-weight:600;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.4);
+    backdrop-filter:blur(6px);
+    padding:8px 26px;border-radius:999px;
+    animation:fadeUp 2s ease .6s both;
+  }
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+  main{max-width:1150px;margin:0 auto;padding:20px 20px 110px}
+
+  /* عناوين الأقسام */
+  .section-title{
+    display:flex;align-items:center;gap:14px;justify-content:center;
+    color:#fff;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900;
+    margin:46px 0 24px;text-shadow:0 3px 14px rgba(0,0,0,.25);
+    opacity:0;transform:translateY(30px);
+    transition:opacity 1.5s ease,transform 1.5s ease;
+  }
+  .section-title.show{opacity:1;transform:none}
+  .section-title .num{
+    width:46px;height:46px;border-radius:50%;
+    background:#fff;color:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  .section-title .ico{font-size:2rem;animation:float 5s ease-in-out infinite}
+
+  .grid{display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
+
+  .card{
+    background:#fff;border-radius:22px;padding:28px 26px;
+    box-shadow:0 14px 38px rgba(8,40,90,.2);
+    position:relative;overflow:hidden;
+    opacity:0;transform:translateY(46px);
+    transition:opacity 1.5s ease,transform 1.5s cubic-bezier(.2,.7,.2,1),box-shadow .6s ease;
+  }
+  .card.show{opacity:1;transform:none}
+  .card.show:hover{transform:translateY(-6px);box-shadow:0 24px 52px rgba(8,40,90,.3)}
+  .card::before{
+    content:"";position:absolute;top:0;right:0;left:0;height:6px;
+    background:linear-gradient(90deg,var(--blue),var(--sky),var(--green));
+  }
+  .card .emoji{
+    width:68px;height:68px;border-radius:20px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.1rem;margin-bottom:14px;
+    background:linear-gradient(135deg,#e8f3ff,#e6fbf3);
+    animation:float 5.5s ease-in-out infinite;
+  }
+  .card:nth-child(2n) .emoji{animation-delay:.8s}
+  .card:nth-child(3n) .emoji{animation-delay:1.6s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .card h2{font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:8px}
+  .card p{
+    color:#2b3d55;font-size:1.04rem;
+    opacity:0;transform:translateX(24px);
+    transition:opacity 1.4s ease .6s,transform 1.4s ease .6s;
+  }
+  .card.show p{opacity:1;transform:none}
+  .card p + p{margin-top:8px;transition-delay:1.1s}
+
+  .big-number{
+    display:inline-block;font-weight:900;color:#fff;
+    background:linear-gradient(135deg,var(--blue),var(--sky));
+    padding:2px 14px;border-radius:12px;margin:0 4px;
+  }
+  .big-number.g{background:linear-gradient(135deg,var(--sky),var(--green))}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+  .chip{
+    background:#eaf5ff;color:var(--blue);font-weight:700;font-size:.95rem;
+    padding:3px 14px;border-radius:999px;border:1px solid #cfe6fb;
+  }
+
+  .warn::before{background:linear-gradient(90deg,#ff7a59,#ffb347)}
+  .warn h2{color:#d9480f}
+  .warn .emoji{background:linear-gradient(135deg,#fff0e8,#fff8e1)}
+
+  .closing{
+    margin-top:46px;background:#fff;border-radius:22px;padding:30px;text-align:center;
+    box-shadow:0 18px 45px rgba(8,40,90,.22);
+    opacity:0;transform:translateY(40px);
+    transition:opacity 1.6s ease,transform 1.6s ease;
+  }
+  .closing.show{opacity:1;transform:none}
+  .closing .e{font-size:2.4rem;display:inline-block;animation:float 5s ease-in-out infinite}
+  .closing h3{color:var(--blue);font-size:1.4rem;margin:8px 0 6px}
+  .closing p{color:var(--muted)}
+
+  /* التوقيع: ثابت أسفل الشمال وفوق كل المحتوى */
+  .signature{
+    position:fixed;bottom:14px;left:14px;z-index:99999;
+    direction:ltr;
+    background:rgba(255,255,255,.92);
+    color:var(--blue);
+    font-weight:700;font-size:.95rem;
+    padding:9px 18px;border-radius:999px;
+    box-shadow:0 8px 24px rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.7);
+    backdrop-filter:blur(8px);
+    font-family:'Cairo',sans-serif;
+  }
+
+  @media(max-width:600px){.signature{font-size:.8rem;padding:7px 14px}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .card,.card p,.closing,.section-title{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<header>
+  <div class="logo-wrap">
+    <!-- ضع ملف لوجو يونيون اير بجانب هذا الملف باسم logo.png -->
+    <div class="brand">
+      <div class="brand-item">
+        <img src="logo.png" alt="Unionaire"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+        <span class="wordmark">unionaire</span>
+      </div>
+      <span class="divider"></span>
+      <div class="brand-item">
+        <!-- ضع ملف لوجو UGT بجانب هذا الملف باسم ugt.png -->
+        <img src="ugt.png" alt="UGT"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+        <span class="ugt-mark">UGT</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub">📋 توجيهات وإرشادات للموظفين</div>
+</header>
+
+<main>
+
+  <!-- أولاً -->
+  <div class="section-title"><span class="num">1</span><span class="ico">⏱️</span><span>مدة تنفيذ البلاغات</span></div>
+  <div class="grid">
+    <article class="card">
+      <div class="emoji">🏙️</div>
+      <h2>القاهرة – الجيزة – القليوبية – الإسكندرية</h2>
+      <div class="chips"><span class="chip">📍 القاهرة</span><span class="chip">📍 الجيزة</span><span class="chip">📍 القليوبية</span><span class="chip">📍 الإسكندرية</span></div>
+      <p>⏳ يتم إبلاغ العميل بأن مدة التنفيذ خلال <span class="big-number">48 ساعة عمل</span></p>
+      <p>📞 وسيتم التواصل في يوم التنفيذ الفعلي من قِبل الفني.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">🗺️</div>
+      <h2>جميع المحافظات الأخرى</h2>
+      <p>⏳ يتم إبلاغ العميل بأن مدة التنفيذ خلال <span class="big-number g">72 ساعة عمل</span></p>
+      <p>📞 وسيتم التواصل في يوم التنفيذ الفعلي من قِبل الفني.</p>
+    </article>
+  </div>
+
+  <!-- ثانياً -->
+  <div class="section-title"><span class="num">2</span><span class="ico">💰</span><span>موقف تحصيل الرسوم</span></div>
+  <div class="grid">
+    <article class="card">
+      <div class="emoji">🔢</div>
+      <h2>سيريال مسجّل خارج الضمان</h2>
+      <p>🧾 يتم إبلاغ العميل بوجود رسم زيارة وتوضيحه حسب المنتج.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">🚫</div>
+      <h2>بلاغ بدون سيريال</h2>
+      <p>🛠️ يتم إبلاغ العميل أنه في حالة كون الجهاز خارج الضمان سيتم تحصيل رسوم زيارة.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">🆕</div>
+      <h2>تركيب جهاز جديد</h2>
+      <p>💵 يتم إبلاغ العميل بتكلفة التركيب.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">🪶</div>
+      <h2>بلاغ لجهاز خفيف</h2>
+      <p>🚗 يجب توضيح رسوم الزيارة للعميل.</p>
+    </article>
+  </div>
+
+  <!-- ثالثاً -->
+  <div class="section-title"><span class="num">3</span><span class="ico">🎧</span><span>إرشادات المكالمات</span></div>
+  <div class="grid">
+    <article class="card">
+      <div class="emoji">⏸️</div>
+      <h2>مدة الانتظار</h2>
+      <p>⌛ عدم تخطي مدة وضع العميل على الانتظار أكثر من <span class="big-number">دقيقتين</span></p>
+    </article>
+    <article class="card">
+      <div class="emoji">👂</div>
+      <h2>الاستماع للعميل</h2>
+      <p>🙊 عدم مقاطعة العميل، وسماع مشكلته والرد عليه بشكل احترافي.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">📱</div>
+      <h2>مراجعة البيانات</h2>
+      <p>🏠 الالتزام بمراجعة أرقام الموبايل وعناوين العملاء.</p>
+    </article>
+    <article class="card">
+      <div class="emoji">🛠️</div>
+      <h2>مكالمات الصيانة</h2>
+      <p>🔁 عدم تحويل المكالمات التي تخص فريق الصيانة إلى فريق المبيعات.</p>
+    </article>
+    <article class="card warn">
+      <div class="emoji">📢</div>
+      <h2>التشهير أو حماية المستهلك</h2>
+      <p>⚖️ في حالة إفادة العميل بالتشهير ضد الشركة أو التوجه إلى حماية المستهلك، يجب إرسال بيانات العميل إلى فريق الشكاوى للعمل عليها من خلالهم.</p>
+    </article>
+    <article class="card warn">
+      <div class="emoji">💸</div>
+      <h2>تحصيل مبلغ مالي من العميل</h2>
+      <p>🤐 إذا أفاد العميل بأنه تم تحصيل مبلغ مالي منه من خلال مركز الخدمة أو الفني، لا يتم توضيح أن المبلغ غير مستحق.</p>
+      <p>📋 يتم إفادته بأنه سيتم الرجوع إلى إدارة الصيانة والتواصل معه.</p>
+      <p>📧 ويتم إرسال إيميل مباشر لمدير القطاع وإبلاغه بالموقف.</p>
+    </article>
+  </div>
+
+  <section class="closing">
+    <div class="e">✈️</div>
+    <h3>شكرًا لالتزامكم وجهودكم المتميزة</h3>
+    <p>رضا العميل هو هدفنا، وأنتم سر نجاحنا. 💙💚</p>
+  </section>
+</main>
+
+<div class="signature">✨ Designed &amp; Created by Ali Adel</div>
+
+<script>
+  const items = document.querySelectorAll('.card, .closing, .section-title');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('show'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    items.forEach((el, i) => {
+      if (el.classList.contains('card')) el.style.transitionDelay = (i % 3) * 0.25 + 's';
+      io.observe(el);
+    });
+  } else {
+    items.forEach(el => el.classList.add('show'));
+  }
+</script>
+</body>
+</html>
