@@ -20,7 +20,6 @@
         padding: 24px;
     }
 
-    /* ========== الحاوية الرئيسية ========== */
     .dashboard {
         max-width: 1600px;
         margin: 0 auto;
@@ -30,7 +29,6 @@
         overflow: hidden;
     }
 
-    /* ========== رأس الصفحة ========== */
     .header {
         background: linear-gradient(105deg, #2c7da0 0%, #3fa7c9 100%);
         padding: 18px 36px;
@@ -67,7 +65,6 @@
         margin-top: 4px;
     }
 
-    /* ========== زر العودة (في الأعلى بجانب الإصدار) ========== */
     .top-actions {
         display: flex;
         align-items: center;
@@ -106,12 +103,10 @@
         border: 1px solid rgba(255,255,255,0.25);
     }
 
-    /* ========== المحتوى الرئيسي ========== */
     .main-content {
         padding: 36px;
     }
 
-    /* ========== شبكة الأزرار الموحدة ========== */
     .unified-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -147,6 +142,7 @@
     .premium-card:nth-child(14) { border-top: 4px solid #FF7043; }
     .premium-card:nth-child(15) { border-top: 4px solid #26A69A; }
     .premium-card:nth-child(16) { border-top: 4px solid #D32F2F; }
+    .premium-card:nth-child(17) { border-top: 4px solid #00796B; }
 
     .premium-card:hover {
         transform: translateY(-8px);
@@ -175,6 +171,7 @@
     .premium-card:nth-child(14) .card-icon { color: #FF7043; }
     .premium-card:nth-child(15) .card-icon { color: #26A69A; }
     .premium-card:nth-child(16) .card-icon { color: #D32F2F; }
+    .premium-card:nth-child(17) .card-icon { color: #00796B; }
 
     .premium-card:hover .card-icon {
         transform: scale(1.08);
@@ -192,7 +189,6 @@
         font-weight: 500;
     }
 
-    /* ========== كارد التعليمات ========== */
     .pro-instructions {
         background: #fefcf5;
         border-radius: 36px;
@@ -248,7 +244,6 @@
         font-size: 14px;
     }
 
-    /* ========== iframe ========== */
     .iframe-modern {
         width: 100%;
         min-height: 70vh;
@@ -275,7 +270,6 @@
 <body>
 
 <div class="dashboard" id="dashboardRoot">
-    <!-- الهيدر مع زر العودة في الأعلى -->
     <div class="header">
         <div class="logo-area">
             <img src="https://unionaire.com/ct/unionaire.png" alt="UGT" class="logo-img" onerror="this.src='https://via.placeholder.com/60?text=UGT'">
@@ -318,6 +312,7 @@
                     <div class="premium-card" data-page="3cx-odoo.html"><div class="card-icon">💻</div><div class="card-title">3CX & Odoo</div><div class="card-sub">روابط النظام</div></div>
                     <div class="premium-card" data-page="whatsapp-scripts.html"><div class="card-icon">📱</div><div class="card-title">WhatsApp Scripts</div><div class="card-sub">نصوص جاهزة</div></div>
                     <div class="premium-card" data-page="unionair-script.html"><div class="card-icon">📞</div><div class="card-title">Call-script Unionaire</div><div class="card-sub">سكريبت المكالمات</div></div>
+                    <div class="premium-card" data-page="employee-guidelines.html"><div class="card-icon">📌</div><div class="card-title">تعليمات هامة للكول سنتر</div><div class="card-sub">إرشادات الموظفين</div></div>
                 </div>
 
                 <div class="pro-instructions">
@@ -344,6 +339,7 @@
         "3cx-odoo.html": { title: "3CX & Odoo", url: "3cx-odoo.html" },
         "whatsapp-scripts.html": { title: "WhatsApp Scripts", url: "whatsapp-scripts.html" },
         "unionair-script.html": { title: "Call-script Unionaire", url: "unionair-script.html" },
+        "employee-guidelines.html": { title: "تعليمات هامة للكول سنتر", url: "employee-guidelines.html" },
         "followup.html": { title: "Follow UP", url: "follow up .html" }
     };
 
