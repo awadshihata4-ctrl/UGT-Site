@@ -1,239 +1,268 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UGT Booking</title>
-
-    <!-- Bootstrap & Select2 Styles -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap">
-
-    <!-- jQuery & Bootstrap Scripts -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-</head>
 <meta charset="utf-8">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="assets/css/styles.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGT Booking | يونيون اير</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@800&display=swap');
+  :root{
+    --blue:#0b4f9c; --blue-dark:#083a73; --blue-light:#e8f1fb;
+    --accent:#19a7ce; --green:#1f9d63; --red:#d64545;
+    --bg:#f3f6fb; --card:#ffffff; --text:#1c2a3a; --muted:#6b7a8c; --border:#dde5ef;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Almarai',Tahoma,sans-serif;background:linear-gradient(135deg,#0b4f9c 0%,#19a7ce 50%,#1f9d63 100%) fixed;min-height:100vh;color:var(--text);direction:rtl}
 
-    #copyTextBox {
-        font-size: 14px;
-        width: calc(50% - 20px);
-        height: calc(100vh - 50px);
-        resize: none;
-        overflow: auto;
-        padding: 20px;
-        background-color: #f8f8f8;
-        border: 1px solid #ddd;
-        box-sizing: border-box;
-        font-family: 'Almarai', sans-serif;
-        line-height: 1.5;
-        position: fixed;
-        left: 0;
-        top: 120px;
-    }
-    .mix-text {
-        direction: rtl;
-        unicode-bidi: bidi-override;
-    }
+  .topbar{background:transparent;color:#fff;padding:26px 24px 6px;text-align:center}
+  .topbar-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  .topbar-inner > div:last-child{text-align:center}
+  .topbar h1{text-shadow:0 2px 8px rgba(0,0,0,.2)}
+  .logo-wrap{background:#fff;border-radius:16px;padding:8px 14px;display:flex;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  .logo-wrap img{height:56px;width:auto;display:block}
+  .topbar h1{margin:0;font-size:22px;font-weight:800}
+  .topbar p{margin:4px 0 0;font-size:13px;opacity:.9;font-weight:400}
 
-    .mix-text .english {
-        direction: ltr;
-        unicode-bidi: embed;
-    }
+  .wrap{max-width:1180px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .wrap > section:last-child{position:sticky;top:16px;align-self:start}
+  @media(max-width:860px){.wrap{grid-template-columns:1fr}.wrap > section:last-child{position:static}}
 
-    .fixed-position {
-        position: fixed;
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(20,50,90,.06)}
+  .card h2{margin:0 0 16px;font-size:17px;font-weight:800;color:var(--blue-dark)}
 
-    }
+  .tabs{display:flex;gap:8px;background:var(--blue-light);padding:6px;border-radius:14px;margin-bottom:20px}
+  .tab{flex:1;border:0;background:transparent;font-family:inherit;font-weight:800;font-size:14px;padding:12px 8px;border-radius:10px;cursor:pointer;color:var(--blue);transition:.2s}
+  .tab.active{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(11,79,156,.35)}
+
+  .btn{font-family:inherit;font-weight:800;font-size:14px;border:0;border-radius:12px;padding:11px 18px;cursor:pointer;color:#fff;transition:.15s}
+  .btn:hover{transform:translateY(-1px);filter:brightness(1.07)}
+  .btn-primary{background:var(--blue)} .btn-danger{background:var(--red)} .btn-success{background:var(--green)}
+  .btn-block{width:100%;padding:14px;font-size:15px}
+  .actions{display:flex;gap:10px;margin-bottom:18px}
+
+  .form-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:10px 12px;background:#f8fafd;border:1px solid var(--border);border-radius:12px}
+  .form-group label{background:var(--blue);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin:0}
+  .zerial-input{font-family:inherit;font-size:15px;width:220px;height:40px;padding:0 12px;border:1px solid var(--border);border-radius:10px;direction:ltr;text-align:left;outline:none;color:var(--text);background:#fff}
+  .zerial-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(25,167,206,.2)}
+  .issue-date{margin:0;font-size:12px;color:var(--muted)}
+
+  #customerDetails{display:none;margin-top:16px;padding:14px;border:1px dashed var(--accent);border-radius:12px;background:#f2fbfe}
+  #customerDetails div{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+  #customerDetails input{flex:1;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;background:#fff}
+
+  .maint-info{display:none;background:var(--blue-light);border-radius:14px;padding:16px;font-size:14px;line-height:1.9;color:var(--blue-dark);margin-top:18px}
+  .maint-info ul{margin:8px 0 0;padding-right:20px}
+
+  #copyTextBox{width:100%;min-height:380px;resize:vertical;padding:16px;border:1px solid var(--border);border-radius:14px;background:#f8fafd;font-family:inherit;font-size:14px;line-height:1.9;color:var(--text);outline:none;margin-bottom:14px;direction:rtl;text-align:right}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--green);color:#fff;padding:12px 24px;border-radius:30px;font-weight:800;opacity:0;pointer-events:none;transition:.3s;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{text-align:center;color:rgba(255,255,255,.9);font-size:12px;padding:10px 0 60px}
+  .signature{position:fixed;bottom:14px;left:16px;direction:ltr;background:rgba(255,255,255,.95);color:var(--blue-dark);font-weight:800;font-size:12px;padding:8px 16px;border-radius:30px;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:50;letter-spacing:.3px}
 </style>
-<script src="jquery.charReplacer.js"></script>
-<body style="font-family: 'Almarai', sans-serif; direction: rtl; background-color: #ffffff;"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-wrap"><img src="https://unionaire.com/ct/unionaire.png" alt="Unionaire"></div>
+    <div>
+      <h1>مركز رسائل خدمة العملاء</h1>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <div class="tabs">
+      <button type="button" class="tab active" data-mode="serial">🔗 رابط الحجز بالسيريال</button>
+      <button type="button" class="tab" data-mode="maint">🛠️ حجز بلاغ صيانة &amp; واتساب</button>
+    </div>
+
+    <h2>📋 السيريال</h2>
+    <div class="actions">
+      <button type="button" id="addBtn" class="btn btn-primary">➕ إضافة سيريال</button>
+      <button type="button" id="removeBtn" class="btn btn-danger">➖ حذف سيريال</button>
+    </div>
+
+    <div id="serialsBox">
+      <div class="form-group">
+        <label>1</label>
+        <input type="text" class="zerial-input" placeholder="اكتب السيريال هنا" maxlength="20" autocomplete="off">
+        <p class="issue-date"></p>
+      </div>
+    </div>
+
+    <div id="customerDetails">
+      <div>👤 الاسم: <input type="text" id="name" readonly></div>
+      <div>📞 الهاتف: <input type="text" id="phone" readonly></div>
+      <div>📍 المحافظة: <input type="text" id="state" readonly></div>
+      <div>🏙️ المدينة: <input type="text" id="city" readonly></div>
+    </div>
+
+    <div class="maint-info" id="maintInfo">
+      الرسالة تتضمن:
+      <ul>
+        <li>🔗 رابط تسجيل بلاغ صيانة (مع السيريال لو تم إدخاله)</li>
+        <li>💬 رابط الحجز عبر الواتس أب</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>💌 معاينة الرسالة</h2>
+    <textarea id="copyTextBox" readonly></textarea>
+    <button type="button" id="copyButton" class="btn btn-success btn-block">📋 نسخ الرسالة</button>
+  </section>
+</main>
+
+<footer>© Unionaire — Customer Service</footer>
+<div class="signature">✨ Designed &amp; Created by Ali Adel</div>
+<div class="toast" id="toast">✅ تم نسخ الرسالة</div>
 
 <script>
-    $(document).ready(function () {
-        $("#serial_name").on("keyup", function () {
-            let serial = $(this).val().trim();
+(function () {
+  var mode = "serial";
+  var box = document.getElementById("serialsBox");
+  var out = document.getElementById("copyTextBox");
 
-            if (serial.length > 0) {
-                let url = "https://www.unionaire-tech.com/get_customer_data_from_serial?serial_name=" + serial;
+  function inputs() { return box.querySelectorAll(".zerial-input"); }
 
-                $.getJSON(url, function (data) {
-                    if (data && data.data) {
-                        // Show customer details
-                        $("#name").val(data.data.name);
-                        $("#phone").val(data.data.main_mobile_number);
-                        $("#state").val(data.data.state_name);
-                        $("#city").val(data.data.city_name);
-                        $("#customerDetails").show();
-                    } else {
-                        $("#customerDetails").hide();
-                    }
-                });
-            } else {
-                $("#customerDetails").hide();
-            }
-        });
+  function normalize(v) {
+    var ar = "٠١٢٣٤٥٦٧٨٩";
+    return v.replace(/\s+/g, "").toUpperCase()
+            .replace(/[\/,*"'#._]/g, "-")
+            .replace(/[٠-٩]/g, function (d) { return ar.indexOf(d); });
+  }
+
+  function serialValues() {
+    var list = [];
+    inputs().forEach(function (i) { var s = i.value.trim(); if (s) list.push(s); });
+    return list;
+  }
+
+  function buildSerialMessage() {
+    var s = serialValues();
+    var links = s.length
+      ? s.map(function (x) { return "🔗 https://unionaire.com/ct/index.php?serial=" + x; }).join("\n")
+      : "🔗 https://unionaire.com/ct/index.php?serial=";
+    return "عميلنا العزيز 🌟\n" +
+      "برجاء الضغط على اللينك واختيار إحدى خدماتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات 👇\n" +
+      links + "\n" +
+      "📌 استخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء 🙏";
+  }
+
+  function buildMaintMessage() {
+    var s = serialValues();
+    var links = s.length
+      ? s.map(function (x) { return "🔗 https://unionaire.com/ct/index.php?serial=" + x; }).join("\n")
+      : "🔗 http://unionaire.com/ct/";
+    return "عميل يونيون اير العزيز 🌟\n" +
+      "يمكنكم الآن تسجيل بلاغ صيانة 🛠️ من خلال الرابط التالي:\n" +
+      links + "\n" +
+      "💬 ويمكنكم الحجز ايضا عن طريق الواتس أب من خلال الرابط التالي:\n" +
+      "https://wa.me/message/TCLIMRXYFJP5H1\n" +
+      "نحن في خدمتكم دائماً ❤️\nUnionaire";
+  }
+
+  function update() {
+    out.value = (mode === "maint") ? buildMaintMessage() : buildSerialMessage();
+  }
+
+  function renumber() {
+    inputs().forEach(function (inp, i) {
+      inp.parentNode.querySelector("label").textContent = i + 1;
     });
+    update();
+  }
 
-    $(document).ready(function () {
-        var fieldCount = 1;
-
-        $("#addzerialBtn").on("click", function () {
-            var zerialInput = '<div class="form-group">' +
-                '<label for="zerial_name_' + fieldCount + '">' + fieldCount + ':</label>' +
-                '<input style="font-size:12px; width: 140px; height: 30px; display: inline-block;" type="text" class="form-control input-lg zerial-input" placeholder="Serial" name="zerial_name_' + fieldCount + '" id="zerial_name_' + fieldCount + '" value="" required="required" maxlength="20" />' +
-                '<p id="issue_date_' + fieldCount + '"></p>' +
-                '</div>';
-            $("#zerialInputsContainer").append(zerialInput);
-            updatezerialCount();
-        });
-
-        $("#removezerialBtn").on("click", function () {
-            if (fieldCount > 0) {
-                fieldCount--;
-                $("#zerialInputsContainer .form-group:last-child").remove();
-                updatezerialCount();
-            }
-        });
-
-        function updatezerialCount() {
-            var zerialInputs = $(".zerial-input");
-            fieldCount = zerialInputs.length;
-            zerialInputs.each(function (index) {
-                $(this).attr("name", "zerial_name_" + (index + 1));
-                $(this).attr("id", "zerial_name_" + (index + 1));
-                $(this).prev("label").text((index + 1));
-            });
-            updateCopyText();
-        }
-
-        $(document).on("input", ".zerial-input", function () {
-            var currentzerialInput = $(this);
-            var currentissueDate = currentzerialInput.next("p");
-            currentissueDate.empty();
-
-            var zerialValue = currentzerialInput.val().replace(/\s+/g, "");
-
-            zerialValue = zerialValue.toLocaleUpperCase();
-            zerialValue = zerialValue.replace("/", "-");
-            zerialValue = zerialValue.replace(",", "-");
-            zerialValue = zerialValue.replace("*", "-");
-            zerialValue = zerialValue.replace('"', '-');
-            zerialValue = zerialValue.replace("'", "-");
-            zerialValue = zerialValue.replace("#", "-");
-            zerialValue = zerialValue.replace(".", "-");
-            zerialValue = zerialValue.replace("_", "-");
-            zerialValue = zerialValue.replace("/", "-");
-            zerialValue = zerialValue.replace("١", "1");
-            zerialValue = zerialValue.replace("٢", "2");
-            zerialValue = zerialValue.replace("٣", "3");
-            zerialValue = zerialValue.replace("٤", "4");
-            zerialValue = zerialValue.replace("٥", "5");
-            zerialValue = zerialValue.replace("٦", "6");
-            zerialValue = zerialValue.replace("٧", "7");
-            zerialValue = zerialValue.replace("٨", "8");
-            zerialValue = zerialValue.replace("٩", "9");
-            zerialValue = zerialValue.replace("٠", "0");
-
-            currentzerialInput.val(zerialValue);
-
-            currentissueDate.text("...Loading");
-
-            var url = "https://www.unionaire-tech.com/get_last_date?a_serial=" + zerialValue;
-            $.getJSON(url)
-                .done(function (data) {
-                    currentissueDate.text(data.issue_date);
-                    updateCopyText();
-                });
-        });
-
-        $("#copyButton").on("click", function () {
-            var copyText = "";
-            var zerialInputs = $(".zerial-input");
-            var numzerials = zerialInputs.length;
-
-            if (numzerials === 0) {
-                copyText = "عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى\nhttp://unionaire.com/ct/\n\nويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى\nhttps://wa.me/message/TCLIMRXYFJP5H1\n الواتس اب من خلال الرابط ";
-            }
-            else if (numzerials === 1) {
-                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات\nhttps://unionaire.com/ct/index.php?serial=" + zerialInputs.val() + "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
-            } else {
-                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات";
-                $(".zerial-input").each(function () {
-                    copyText += "\nhttps://unionaire.com/ct/index.php?serial=" + $(this).val();
-                });
-                copyText += "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
-            }
-
-            $("#copyTextBox").val(copyText);
-            $("#copyTextBox").select();
-            document.execCommand("copy");
-
-            alert("Text copied to clipboard!");
-        });
-
-        function updateCopyText() {
-            var copyText = "";
-            var zerialInputs = $(".zerial-input");
-            var numzerials = zerialInputs.length;
-
-            if (numzerials === 0) {
-                copyText = "عميل يونيون اير العزيز يمكن الان تسجيل بلاغ صيانة من خلال الرابط التالى\nhttp://unionaire.com/ct/\n\ويمكنكم الحجز  ومتابعه البلاغ عن طريق الواتس أب من خلال الرابط التالى\nhttps://wa.me/message/TCLIMRXYFJP5H1\n";
-            }
-            else if (numzerials === 1) {
-                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات\nhttps://unionaire.com/ct/index.php?serial=" + zerialInputs.val() + "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
-            } else {
-                copyText = "عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات";
-                $(".zerial-input").each(function () {
-                    copyText += "\nhttps://unionaire.com/ct/index.php?serial=" + $(this).val();
-                });
-                copyText += "\nاستخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز، فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء";
-            }
-
-            $("#copyTextBox").val(copyText);
-        }
-
-        updateCopyText();
+  /* tabs */
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      mode = t.getAttribute("data-mode");
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("active"); });
+      t.classList.add("active");
+      document.getElementById("maintInfo").style.display = (mode === "maint") ? "block" : "none";
+      update();
     });
+  });
+
+  /* add / remove */
+  document.getElementById("addBtn").addEventListener("click", function () {
+    var d = document.createElement("div");
+    d.className = "form-group";
+    d.innerHTML = '<label></label><input type="text" class="zerial-input" placeholder="اكتب السيريال هنا" maxlength="20" autocomplete="off"><p class="issue-date"></p>';
+    box.appendChild(d);
+    renumber();
+    d.querySelector("input").focus();
+  });
+  document.getElementById("removeBtn").addEventListener("click", function () {
+    var groups = box.querySelectorAll(".form-group");
+    if (groups.length > 0) {
+      box.removeChild(groups[groups.length - 1]);
+      if (groups.length === 1) { document.getElementById("customerDetails").style.display = "none"; }
+      renumber();
+    }
+  });
+
+  /* typing */
+  var timers = [];
+  box.addEventListener("input", function (e) {
+    var el = e.target;
+    if (!el.classList.contains("zerial-input")) return;
+    var pos = el.selectionStart;
+    var clean = normalize(el.value);
+    if (clean !== el.value) { el.value = clean; }
+    update();                                   // message updates instantly
+
+    var dateEl = el.parentNode.querySelector(".issue-date");
+    var idx = Array.prototype.indexOf.call(inputs(), el);
+    clearTimeout(timers[idx]);
+    dateEl.textContent = "";
+    if (!clean) { if (idx === 0) document.getElementById("customerDetails").style.display = "none"; return; }
+
+    timers[idx] = setTimeout(function () {
+      dateEl.textContent = "...Loading";
+      fetch("https://www.unionaire-tech.com/get_last_date?a_serial=" + encodeURIComponent(clean))
+        .then(function (r) { return r.json(); })
+        .then(function (d) { dateEl.textContent = d.issue_date || ""; })
+        .catch(function () { dateEl.textContent = ""; });
+
+      if (idx === 0) {
+        fetch("https://www.unionaire-tech.com/get_customer_data_from_serial?serial_name=" + encodeURIComponent(clean))
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var box2 = document.getElementById("customerDetails");
+            if (d && d.data) {
+              document.getElementById("name").value = d.data.name || "";
+              document.getElementById("phone").value = d.data.main_mobile_number || "";
+              document.getElementById("state").value = d.data.state_name || "";
+              document.getElementById("city").value = d.data.city_name || "";
+              box2.style.display = "block";
+            } else { box2.style.display = "none"; }
+          })
+          .catch(function () {});
+      }
+    }, 400);
+  });
+
+  /* copy */
+  document.getElementById("copyButton").addEventListener("click", function () {
+    update();
+    var text = out.value;
+    function done() {
+      var t = document.getElementById("toast");
+      t.classList.add("show");
+      setTimeout(function () { t.classList.remove("show"); }, 1800);
+    }
+    function fallback() { out.removeAttribute("readonly"); out.select(); document.execCommand("copy"); out.setAttribute("readonly", ""); done(); }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else { fallback(); }
+  });
+
+  update();
+})();
 </script>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div style="display: flex; align-items: center;">
-                <img src="https://unionaire.com/ct/unionaire.png" width="150" height="150" style="font-size: 48px;">
-            </div>
-            <h1></h1>
-            <button id="addzerialBtn" class="btn btn-primary">Add Serial</button>
-            <button id="removezerialBtn" class="btn btn-danger">Remove Serial</button>
-            <br><br>
-            <div id="zerialInputsContainer">
-                <div class="form-group">
-                    <label for="zerial_name_1">1</label>
-                    <input style="font-size: 12px; width: 140px; height: 30px; display: inline-block;" type="text" class="form-control input-lg zerial-input" placeholder="Serial" name="zerial_name_1" id="zerial_name_1" value="" required="required" maxlength="20" />
-                    <p id="issue_date_1"></p>
-                </div>
-            </div>
-            <button id="copyButton" class="btn btn-success">Copy Message</button>
-            <textarea id="copyTextBox" readonly></textarea>
-
-            <!-- Customer Details Display -->
-            <div id="customerDetails" style="display:none;">
-                <div>Name: <input type="text" id="name" readonly /></div>
-                <div>Phone: <input type="text" id="phone" readonly /></div>
-                <div>State: <input type="text" id="state" readonly /></div>
-                <div>City: <input type="text" id="city" readonly /></div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
