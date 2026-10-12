@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث سيريال - تكييفات</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f5f8fc;
+            margin: 0;
+            padding: 20px;
+            color: #1e2a3a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 30px 30px 40px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #0b2b4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .subhead {
+            color: #4a5b6e;
+            margin-bottom: 28px;
+            border-right: 4px solid #2a7de1;
+            padding-right: 16px;
+            font-size: 15px;
+            background: #f0f5fe;
+            padding: 12px 20px;
+            border-radius: 14px;
+        }
+
+        /* شريط البحث */
+        .search-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+            background: #f0f4fb;
+            padding: 18px 22px;
+            border-radius: 60px;
+            margin-bottom: 30px;
+            border: 1px solid #dbe1ec;
+        }
+        .search-box label {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1d3a5a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-box input {
+            flex: 2;
+            min-width: 220px;
+            padding: 12px 20px;
+            border: 1px solid #c9d4e3;
+            border-radius: 40px;
+            font-size: 16px;
+            background: white;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .search-box input:focus {
+            border-color: #1a6dd4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 109, 212, 0.2);
+        }
+        .search-box button {
+            background: #1a6dd4;
+            border: none;
+            color: white;
+            padding: 12px 34px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .search-box button:hover {
+            background: #0f58b3;
+            transform: scale(1.01);
+        }
+        .search-box .clear-btn {
+            background: #b0c2d9;
+            padding: 12px 24px;
+        }
+        .search-box .clear-btn:hover {
+            background: #8fa1ba;
+        }
+
+        /* بطاقة النتيجة - hidden افتراضي */
+        .result-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e5ecf5;
+            padding: 20px 25px 25px;
+            margin-top: 10px;
+            box-shadow: 0 6px 14px rgba(0, 20, 50, 0.04);
+            transition: 0.15s;
+            display: none; /* مخفية تماماً في البداية */
+        }
+        .result-card.visible {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed #dce4ef;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+        .result-header .serial-big {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0b2b4a;
+            background: #e9eff8;
+            padding: 6px 22px;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+        }
+        .result-header .badge-ok {
+            background: #d1f0d6;
+            color: #1a6e34;
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px 30px;
+            margin: 16px 0 18px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .detail-item .label {
+            font-size: 13px;
+            color: #5a6f88;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .detail-item .value {
+            font-size: 17px;
+            font-weight: 500;
+            color: #0b1f33;
+            word-break: break-word;
+            background: #f9fbfe;
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid #edf2fa;
+        }
+
+        .extra-info {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #eef3fc;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px 60px;
+            background: #fafcff;
+            border-radius: 18px;
+            padding: 18px 22px;
+        }
+        .extra-item {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .extra-item .tag {
+            background: #dce5f2;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d3a5a;
+        }
+        .extra-item .info {
+            font-size: 17px;
+            font-weight: 500;
+            color: #0a2640;
+        }
+        .extra-item .info i {
+            font-weight: 300;
+            color: #40658b;
+            margin-left: 6px;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 30px 10px;
+            color: #6f7f94;
+            font-size: 18px;
+            background: #f9fbfe;
+            border-radius: 40px;
+            margin-top: 15px;
+            border: 1px dashed #c7d4e5;
+            display: none;
+        }
+        .not-found.visible {
+            display: block;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #3c5a78;
+            background: #eef4fd;
+            padding: 14px 20px;
+            border-radius: 40px;
+            text-align: center;
+        }
+        @media (max-width: 650px) {
+            .search-box {
+                border-radius: 28px;
+                padding: 16px;
+            }
+            .search-box input {
+                min-width: 160px;
+            }
+            .result-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 12px;
+            }
+            .extra-info {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔍 بحث · السيريال</h1>
+    <div class="subhead">أدخل الرقم التسلسلي (Serial) لعرض تفاصيل المنتج، الضمان، وتكلفة التركيب</div>
+
+    <!-- شريط البحث -->
+    <div class="search-box">
+        <label for="serialInput">🔎 السيريال</label>
+        <input type="text" id="serialInput" placeholder="مثال: S-000007833581" autofocus>
+        <button id="searchBtn">بحث</button>
+        <button id="clearBtn" class="clear-btn">مسح</button>
+    </div>
+
+    <!-- بطاقة النتيجة (مخفية في البداية) -->
+    <div id="resultCard" class="result-card">
+        <div class="result-header">
+            <span class="serial-big" id="displaySerial">S-000007833581</span>
+            <span class="badge-ok" id="displayStatus">✅ OK</span>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="label">📦 اسم الصنف</span>
+                <span class="value" id="displayProduct">3 HP indoor wall unit</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">🏢 العميل (المعرض)</span>
+                <span class="value" id="displayCustomer">معرض محمود مصطفى محمد احمد-القاهرة</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">🔖 كود الصنف</span>
+                <span class="value" id="displayItemCode">GI024CV60UCFRD</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">📅 التاريخ</span>
+                <span class="value" id="displayDate">07/28/26</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">🧾 طلب الصرف</span>
+                <span class="value" id="displayRequest">3822857</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">🔢 رقم الحركة</span>
+                <span class="value" id="displayMovement">738718</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">📄 رقم الإذن</span>
+                <span class="value" id="displayPermit">12</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">👤 كود العميل</span>
+                <span class="value" id="displayCustomerCode">1012001154</span>
+            </div>
+        </div>
+
+        <!-- الضمان و التركيب -->
+        <div class="extra-info">
+            <div class="extra-item">
+                <span class="tag">🛡️ الضمان</span>
+                <span class="info">سنة واحدة <i>(شاملة)</i></span>
+            </div>
+            <div class="extra-item">
+                <span class="tag">🔧 تكلفة التركيب</span>
+                <span class="info">1500 ج <i>(من خلال الشركة)</i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة عدم العثور -->
+    <div id="notFound" class="not-found">
+        ⚡ لم يتم العثور على سيريال مطابق · حاول مرة أخرى
+    </div>
+
+    <div class="footer-note">
+        💡 اكتب السيريال واضغط "بحث" أو Enter
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- البيانات المدمجة (نفس البيانات السابقة) -----
+        const rawData = [
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833581"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830124"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830111"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833672"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833580"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833576"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833671"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830129"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830118"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833676"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830120"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829528"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829530"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833680"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833689"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829473"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833575"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833684"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830119"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833687"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830125"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833673"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830121"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830130"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829527"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829526"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829476"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829529"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829475"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830113"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830114"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833574"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833579"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833685"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829525"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830122"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833578"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833669"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830131"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833686"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833668"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833678"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830126"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833670"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830132"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833577"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833679"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833683"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830127"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833674"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829471"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830128"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833682"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829474"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830112"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833677"},
+            {Date:"07/28/26", ItemCode:"GO025CV6R0WPKD", Request:"3822857", Movement:"738668", Permit:"11", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829472"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833573"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833681"},
+            {Date:"07/28/26", ItemCode:"GI024CV60UCFRD", Request:"3822857", Movement:"738718", Permit:"12", CustomerCode:"1012001154", Customer:"معرض محمود مصطفى محمد احمد-القاهرة", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833675"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833550"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833959"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829564"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829504"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829507"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833551"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829494"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832853"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829490"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833949"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829486"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829493"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829489"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829505"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829510"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829506"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833547"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833946"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833956"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833952"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829502"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833954"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832854"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833955"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833951"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833953"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833548"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833549"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829508"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829503"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832852"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829488"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833545"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829491"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829509"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833957"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833960"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833950"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829499"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829497"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833552"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829561"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829498"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832855"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829492"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833553"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829563"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832856"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829487"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832851"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833958"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833948"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829562"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833546"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829501"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829496"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829500"},
+            {Date:"07/29/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"738822", Permit:"14", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833947"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829495"},
+            {Date:"07/29/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"738821", Permit:"13", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007829565"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830008"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831034"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830014"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830011"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833555"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830152"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830021"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830019"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833556"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831028"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830020"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831030"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833554"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831040"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830010"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831031"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831025"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830017"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830006"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831032"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831038"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830012"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830007"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830151"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833557"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830013"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831026"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831039"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831035"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830018"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831033"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831037"},
+            {Date:"07/30/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"738956", Permit:"15", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831036"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830016"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830015"},
+            {Date:"07/30/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"738958", Permit:"16", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830009"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830170"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832849"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832848"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830076"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833916"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830025"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833590"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830027"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833606"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830161"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833585"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833588"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833909"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833903"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830022"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831029"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832845"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830048"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832850"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833908"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830023"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830168"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833572"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830049"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830149"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830047"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830041"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833589"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830038"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831022"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833917"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830157"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833591"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830040"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830033"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830160"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833910"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830026"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830034"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833604"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830044"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831027"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832847"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830024"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833587"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831019"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833582"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830039"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830078"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833899"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830159"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833607"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833897"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830165"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830031"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830029"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830156"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833907"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833913"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830042"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833584"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833608"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830164"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830163"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830155"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833918"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833911"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830150"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833914"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833912"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830167"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830050"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831023"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831021"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830028"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833901"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833902"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830162"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833915"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007831020"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833605"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830035"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833898"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830077"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830036"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833583"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830154"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830153"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830158"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830043"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830046"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833586"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007832846"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833900"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830037"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830166"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830032"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833906"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833904"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3823597", Movement:"739504", Permit:"20", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833896"},
+            {Date:"07/31/26", ItemCode:"GI024CV60UCFRD", Request:"3822853", Movement:"739505", Permit:"21", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP indoor wall unit,Cold, with ionizer filter-60HZ", Serial:"S-000007833905"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3822853", Movement:"739485", Permit:"19", CustomerCode:"1012000008", Customer:"شركة البودى جروب", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830169"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739484", Permit:"18", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830045"},
+            {Date:"07/31/26", ItemCode:"GO025CV6R0WPKD", Request:"3823597", Movement:"739483", Permit:"17", CustomerCode:"1012002516", Customer:"حماده امين عرفه محمد حمود- المنار للاجهزة الكهربائية-القليوبية", Type:"OK", Product:"3 HP Outdoor Unit,Cold, Pipe and Cable Kit-60HZ", Serial:"S-000007830030"}
+        ];
+
+        // عناصر DOM
+        const resultCard = document.getElementById('resultCard');
+        const notFound = document.getElementById('notFound');
+        const serialInput = document.getElementById('serialInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        const displaySerial = document.getElementById('displaySerial');
+        const displayStatus = document.getElementById('displayStatus');
+        const displayProduct = document.getElementById('displayProduct');
+        const displayCustomer = document.getElementById('displayCustomer');
+        const displayItemCode = document.getElementById('displayItemCode');
+        const displayDate = document.getElementById('displayDate');
+        const displayRequest = document.getElementById('displayRequest');
+        const displayMovement = document.getElementById('displayMovement');
+        const displayPermit = document.getElementById('displayPermit');
+        const displayCustomerCode = document.getElementById('displayCustomerCode');
+
+        // دالة البحث
+        function searchSerial(query) {
+            const trimmed = query.trim();
+            // إخفاء كل شيء أولاً
+            resultCard.classList.remove('visible');
+            notFound.classList.remove('visible');
+
+            if (trimmed === '') {
+                return; // لو فاضي، ميفضلش حاجة ظاهرة
+            }
+
+            const found = rawData.find(item => item.Serial === trimmed);
+            if (found) {
+                displaySerial.textContent = found.Serial;
+                displayStatus.textContent = '✅ OK';
+                displayProduct.textContent = found.Product;
+                displayCustomer.textContent = found.Customer;
+                displayItemCode.textContent = found.ItemCode;
+                displayDate.textContent = found.Date;
+                displayRequest.textContent = found.Request;
+                displayMovement.textContent = found.Movement;
+                displayPermit.textContent = found.Permit;
+                displayCustomerCode.textContent = found.CustomerCode;
+
+                resultCard.classList.add('visible');
+            } else {
+                notFound.classList.add('visible');
+            }
+        }
+
+        // الأحداث
+        searchBtn.addEventListener('click', function() {
+            searchSerial(serialInput.value);
+        });
+
+        clearBtn.addEventListener('click', function() {
+            serialInput.value = '';
+            resultCard.classList.remove('visible');
+            notFound.classList.remove('visible');
+            serialInput.focus();
+        });
+
+        serialInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchSerial(serialInput.value);
+            }
+        });
+    })();
+</script>
+</body>
+</html>
