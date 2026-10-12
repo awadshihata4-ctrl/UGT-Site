@@ -125,24 +125,30 @@
         box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 180px;
     }
     .premium-card:nth-child(1) { border-top: 4px solid #FFB347; }
     .premium-card:nth-child(2) { border-top: 4px solid #6C63FF; }
     .premium-card:nth-child(3) { border-top: 4px solid #4CAF50; }
-    .premium-card:nth-child(4) { border-top: 4px solid #FF6B6B; }
-    .premium-card:nth-child(5) { border-top: 4px solid #20B2AA; }
-    .premium-card:nth-child(6) { border-top: 4px solid #FF8C42; }
-    .premium-card:nth-child(7) { border-top: 4px solid #8855FF; }
-    .premium-card:nth-child(8) { border-top: 4px solid #E91E63; }
-    .premium-card:nth-child(9) { border-top: 4px solid #00ACC1; }
-    .premium-card:nth-child(10) { border-top: 4px solid #FFA000; }
-    .premium-card:nth-child(11) { border-top: 4px solid #8BC34A; }
-    .premium-card:nth-child(12) { border-top: 4px solid #F06292; }
-    .premium-card:nth-child(13) { border-top: 4px solid #5C6BC0; }
-    .premium-card:nth-child(14) { border-top: 4px solid #FF7043; }
-    .premium-card:nth-child(15) { border-top: 4px solid #26A69A; }
-    .premium-card:nth-child(16) { border-top: 4px solid #D32F2F; }
-    .premium-card:nth-child(17) { border-top: 4px solid #00796B; }
+    .premium-card:nth-child(4) { border-top: 4px solid #9C27B0; }
+    .premium-card:nth-child(5) { border-top: 4px solid #FF6B6B; }
+    .premium-card:nth-child(6) { border-top: 4px solid #20B2AA; }
+    .premium-card:nth-child(7) { border-top: 4px solid #FF8C42; }
+    .premium-card:nth-child(8) { border-top: 4px solid #8855FF; }
+    .premium-card:nth-child(9) { border-top: 4px solid #E91E63; }
+    .premium-card:nth-child(10) { border-top: 4px solid #00ACC1; }
+    .premium-card:nth-child(11) { border-top: 4px solid #FFA000; }
+    .premium-card:nth-child(12) { border-top: 4px solid #8BC34A; }
+    .premium-card:nth-child(13) { border-top: 4px solid #F06292; }
+    .premium-card:nth-child(14) { border-top: 4px solid #5C6BC0; }
+    .premium-card:nth-child(15) { border-top: 4px solid #FF7043; }
+    .premium-card:nth-child(16) { border-top: 4px solid #26A69A; }
+    .premium-card:nth-child(17) { border-top: 4px solid #D32F2F; }
+    .premium-card:nth-child(18) { border-top: 4px solid #00796B; }
 
     .premium-card:hover {
         transform: translateY(-8px);
@@ -158,20 +164,21 @@
     .premium-card:nth-child(1) .card-icon { color: #FFB347; }
     .premium-card:nth-child(2) .card-icon { color: #6C63FF; }
     .premium-card:nth-child(3) .card-icon { color: #4CAF50; }
-    .premium-card:nth-child(4) .card-icon { color: #FF6B6B; }
-    .premium-card:nth-child(5) .card-icon { color: #20B2AA; }
-    .premium-card:nth-child(6) .card-icon { color: #FF8C42; }
-    .premium-card:nth-child(7) .card-icon { color: #8855FF; }
-    .premium-card:nth-child(8) .card-icon { color: #E91E63; }
-    .premium-card:nth-child(9) .card-icon { color: #00ACC1; }
-    .premium-card:nth-child(10) .card-icon { color: #FFA000; }
-    .premium-card:nth-child(11) .card-icon { color: #8BC34A; }
-    .premium-card:nth-child(12) .card-icon { color: #F06292; }
-    .premium-card:nth-child(13) .card-icon { color: #5C6BC0; }
-    .premium-card:nth-child(14) .card-icon { color: #FF7043; }
-    .premium-card:nth-child(15) .card-icon { color: #26A69A; }
-    .premium-card:nth-child(16) .card-icon { color: #D32F2F; }
-    .premium-card:nth-child(17) .card-icon { color: #00796B; }
+    .premium-card:nth-child(4) .card-icon { color: #9C27B0; }
+    .premium-card:nth-child(5) .card-icon { color: #FF6B6B; }
+    .premium-card:nth-child(6) .card-icon { color: #20B2AA; }
+    .premium-card:nth-child(7) .card-icon { color: #FF8C42; }
+    .premium-card:nth-child(8) .card-icon { color: #8855FF; }
+    .premium-card:nth-child(9) .card-icon { color: #E91E63; }
+    .premium-card:nth-child(10) .card-icon { color: #00ACC1; }
+    .premium-card:nth-child(11) .card-icon { color: #FFA000; }
+    .premium-card:nth-child(12) .card-icon { color: #8BC34A; }
+    .premium-card:nth-child(13) .card-icon { color: #F06292; }
+    .premium-card:nth-child(14) .card-icon { color: #5C6BC0; }
+    .premium-card:nth-child(15) .card-icon { color: #FF7043; }
+    .premium-card:nth-child(16) .card-icon { color: #26A69A; }
+    .premium-card:nth-child(17) .card-icon { color: #D32F2F; }
+    .premium-card:nth-child(18) .card-icon { color: #00796B; }
 
     .premium-card:hover .card-icon {
         transform: scale(1.08);
@@ -181,12 +188,26 @@
         font-size: 17px;
         color: #1e2a3e;
         margin-top: 6px;
+        line-height: 1.4;
+        word-break: break-word;
+        width: 100%;
     }
     .card-sub {
         font-size: 12px;
         color: #7f8c8d;
         margin-top: 6px;
         font-weight: 500;
+        line-height: 1.4;
+    }
+
+    /* تنسيق خاص للبطاقة ذات النص الطويل */
+    .premium-card.long-title .card-title {
+        font-size: 14px;
+        line-height: 1.35;
+        margin-top: 4px;
+    }
+    .premium-card.long-title .card-sub {
+        font-size: 11px;
     }
 
     .pro-instructions {
@@ -256,9 +277,10 @@
     @media (max-width: 768px) {
         .main-content { padding: 20px; }
         .unified-grid { gap: 14px; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
-        .premium-card { padding: 18px 10px; }
+        .premium-card { padding: 18px 10px; min-height: 160px; }
         .card-icon { font-size: 34px; }
         .card-title { font-size: 13px; }
+        .premium-card.long-title .card-title { font-size: 12px; }
         .instruction-row { flex-direction: column; gap: 8px; }
         .header { padding: 15px 20px; }
         .top-actions { margin-top: 5px; }
@@ -300,6 +322,7 @@
                     <div class="premium-card" data-page="sms.html"><div class="card-icon">💬</div><div class="card-title">SMS</div><div class="card-sub">إرسال رسائل</div></div>
                     <div class="premium-card" data-page="model-serial.html"><div class="card-icon">🔍</div><div class="card-title">الموديل والسريال</div><div class="card-sub">بحث متقدم</div></div>
                     <div class="premium-card" data-page="visit-fees.html"><div class="card-icon">💰</div><div class="card-title">رسوم الزيارة</div><div class="card-sub">الأسعار والتكاليف</div></div>
+                    <div class="premium-card long-title" data-page="warranty-install.html"><div class="card-icon">🛡️</div><div class="card-title">تركيب تكييف بضمان ورسوم خاصة</div><div class="card-sub">ضمان + أسعار مميزة</div></div>
                     <div class="premium-card" data-page="ac-install.html"><div class="card-icon">🔧</div><div class="card-title">فك وتركيب التكييف</div><div class="card-sub">خدمات متخصصة</div></div>
                     <div class="premium-card" data-page="faults.html"><div class="card-icon">⚠️</div><div class="card-title">اختيار الأعطال</div><div class="card-sub">تشخيص دقيق</div></div>
                     <div class="premium-card" data-page="electric-heater.html"><div class="card-icon">🔥</div><div class="card-title">سخان كهرباء</div><div class="card-sub">استبدال وإصلاح</div></div>
@@ -327,6 +350,7 @@
         "sms.html": { title: "SMS - رسائل", url: "sms.html" },
         "model-serial.html": { title: "الموديل والسريال", url: "model-serial.html" },
         "visit-fees.html": { title: "رسوم الزيارة", url: "visit-fees.html" },
+        "warranty-install.html": { title: "تركيب تكييف بضمان ورسوم خاصة", url: "warranty-install.html" },
         "ac-install.html": { title: "فك وتركيب التكييف", url: "ac-install.html" },
         "faults.html": { title: "اختيار الأعطال", url: "faults.html" },
         "electric-heater.html": { title: "سخان كهرباء", url: "electric-heater.html" },
