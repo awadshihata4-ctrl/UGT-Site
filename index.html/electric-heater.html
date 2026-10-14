@@ -43,12 +43,11 @@
         }
 
         .container {
-            max-width: 1400px; /* تم توسيع الحاوية لتناسب عدد الأعمدة الإضافية */
+            max-width: 1400px;
             margin: 25px auto;
             padding: 0 20px;
         }
 
-        /* لوحة البيانات السريعة العلوية */
         .info-grid {
             display: flex;
             gap: 15px;
@@ -79,7 +78,6 @@
             color: #1e293b;
         }
 
-        /* شريط التنقل والأزرار العصرية */
         .tabs-title {
             font-size: 16px;
             font-weight: 700;
@@ -119,13 +117,67 @@
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
         }
 
-        /* تصميم الجداول الاحترافي */
+        .summary-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            border-right: 6px solid #2e7d32;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .summary-card.green { border-right-color: #2e7d32; }
+        .summary-card.yellow { border-right-color: #f59e0b; }
+        .summary-card.red { border-right-color: #dc2626; }
+
+        .summary-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .summary-card .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .summary-card .label {
+            font-weight: 700;
+            color: #475569;
+            min-width: 110px;
+        }
+
+        .summary-card .value {
+            color: #334155;
+            flex: 1;
+        }
+
+        .summary-card .reason-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            font-size: 14.5px;
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .summary-card .reason-box strong {
+            color: #b91c1c;
+        }
+
         .table-container {
             background: var(--card-bg);
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             border: 1px solid var(--border-color);
-            overflow-x: auto; /* لدعم التصفح الأفقي على الشاشات الصغيرة */
+            overflow-x: auto;
             display: none;
             animation: fadeIn 0.4s ease;
         }
@@ -210,6 +262,27 @@
         <button id="btn-outOfWarranty" onclick="showTable('outOfWarranty')">خارج الضمان</button>
     </div>
 
+    <!-- ========== ملخص السنة الأولى ========== -->
+    <div id="summary-firstYear" class="summary-card green">
+        <h3>🟢 ملخص موقف الضمان: السنة الأولى</h3>
+        <div class="row">
+            <span class="label">الوضع:</span>
+            <span class="value">العميل داخل السنة الأولى من الضمان.</span>
+        </div>
+        <div class="row">
+            <span class="label">حق العميل:</span>
+            <span class="value">استبدال الجهاز بجهاز جديد بعد الاطلاع على المنتج والأوراق.</span>
+        </div>
+        <div class="row">
+            <span class="label">التكلفة:</span>
+            <span class="value">مجاني (لو الأوراق سليمة) + 350ج رسوم زيارة منزلية لو مش قادر ييجي الفرع.</span>
+        </div>
+        <div class="reason-box">
+            <strong>السبب الأساسي:</strong> عدم تغيير عمود المغنيسيوم في ميعاده (كل 6 شهور)، ودي حاجة موضحه في: كتيب التشغيل + شهادة الضمان + وأحياناً على السخان نفسه.<br>
+            <strong>شرح السبب:</strong> عمود المغنيسيوم وظيفته الأساسية إنه يحمي الحلة من التآكل. لما العمود مش بيتغير، بيستهلك نفسه وبيبدأ الحلة تتأكل من جوه، ومع الوقت بيتحول التآكل ده لثقب في الحلة. والثقب ده هو اللي بيسبب تسريب المياه. يعني المشكلة مش عيب تصنيع، المشكلة إن الصيانة الدورية للعمود مكنتش بتحصل.
+        </div>
+    </div>
+
     <div id="firstYear" class="table-container">
         <table>
             <thead>
@@ -233,11 +306,37 @@
                     <td>كشف علي الجهاز لدى العميل</td>
                     <td>عميل السنة الأولى - تسريب مياه - زيارة منزلية 350ج رسوم زيارة</td>
                     <td>Field Service</td>
-                    <td>زيارة منزلية عادية على الكباستي الموجود او اللي يختاره العميل </td>
+                    <td>زيارة منزلية عادية على الكباستي الموجوده</td>
                     <td>المركز سيقوم بكتابة تقرير ويتم عمل الاستبدال والتوريد للعميل من خلالنا</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <!-- ========== ملخص بعد السنة الأولى ========== -->
+    <div id="summary-afterFirstYear" class="summary-card yellow">
+        <h3>🟡 ملخص موقف الضمان: بعد السنة الأولى</h3>
+        <div class="row">
+            <span class="label">الوضع:</span>
+            <span class="value">العميل عدّى السنة الأولى من الضمان، بس لسه في فترة الضمان.</span>
+        </div>
+        <div class="row">
+            <span class="label">حق العميل:</span>
+            <span class="value">إصلاح أو استبدال برسوم.</span>
+        </div>
+        <div class="row">
+            <span class="label">الخيارات:</span>
+            <span class="value">
+                1. تغيير الحلة في الفرع: 950 جنيه.<br>
+                2. تغيير الحلة في البيت: 350ج زيارة + تكلفة الحلة.<br>
+                3. استبدال بجهاز جديد لدى العميل: 1200–1550ج + 350ج زيارة.<br>
+                4. استبدال بجهاز جديد من الفرع: 1200–1550ج.
+            </span>
+        </div>
+        <div class="reason-box">
+            <strong>السبب الأساسي:</strong> عدم تغيير عمود المغنيسيوم (في خلال أول 6 شهور من السنة الأولى)، ودي حاجة موضحه في: كتيب التشغيل + شهادة الضمان + وأحياناً على السخان نفسه.<br>
+            <strong>شرح السبب:</strong> عمود المغنيسيوم بيحمي الحلة من التآكل. لما مش بيتغير، الحلة بتتأكل من جوه وبيحصل ثقب، والثقب ده هو اللي بيسبب تسريب المياه. المشكلة مش عيب تصنيع، المشكلة إن العمود مش بيتغير في ميعاده، وده اللي بيسبب الثقب.
+        </div>
     </div>
 
     <div id="afterFirstYear" class="table-container">
@@ -267,7 +366,7 @@
                     <td>تغيير حلة لدى العميل</td>
                     <td>عميل بعد السنة الأولى - تسريب مياه - زيارة منزلية 350ج + ثمن تغيير الحلة</td>
                     <td>Field Service</td>
-                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجوده</td>
                     <td>المركز سيغير الحلة في منزل العميل</td>
                     <td></td>
                     <td></td>
@@ -285,13 +384,37 @@
                     <td> تغير منتج جديد لدى العميل بدلا من تغير الحلة </td>
                     <td> عميل بعد السنة الأولى - تسريب مياه - زيارة منزلية 350ج + ثمن فرق المنتج الجديد من 1200ج الي 1550ج </td>
                     <td>Field Service</td>
-                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجوده</td>
                     <td>المركز سيكتب تقرير ويتم الاستبدال والتوريد من خلالنا</td>
                     <td>في حاله ان الجهاز عند العميل30لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 350ج + 1200ج</td>
                     <td>في حاله ان الجهاز عند العميل40لتر واحنا طبعا هنديله 50 لتر هيكون في فرق 250ج + 1200ج</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <!-- ========== ملخص خارج الضمان ========== -->
+    <div id="summary-outOfWarranty" class="summary-card red">
+        <h3>🔴 ملخص موقف الضمان: خارج الضمان</h3>
+        <div class="row">
+            <span class="label">الوضع:</span>
+            <span class="value">العميل خارج فترة الضمان. الجهاز حالياً خارج مدة الضمان. <strong>ولا يتم إصلاح ثقب الحلة للأسف.</strong></span>
+        </div>
+        <div class="row">
+            <span class="label">حق العميل:</span>
+            <span class="value">مفيش إصلاح مجاني، بس فيه خصم 10% على سعر الجهاز الجديد.</span>
+        </div>
+        <div class="row">
+            <span class="label">الخيارات:</span>
+            <span class="value">
+                1. شراء من الفرع: خصم 10%.<br>
+                2. توصيل للبيت: 350ج زيارة + خصم 10%.
+            </span>
+        </div>
+        <div class="reason-box">
+            <strong>السبب الأساسي:</strong> عدم تغيير عمود المغنيسيوم في ميعاده (كل 6 شهور)، ودي حاجة موضحه في: كتيب التشغيل + شهادة الضمان + وأحياناً على السخان نفسه.<br>
+            <strong>شرح السبب:</strong> عمود المغنيسيوم هو المسؤول الأول عن حماية الحلة. لما مش بيتغير، الحلة بتتآكل وبيحصل ثقب، والثقب ده هو اللي بيسبب تسريب المياه. المشكلة مش عيب في الجهاز، المشكلة إن العمود مش بيتغير في الوقت المحدد.
+        </div>
     </div>
 
     <div id="outOfWarranty" class="table-container">
@@ -317,7 +440,7 @@
                     <td>توريد الجهاز الجديد للعميل</td>
                     <td>عميل خارج الضمان - تسريب مياه - زيارة منزلية 350ج + خصم 10%علي سعر الجهاز الجديد</td>
                     <td>Field Service</td>
-                    <td>زيارة منزلية عادية على الكباستي الموجود</td>
+                    <td>زيارة منزلية عادية على الكباستي الموجوده</td>
                     <td>Wait Center</td>
                 </tr>
             </tbody>
@@ -329,19 +452,25 @@
 <script>
 function showTable(tableId) {
     const tables = ['firstYear', 'afterFirstYear', 'outOfWarranty'];
+    const summaries = {
+        firstYear: 'summary-firstYear',
+        afterFirstYear: 'summary-afterFirstYear',
+        outOfWarranty: 'summary-outOfWarranty'
+    };
 
     tables.forEach(id => {
         document.getElementById(id).classList.remove('visible');
         document.getElementById('btn-' + id).classList.remove('active');
+        document.getElementById(summaries[id]).style.display = 'none';
     });
 
     if(tableId) {
         document.getElementById(tableId).classList.add('visible');
         document.getElementById('btn-' + tableId).classList.add('active');
+        document.getElementById(summaries[tableId]).style.display = 'block';
     }
 }
 
-// فتح جدول (السنة الأولى) تلقائياً عند فتح الصفحة كمظهر افتراضي بدئي
 window.onload = function() {
     showTable('firstYear');
 };
