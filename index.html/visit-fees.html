@@ -318,6 +318,7 @@
                             <option value="option1">Unionaire</option>
                             <option value="option2">Premium</option>
                             <option value="option3">Supertech</option>
+                            <option value="option4">AMRICOOL</option>
                         </select>
                     </div>
                     <div class="ugt-form-group">
@@ -607,23 +608,6 @@
                 }
             });
         });
-
-        $.ajax({
-            url: "https://www.unionaire-tech.com/get_last_date?a_serial=" + serialValue,
-            dataType: 'json',
-            success: function(data) { updateInfoText(serialValue); },
-            error: function() { updateInfoText(serialValue); }
-        });
-
-        function updateInfoText(serialValue) {
-            var message = `عميلنا العزيز برجاء الضغط على اللينك واختيار احد خدمتنا ( تفعيل الضمان - طلب الصيانة - التركيبات ) وتسجيل البيانات<br>` +
-                        `<a href="https://unionaire.com/ct/index.php?serial=${serialValue}" target="_blank">https://unionaire.com/ct/index.php?serial=${serialValue}</a><br>` +
-                        `استخدم هذا الرابط في كل مرة ترغب فيها بحجز نفس الجهاز فهو مخصص لك لضمان الحجز السهل والمتكرر بدون الحاجة للاتصال بخدمة العملاء.<br>` +
-                        `ويمكنكم الحجز عن طريق الواتس أب من خلال الرابط التالى <a href="https://wa.me/message/TCLIMRXYFJP5H1" target="_blank">https://wa.me/message/TCLIMRXYFJP5H1</a><br>` +
-                        `ويمكنكم معرفة طريقة استخدام خدمة الواتس اب من خلال الرابط التالى <a href="https://youtu.be/DaydrULq0jI" target="_blank">https://youtu.be/DaydrULq0jI</a><br>` +
-                        `ويمكنكم معرفة طريقة استخدام الحجز الالى من خلال الرابط التالى <a href="https://youtu.be/R3Z5gVz9OWY" target="_blank">https://youtu.be/R3Z5gVz9OWY</a>`;
-            $('#infoText').html(message);
-        }
     </script>
 
     <script>
@@ -874,31 +858,46 @@
             });
 
             function updateWarrantyStatus() {
+                // نعتمد هنا على "مدة الضمان الشامل" فقط (والتي ستكون 3)
                 const warantyText = $('#waranty').val();
-                let warantyInMonths;
+                let warantyInMonths = NaN;
 
-                if (warantyText.includes('اشهر')) {
-                    warantyInMonths = parseInt(warantyText.split(' ')[1], 10);
-                } else {
-                    warantyInMonths = parseInt(warantyText, 10) * 12;
+                if (warantyText) {
+                    const yearMatch = warantyText.match(/(\d+)\s*(سنة|سنوات|سنه)/);
+                    const monthMatch = warantyText.match(/(\d+)\s*(شهر|شهور|اشهر)/);
+                    
+                    if (yearMatch) {
+                        warantyInMonths = parseInt(yearMatch[1], 10) * 12;
+                    } else if (monthMatch) {
+                        warantyInMonths = parseInt(monthMatch[1], 10);
+                    } else if (warantyText.includes('سنتين')) {
+                        warantyInMonths = 2 * 12;
+                    } else if (!isNaN(parseInt(warantyText))) {
+                        // هنا سيقرأ رقم 3 ويحوله إلى 36 شهر
+                        warantyInMonths = parseInt(warantyText, 10) * 12;
+                    }
                 }
 
-                const timeDifferenceText = $('#timeDifference').val();
-                const timeDifferenceYears = parseInt(timeDifferenceText.split(' ')[0], 10);
-                const timeDifferenceMonths = parseInt(timeDifferenceText.split(' ')[2], 10);
+                const timeDifferenceText = $('#timeDifference').val() || '';
+                const yearsMatch = timeDifferenceText.match(/(\d+)\s*سنوات/);
+                const monthsMatch = timeDifferenceText.match(/(\d+)\s*شهور/);
+                
+                const timeDifferenceYears = yearsMatch ? parseInt(yearsMatch[1], 10) : 0;
+                const timeDifferenceMonths = monthsMatch ? parseInt(monthsMatch[1], 10) : 0;
                 const timeDifferenceInMonths = (timeDifferenceYears * 12) + timeDifferenceMonths;
 
                 let warrantyStatus = 'غير متاح';
 
-                if (!isNaN(warantyInMonths) && !isNaN(timeDifferenceInMonths)) {
+                if (!isNaN(warantyInMonths) && timeDifferenceText !== '') {
                     if (warantyInMonths > timeDifferenceInMonths) {
-                        warrantyStatus = ' داخل الضمان / لا يتم تحصيل رسوم زيارة';
+                        warrantyStatus = 'داخل الضمان / لا يتم تحصيل رسوم زيارة';
                     } else {
                         warrantyStatus = 'خارج الضمان / يتم تحصيل رسوم زيارة';
                     }
                 }
 
                 $('#warrantyStatus').val(warrantyStatus);
+                updateWarrantyStatusDisplay(); 
             }
 
             function updateWarrantyDisplay() {
@@ -949,6 +948,21 @@
                 else if (firstDropdownValue === 'option3') {
                     if (selectedProduct && productWarrantyDetails2[selectedProduct]) {
                         const productDetails = productWarrantyDetails2[selectedProduct];
+                        if (productDetails.year_condition) {
+                            warrantyPeriod = productDetails.year_condition[selectedYear] || productDetails.default;
+                        }
+                        else if (productDetails.models && productDetails.models[selectedModel]) {
+                            const modelDetails = productDetails.models[selectedModel];
+                            warrantyPeriod = modelDetails[selectedYear] || modelDetails['default'];
+                        }
+                        else {
+                            warrantyPeriod = productDetails.default;
+                        }
+                    }
+                }
+                else if (firstDropdownValue === 'option4') {
+                    if (selectedProduct && productWarrantyDetails3[selectedProduct]) {
+                        const productDetails = productWarrantyDetails3[selectedProduct];
                         if (productDetails.year_condition) {
                             warrantyPeriod = productDetails.year_condition[selectedYear] || productDetails.default;
                         }
@@ -1035,6 +1049,49 @@
                 'Mini.Oven': {'default': '0.5'},'AC2': {'default': '1'},'default': {'default': '1'}
             };
 
+            // ===== AMRICOOL Warranty Data =====
+            const productWarrantyDetails3 = {
+                'REF': { // No Frost
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '3', 2027: '3', 2028: '3', 2029: '3', 2030: '3'
+                    }
+                },
+                'D-REF': { // D Frost
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '3', 2027: '3', 2028: '3', 2029: '3', 2030: '3'
+                    }
+                },
+                'H-DF': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '3', 2027: '3', 2028: '3', 2029: '3', 2030: '3'
+                    }
+                },
+                'V-DF': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '3', 2027: '3', 2028: '3', 2029: '3', 2030: '3'
+                    }
+                },
+                'AC': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '2', 2027: '2', 2028: '2', 2029: '2', 2030: '2'
+                    }
+                },
+                'AC2': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: '2', 2027: '2', 2028: '2', 2029: '2', 2030: '2'
+                    }
+                },
+                'default': {
+                    'default': 'غير متاح'
+                }
+            };
+
             const productWarrantyNotes = {
                 'AC': {'default': 'سنتين شامل','year_condition': {2016:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2017:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2018:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2019:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2020:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2021:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2022:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2023:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2024:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية',2025:'سنتين شامل بالأضافة الي توفير قطع الغيار للثلاث سنوات التالية'}},
                 'REF': {'default': '5 سنوات شامل','year_condition': {2016:'5 سنوات',2017:'5 سنوات',2018:'10 سنوات شامل غير شامل التركيب',2019:'10 سنوات',2020:'ضمان شامل لمدة 10 سنوات',2021:'10 سنوات',2022:'10 سنوات',2023:'10 سنوات',2024:'10 سنوات',2025:'10 سنوات'}},
@@ -1101,6 +1158,73 @@
                 'Mini.Oven': {'default': '6 شهور'},'default': {'default': 'سنة'}
             };
 
+            // ===== AMRICOOL Warranty Notes =====
+            const productWarrantyNotes3 = {
+                'REF': { // No Frost
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان 5 سنوات على الكباس',
+                        2027: 'ضمان 5 سنوات على الكباس',
+                        2028: 'ضمان 5 سنوات على الكباس',
+                        2029: 'ضمان 5 سنوات على الكباس',
+                        2030: 'ضمان 5 سنوات على الكباس'
+                    }
+                },
+                'D-REF': { // D Frost
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان 5 سنوات على الكباس',
+                        2027: 'ضمان 5 سنوات على الكباس',
+                        2028: 'ضمان 5 سنوات على الكباس',
+                        2029: 'ضمان 5 سنوات على الكباس',
+                        2030: 'ضمان 5 سنوات على الكباس'
+                    }
+                },
+                'H-DF': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان 5 سنوات على الكباس',
+                        2027: 'ضمان 5 سنوات على الكباس',
+                        2028: 'ضمان 5 سنوات على الكباس',
+                        2029: 'ضمان 5 سنوات على الكباس',
+                        2030: 'ضمان 5 سنوات على الكباس'
+                    }
+                },
+                'V-DF': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان 5 سنوات على الكباس',
+                        2027: 'ضمان 5 سنوات على الكباس',
+                        2028: 'ضمان 5 سنوات على الكباس',
+                        2029: 'ضمان 5 سنوات على الكباس',
+                        2030: 'ضمان 5 سنوات على الكباس'
+                    }
+                },
+                'AC': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2027: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2028: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2029: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2030: 'ضمان سنتين شامل + خمس سنوات على الكباس'
+                    }
+                },
+                'AC2': {
+                    'default': 'غير متاح',
+                    'year_condition': {
+                        2026: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2027: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2028: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2029: 'ضمان سنتين شامل + خمس سنوات على الكباس',
+                        2030: 'ضمان سنتين شامل + خمس سنوات على الكباس'
+                    }
+                },
+                'default': {
+                    'default': 'غير متاح'
+                }
+            };
+
             function getTotalWarrantyPeriod() {
                 const selectedProduct = $('#products-list').val();
                 const selectedModel = $('#model-list').val();
@@ -1124,6 +1248,11 @@
                         productDetails.default;
                 } else if (firstDropdownValue === 'option3' && selectedProduct && productWarrantyDetails2[selectedProduct]) {
                     const productDetails = productWarrantyNotes2[selectedProduct];
+                    totalWarrantyPeriod = productDetails.year_condition ? 
+                        (productDetails.year_condition[selectedYear] || productDetails.default) :
+                        productDetails.default;
+                } else if (firstDropdownValue === 'option4' && selectedProduct && productWarrantyDetails3[selectedProduct]) {
+                    const productDetails = productWarrantyNotes3[selectedProduct];
                     totalWarrantyPeriod = productDetails.year_condition ? 
                         (productDetails.year_condition[selectedYear] || productDetails.default) :
                         productDetails.default;
@@ -1192,6 +1321,7 @@
             });
 
             updateTotalWarrantyDisplay();
+            updateWarrantyStatusDisplay();
         });
 
         $(document).ready(function() {
