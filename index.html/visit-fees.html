@@ -267,6 +267,8 @@
 
         #product-options-wrapper { display: none !important; }
 
+        body.relocate-mode .hide-on-relocate { display: none !important; }
+
         @media (max-width: 900px) {
             html, body { overflow: auto; height: auto; }
             .ugt-main { flex-direction: column; height: auto; }
@@ -304,6 +306,10 @@
                             <input type="radio" id="addnew" name="type_ID" value="new">
                             <span>🔨 تركيب جديد</span>
                         </label>
+                        <label id="lbl-relocate">
+                            <input type="radio" id="relocate" name="type_ID" value="relocate">
+                            <span>🔄 فك وتركيب</span>
+                        </label>
                         <label id="lbl-warranty" style="display:none;">
                             <input type="radio" id="warranty" name="type_ID" value="warranty">
                             <span>🛡️ تفعيل الضمان</span>
@@ -311,8 +317,34 @@
                     </div>
                     <input type="hidden" name="type" id="type" value="repair">
 
-                    <div class="section-label"><span class="icon">🏷️</span> العلامة التجارية والمنتج</div>
-                    <div class="ugt-form-group">
+                    <div id="relocate-options" style="display:none;">
+                        <div class="ugt-form-group">
+                            <label>الخدمة المطلوبة</label>
+                            <select class="form-control" id="relocate-service">
+                                <option value="">اختر الخدمة</option>
+                                <option value="remove-only">فك فانة أو كباس فقط</option>
+                                <option value="remove-install-part">فك وتركيب فانة أو كباس</option>
+                                <option value="install-new">تركيب جهاز جديد أو مستعمل</option>
+                                <option value="remove-install-full">فك وتركيب جهاز كامل قديم</option>
+                            </select>
+                        </div>
+                        <div class="ugt-form-group">
+                            <label>قدرة الجهاز (حصان)</label>
+                            <select class="form-control" id="relocate-capacity">
+                                <option value="">اختر القدرة</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.25">2.25</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="5+">أكبر من 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-label hide-on-relocate"><span class="icon">🏷️</span> العلامة التجارية والمنتج</div>
+                    <div class="ugt-form-group hide-on-relocate">
                         <label>العلامة التجارية</label>
                         <select class="form-control" id="firstDropdown">
                             <option value="option1">Unionaire</option>
@@ -321,7 +353,7 @@
                             <option value="option4">AMRICOOL</option>
                         </select>
                     </div>
-                    <div class="ugt-form-group">
+                    <div class="ugt-form-group hide-on-relocate">
                         <label>نوع المنتج</label>
                         <select class="form-control" id="products-list">
                             <option value="">اختر المنتج</option>
@@ -403,20 +435,20 @@
                         </select>
                     </div>
 
-                    <div class="section-label"><span class="icon">🔢</span> رقم السيريال</div>
-                    <div class="ugt-form-group">
+                    <div class="section-label hide-on-relocate"><span class="icon">🔢</span> رقم السيريال</div>
+                    <div class="ugt-form-group hide-on-relocate">
                         <label>أدخل رقم السيريال</label>
                         <input type="text" class="form-control input-lg" placeholder="أدخل السيريال"
                             name="serial" id="serial" maxlength="15" required
                             oninput="this.value = this.value.trimStart();"
                             onblur="this.value = this.value.trim();">
                     </div>
-                    <div class="ugt-form-group">
+                    <div class="ugt-form-group hide-on-relocate">
                         <label>تاريخ الصرف</label>
                         <input type="text" name="issueDate" id="issueDate" readonly placeholder="يتم الجلب تلقائياً...">
                     </div>
 
-                    <div class="section-label"><span class="icon">👤</span> بيانات العميل</div>
+                    <div class="section-label hide-on-relocate"><span class="icon">👤</span> بيانات العميل</div>
 
                     <div class="ugt-form-group" style="display:none;">
                         <label>الاسم بالكامل</label>
@@ -428,7 +460,7 @@
                         <input type="text" id="phone" name="phone" placeholder="01XXXXXXXXX">
                     </div>
 
-                    <div class="current-loc" id="current-state-wrap" style="display:none;">
+                    <div class="current-loc hide-on-relocate" id="current-state-wrap" style="display:none;">
                         المحافظة الحالية: <span id="staten"></span>
                     </div>
 
@@ -504,27 +536,27 @@
             <div class="ugt-panel-body">
 
                 <!-- معلومات الجهاز -->
-                <div class="section-label"><span class="icon">🗓️</span> معلومات الجهاز</div>
-                <div class="ugt-form-group">
+                <div class="section-label hide-on-relocate"><span class="icon">🗓️</span> معلومات الجهاز</div>
+                <div class="ugt-form-group hide-on-relocate">
                     <label>تاريخ اليوم</label>
                     <input readonly type="text" name="today_date" id="todayDate">
                 </div>
-                <div class="ugt-form-group">
+                <div class="ugt-form-group hide-on-relocate">
                     <label>المدة منذ تاريخ الصرف</label>
                     <input readonly type="text" name="timeDifference" id="timeDifference">
                 </div>
-                <div class="ugt-form-group">
+                <div class="ugt-form-group hide-on-relocate">
                     <label>مدة الضمان الشامل</label>
                     <input type="text" id="waranty" readonly>
                 </div>
-                <div class="ugt-form-group">
+                <div class="ugt-form-group hide-on-relocate">
                     <label>اجمالي مدة الضمان</label>
                     <input type="text" id="totalWarrantyPeriod" readonly>
                 </div>
 
                 <!-- حالة الضمان -->
-                <div class="section-label"><span class="icon">✅</span> حالة الضمان</div>
-                <div class="ugt-form-group">
+                <div class="section-label hide-on-relocate"><span class="icon">✅</span> حالة الضمان</div>
+                <div class="ugt-form-group hide-on-relocate">
                     <div class="warranty-status-field" id="warrantyStatusDisplay">لم يتم تحديد الضمان بعد</div>
                     <input type="text" id="warrantyStatus" readonly style="display:none;">
                 </div>
@@ -557,6 +589,9 @@
         var val = $(this).val();
         if (val === 'repair')   $('#lbl-repair').addClass('service-btn-active');
         if (val === 'new')      $('#lbl-addnew').addClass('service-btn-active');
+        if (val === 'relocate') $('#lbl-relocate').addClass('service-btn-active');
+        if (val === 'relocate') $('#relocate-options').show(); else $('#relocate-options').hide();
+        $('body').toggleClass('relocate-mode', val === 'relocate');
         if (val === 'warranty') $('#lbl-warranty').addClass('service-btn-active');
     });
 
@@ -786,6 +821,10 @@
                 calculateServiceCost();
             });
 
+            $('#relocate-capacity, #relocate-service').on('change', function() {
+                calculateServiceCost();
+            });
+
             $('#products-list, #state').on('change', function() {
                 calculateServiceCost();
             });
@@ -918,7 +957,7 @@
                 const selectedType = $('input[name="type_ID"]:checked').val();
                 const warrantyStatusText = $('#warrantyStatus').val();
                 
-                if (!selectedProduct || !selectedState) {
+                if ((!selectedProduct && selectedType !== 'relocate') || !selectedState) {
                     $('#serviceCost').val("");
                     return;
                 }
@@ -929,10 +968,28 @@
                 }
                 
                 let basePrice = getBasePrice(selectedProduct, visitType);
+                if (selectedType === 'relocate') {
+                    const cap = $('#relocate-capacity').val();
+                    const svc = $('#relocate-service').val();
+                    if (!cap || !svc) {
+                        $('#serviceCost').val("");
+                        return;
+                    }
+                    const small = (parseFloat(cap) < 3 && cap !== '5+');
+                    const relocatePrices = {
+                        'remove-only':        { name: 'فك فانة أو كباس فقط',           small: 350,  big: 400 },
+                        'remove-install-part':{ name: 'فك وتركيب فانة أو كباس',        small: 750,  big: 950 },
+                        'install-new':        { name: 'تركيب جهاز جديد أو مستعمل',      small: 1000, big: 1350 },
+                        'remove-install-full':{ name: 'فك وتركيب جهاز كامل قديم',       small: 1400, big: 1700 }
+                    };
+                    const item = relocatePrices[svc];
+                    const capLabel = (cap === '5+') ? 'أكبر من 5' : cap;
+                    basePrice = item.name + ' (' + capLabel + ' حصان): ' + (small ? item.small : item.big) + ' ج';
+                }
                 if (ugtIsSpecialSerial() && selectedType === 'new' && selectedProduct === 'AC') {
                     basePrice = "تركيب تكييف جديد: 1500 ج";
                 }
-                const isComplexProduct = (selectedProduct === 'AC' || basePrice.includes("داخل الضمان") || basePrice.includes("لا يتم تحصيل") || basePrice.includes("\n"));
+                const isComplexProduct = (selectedType === 'relocate' || selectedProduct === 'AC' || basePrice.includes("داخل الضمان") || basePrice.includes("لا يتم تحصيل") || basePrice.includes("\n"));
                 
                 const group2States = ['688', '689', '692', '700', '704', '706', '710', '712'];
                 const group3States = ['693', '705', '708', '711', '714'];
