@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="color-scheme" content="dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوائح سوء الاستخدام - Unionaire</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,265 +10,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* إعدادات المتصفح العامة */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
+:root{
+  --bg:#090e1a; --panel:#111827; --panel-2:#0d1424; --line:#1f2b40;
+  --ink:#f3f6fb; --text:#d3dcea; --muted:#8e9db4;
+  --accent:#f6b93b; --accent-d:#e2a22a; --on-accent:#1b1405;
+  --teal:#3fd9c3; --rose:#ff7a9c; --amber:#f6b93b;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Cairo','Segoe UI',Tahoma,sans-serif}
+body{background:var(--bg); color:var(--text); line-height:1.8; padding:26px 20px 40px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
-        body {
-            background-color: #f4f7fc;
-            color: #333;
-            line-height: 1.8;
-            padding: 20px;
-        }
+.page{max-width:1100px; margin:0 auto}
 
-        /* حاوية القسم الرئيسي */
-        #usage-rules {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
+/* الهيدر */
+.head{
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  background:var(--panel); border:1px solid var(--line); border-radius:20px;
+  padding:16px 22px; margin-bottom:20px; box-shadow:var(--shadow);
+}
+.brand{display:flex; align-items:center; gap:14px}
+.logo{width:76px; height:50px; border-radius:12px; background:#fff; display:grid; place-items:center; padding:6px}
+.logo img{max-width:100%; max-height:100%; height:auto}
+.main-title{font-size:22px; font-weight:700; color:var(--ink); line-height:1.3}
+.sub-title{font-size:13px; font-weight:600; color:var(--accent)}
+.back{
+  display:inline-block; padding:10px 20px; border-radius:12px; text-decoration:none;
+  background:var(--accent); color:var(--on-accent); font-weight:700; font-size:14px; transition:background .15s;
+}
+.back:hover{background:var(--accent-d)}
 
-        /* الهيدر والعنوان */
-        .main-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            color: #17538f;
-            margin-bottom: 10px;
-        }
+/* اللوحة الرئيسية */
+#usage-rules{
+  background:var(--panel); border:1px solid var(--line); border-radius:20px;
+  border-inline-start:4px solid var(--accent);
+  padding:30px; box-shadow:var(--shadow);
+}
 
-        .sub-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 30px;
-        }
+.form-group{
+  background:var(--panel-2); padding:18px; border-radius:16px; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:32px;
+}
+.form-group label{font-size:17px; font-weight:700; color:var(--accent)}
+.form-group select{
+  padding:11px 18px; font-size:16px; font-weight:600; border-radius:12px;
+  border:1px solid var(--line); background:var(--panel); color:var(--ink);
+  min-width:260px; cursor:pointer; outline:none; transition:border-color .2s, box-shadow .2s;
+}
+.form-group select:hover,.form-group select:focus{border-color:var(--accent); box-shadow:0 0 0 4px rgba(246,185,59,.15)}
+.form-group select option{background:var(--panel); color:var(--ink)}
 
-        /* اللوجو المركزي */
-        .center-image {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.product-content{display:none; animation:fadeIn .4s ease forwards; padding-top:6px}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
 
-        .center-image img {
-            max-width: 180px;
-            height: auto;
-            transition: transform 0.3s ease;
-        }
-        
-        .center-image img:hover {
-            transform: scale(1.05);
-        }
+.product-content h1{
+  color:var(--ink); font-size:24px; font-weight:700; margin-bottom:24px;
+  text-align:center; position:relative; padding-bottom:12px;
+}
+.product-content h1::after{
+  content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:80px; height:4px; background:var(--accent); border-radius:2px;
+}
 
-        /* مجموعة الاختيار والـ Dropdown */
-        .form-group {
-            background: #f8fafd;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #e1e8f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
+/* الجداول */
+.modern-table-wrap{
+  overflow-x:auto; margin-bottom:28px; border-radius:14px;
+  border:1px solid var(--line); background:var(--panel);
+}
+.modern-table{width:100%; border-collapse:collapse; font-size:15px; text-align:center; min-width:640px}
+.modern-table th{
+  background:var(--panel-2); color:var(--accent); padding:15px; font-weight:700; font-size:15px;
+  border-bottom:1px solid var(--line);
+}
+.modern-table td{padding:14px 16px; color:var(--text); border-bottom:1px solid var(--line); background:var(--panel)}
+.modern-table tr:last-child td{border-bottom:none}
+.modern-table tr:nth-child(even) td{background:#141d2f}
+.modern-table tr:hover td{background:#1a2438}
+.modern-table td.prod{font-weight:700; color:var(--accent); background:var(--panel)}
+.modern-table td.bold{font-weight:600}
+.modern-table td.small{font-size:14px}
+.modern-table td.warn-cell{background:rgba(246,185,59,.10); color:var(--amber)}
+.modern-table td.ok-cell{background:rgba(63,217,195,.10); color:var(--teal); font-size:13px}
+.modern-table td.ok-text{color:var(--teal); font-weight:600}
+.modern-table .note-row td{background:rgba(246,185,59,.10); color:var(--amber); font-weight:600}
+.modern-table .note-row.ok td{background:rgba(63,217,195,.10); color:var(--teal)}
 
-        .form-group label {
-            font-size: 18px;
-            font-weight: 700;
-            color: #17538f;
-        }
+/* القوائم */
+ul,ol{list-style:none; margin-bottom:24px}
+ul li,ol li{position:relative; padding-right:26px; margin-bottom:12px; font-size:16px; color:var(--text); text-align:justify}
+ul li::before{content:"•"; color:var(--accent); font-weight:700; font-size:22px; position:absolute; right:0; top:-2px}
+ol{counter-reset:item}
+ol li::before{counter-increment:item; content:counter(item) "-"; color:var(--accent); font-weight:700; position:absolute; right:0}
+li strong{color:var(--ink)}
+.warn-text{display:inline-block; font-weight:700; color:var(--rose); margin-top:5px}
 
-        .form-group select {
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            border: 2px solid #cbd5e1;
-            background-color: #fff;
-            min-width: 260px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-            color: #444;
-        }
+.section-subtitle{
+  font-size:19px; font-weight:700; color:var(--rose); margin:26px 0 14px;
+  display:flex; align-items:center; gap:10px;
+}
+.section-subtitle.info-type{color:var(--teal)}
 
-        .form-group select:focus {
-            border-color: #17538f;
-            box-shadow: 0 0 0 4px rgba(23, 83, 143, 0.15);
-        }
+.notice-box{
+  background:rgba(240,80,138,.10); border-right:5px solid #f0508a;
+  padding:14px 20px; border-radius:10px; margin-bottom:24px; font-weight:600; color:#ff9db8;
+}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 
-        /* حاويات المنتجات المشروطة */
-        .product-content {
-            display: none; /* مخفي افتراضياً ويتحكم فيه الجافا سكريبت */
-            animation: fadeIn 0.5s ease forwards;
-            border-top: 2px dashed #e2e8f0;
-            padding-top: 30px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .product-content h1 {
-            color: #1e293b;
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .product-content h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: #17538f;
-            border-radius: 2px;
-        }
-
-        /* الجداول المطورة والحديثة */
-        .modern-table-wrap {
-            overflow-x: auto;
-            margin-bottom: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-        }
-
-        .modern-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 15px;
-            background: #fff;
-            text-align: center;
-        }
-
-        .modern-table th {
-            background-color: #17538f;
-            color: #ffffff;
-            padding: 16px;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .modern-table td {
-            padding: 14px 16px;
-            color: #475569;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .modern-table tr:nth-child(even) td {
-            background-color: #f8fafc;
-        }
-
-        .modern-table tr:hover td {
-            background-color: #f0f4f8;
-        }
-
-        .modern-table .note-row td {
-            background-color: #fffbeb !important;
-            color: #b45309;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        /* تنسيق القوائم الحديثة */
-        ul, ol {
-            list-style: none;
-            margin-bottom: 25px;
-        }
-
-        ul li, ol li {
-            position: relative;
-            padding-right: 25px;
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: #334155;
-            text-align: justify;
-        }
-
-        /* إضافة أيقونات مخصصة بديلة للنقاط العادية */
-        ul li::before {
-            content: "•";
-            color: #17538f;
-            font-weight: bold;
-            font-size: 22px;
-            position: absolute;
-            right: 0;
-            top: -2px;
-        }
-
-        ol {
-            counter-reset: item;
-        }
-        ol li::before {
-            counter-increment: item;
-            content: counter(item) "- ";
-            color: #17538f;
-            font-weight: 700;
-            position: absolute;
-            right: 0;
-        }
-
-        /* العناوين الجانبية (مثل حالات سوء الاستخدام وملاحظات) */
-        .section-subtitle {
-            font-size: 20px;
-            font-weight: 700;
-            color: #dc2626; /* لون أحمر هادئ للتحذيرات وسوء الاستخدام */
-            margin: 25px 0 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-subtitle.info-type {
-            color: #0d9488; /* لون تيل للملاحظات العادية */
-        }
-
-        /* صندوق الإشعار الملون */
-        .notice-box {
-            background-color: #fef2f2;
-            border-right: 5px solid #ef4444;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-weight: 600;
-            color: #991b1b;
-        }
-
-        /* شاشات الموبايل المتجاوبة */
-        @media (max-width: 768px) {
-            #usage-rules { padding: 20px; margin: 15px auto; }
-            .form-group { flex-direction: column; align-items: stretch; }
-            .form-group select { min-width: 100%; }
-            .main-title { font-size: 26px; }
-        }
-    </style>
+@media (max-width:768px){
+  body{padding:14px 10px 32px}
+  #usage-rules{padding:18px}
+  .head{padding:14px}
+  .form-group{flex-direction:column; align-items:stretch}
+  .form-group select{min-width:100%}
+  .grid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
 </head>
 <body>
 
-<section id="usage-rules">
-    <div class="center-image">
-        <img src="https://unionaire.com/ct/unionaire.png" alt="Unionaire">
+<div class="page">
+
+<div class="head">
+    <div class="brand">
+        <div class="logo"><img src="https://unionaire.com/ct/unionaire.png" alt="Unionaire"></div>
+        <div>
+            <h1 class="main-title">اللوائح والسياسات</h1>
+            <div class="sub-title">دليل ضوابط سوء الاستخدام وقواعد الضمان</div>
+        </div>
     </div>
-    
-    <h1 class="main-title">اللوائح والسياسات</h1>
-    <h2 class="sub-title">دليل ضوابط سوء الاستخدام وقواعد الضمان</h2>
+    <a class="back" href="index.html">العودة للقائمة الرئيسية</a>
+</div>
+
+<section id="usage-rules">
 
     <div class="form-group">
         <label for="product">اختر المنتج المعني:</label>
@@ -297,7 +172,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 700; color: #17538f;">التكييف</td>
+                        <td class="prod">التكييف</td>
                         <td>5 سنوات</td>
                         <td>5 سنوات</td>
                         <td>5 سنوات</td>
@@ -306,7 +181,7 @@
                     <tr class="note-row">
                         <td colspan="5">يتم تغيير مسطرة اللوفر وزجاج الفانات خلال أول سنتين ضمان في حالة الكسر.</td>
                     </tr>
-                    <tr class="note-row" style="background-color: #f0fdf4 !important; color: #15803d;">
+                    <tr class="note-row ok">
                         <td colspan="5">ملحوظة: في حالة وجود عيب صناعة لا يتم تحصيل أى رسوم نهائياً.</td>
                     </tr>
                 </tbody>
@@ -361,32 +236,32 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="7" style="font-weight:700; color:#17538f;">ثلاجة وديب فريزر</td>
-                        <td style="font-weight:600;">الباب</td>
+                        <td rowspan="7" class="prod">ثلاجة وديب فريزر</td>
+                        <td class="bold">الباب</td>
                         <td>الكسر / الشرخ / تغيير اللون بفعل المواد الكيميائية / الالتواء / المؤثرات الخارجية.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">الثرموستات</td>
+                        <td class="bold">الثرموستات</td>
                         <td>الإصلاح خارج مراكز الشركة المعتمدة / عيوب التيار الكهربائي الصاعد / مؤثر خارجي.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">جوان الباب</td>
+                        <td class="bold">جوان الباب</td>
                         <td>الإصلاح الخارجي / القطع والتمزق بفعل الآلات الحادة / مؤثر خارجي وسوء تنظيف.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">الحساس (Sensor)</td>
+                        <td class="bold">الحساس (Sensor)</td>
                         <td>الإصلاح الخارجي / الفقد / القطع المتعمد أو العرضي / مؤثر خارجي.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">الرسيفر / الكارتة الإلكترونية</td>
+                        <td class="bold">الرسيفر / الكارتة الإلكترونية</td>
                         <td>الإصلاح الخارجي / عيوب تذبذب الكهرباء الشديدة / مؤثر خارجي وسكب سوائل.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">الكباس (الموتور)</td>
+                        <td class="bold">الكباس (الموتور)</td>
                         <td>الإصلاح الخارجي / عيوب تذبذب شدة التيار / المؤثرات الخارجية الضارة.</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;">الموتور المساعد</td>
+                        <td class="bold">الموتور المساعد</td>
                         <td>الإصلاح الخارجي / عيوب تليفات الكهرباء / مؤثر بيئي خارجي.</td>
                     </tr>
                 </tbody>
@@ -403,7 +278,7 @@
             <li>حالات تغيير الكباس بعد مرور عامين ونصف من الشراء: يتم تغيير الكباس ضمان ولكن يتم تحصيل ثمن الفريون والفلتر من العميل. في حالات الشحن يتم تحصيل ثمن الفريون والفلتر من العميل.</li>
             <li><strong>توثيق الكباسات والكويلات:</strong> الالتزام التام بتصوير فيديو (قبل وبعد التغيير) مع الاحتفاظ بصورة بطاقة العميل موقعة ومكتوب عليها الإجراء، ورفعها إلكترونياً.</li>
             <li>اللمبات العادية تُحصل بالتكلفة، أما كارتات الإضاءة الحديثة فتقع داخل الضمان خلال السنة الأولى فقط، وبعدها تُحصل بالتكلفة مع رسم الزيارة.</li>
-            <li><strong>الضمان الحالي:</strong> 10 سنوات للثلاجات والفريزر النوفروست، 5 سنوات للثلاجات الديفروست والفريزر الأفقي، وسنتين للميني بار (مع الالتزام بالشهادة المرفقة بكل جهاز). <div style="display:inline-block; font-weight:bold; color:#dc2626; margin-top:5px;">(ملحوظة: ضمان الثلاجات النوفروست قبل موديل 2017 هو 5 سنوات فقط).</div></li>
+            <li><strong>الضمان الحالي:</strong> 10 سنوات للثلاجات والفريزر النوفروست، 5 سنوات للثلاجات الديفروست والفريزر الأفقي، وسنتين للميني بار (مع الالتزام بالشهادة المرفقة بكل جهاز). <div class="warn-text">(ملحوظة: ضمان الثلاجات النوفروست قبل موديل 2017 هو 5 سنوات فقط).</div></li>
         </ol>
     </div>
 
@@ -458,10 +333,10 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="4" style="font-weight: 700; color: #17538f; background: #fff;">البوتاجاز</td>
-                        <td rowspan="4" style="font-weight: 600; background: #fff;">10 سنوات</td>
+                        <td rowspan="4" class="prod">البوتاجاز</td>
+                        <td rowspan="4" class="bold">10 سنوات</td>
                         <td>أول 5 سنوات: بدون رسوم زيارة وتغيير مجاني للمرة الأولى.</td>
-                        <td rowspan="4" style="font-size:14px;">أول سنة ضمان بدون رسم زيارة (عدا الكسر).<br><br>الـ 4 سنوات المتبقية: يتم تحصيل رسوم الزيارة فقط دون تكلفة لقطع الغيار الأساسية (ما عدا الكسر يتم تحصيل القطعة + الزيارة).<br><br>بعد الـ 5 سنوات الأولى: التغيير بالكامل بالأجر ورسم الزيارة.</td>
+                        <td rowspan="4" class="small">أول سنة ضمان بدون رسم زيارة (عدا الكسر).<br><br>الـ 4 سنوات المتبقية: يتم تحصيل رسوم الزيارة فقط دون تكلفة لقطع الغيار الأساسية (ما عدا الكسر يتم تحصيل القطعة + الزيارة).<br><br>بعد الـ 5 سنوات الأولى: التغيير بالكامل بالأجر ورسم الزيارة.</td>
                         <td>ضمان 3 شهور لأي زجاج يتم تغييره ودفع تكلفته بالأجر من قبل العميل.</td>
                     </tr>
                     <tr>
@@ -472,10 +347,10 @@
                         <td>المرة الثالثة: بالتكلفة الكاملة لقطعة الغيار.</td>
                     </tr>
                     <tr>
-                        <td style="background-color: #fffbeb; color: #b45309;">بعد الـ 5 سنوات الأولى: يتم التغيير بالكامل بالأجر + رسم الزيارة.</td>
-                        <td style="font-size: 13px; background: #f0fdf4; color:#15803d;">سطح زجاج جولدن وسيلفر إيديشن: ضمان سنتين من الشراء، وفي حال تغيره بالأجر يمد ضمانه سنتين أخرى (بشرط عدم تخطي الـ 10 سنوات الإجمالية للبوتاجاز).</td>
+                        <td class="warn-cell">بعد الـ 5 سنوات الأولى: يتم التغيير بالكامل بالأجر + رسم الزيارة.</td>
+                        <td class="ok-cell">سطح زجاج جولدن وسيلفر إيديشن: ضمان سنتين من الشراء، وفي حال تغيره بالأجر يمد ضمانه سنتين أخرى (بشرط عدم تخطي الـ 10 سنوات الإجمالية للبوتاجاز).</td>
                     </tr>
-                    <tr class="note-row" style="background: #f8fafc;">
+                    <tr class="note-row">
                         <td colspan="5">يتم تغيير مفصلة غطاء السطح والقاعدة خلال السنة الأولى ضمان مجاناً في حالة الكسر.</td>
                     </tr>
                 </tbody>
@@ -490,7 +365,7 @@
         </ul>
 
         <h2 class="section-subtitle">تصنيف الأجزاء التي تُحصل بالأجر (سوء استخدام أو مستهلكات):</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;" class="mobile-grid">
+        <div class="grid2">
             <ol>
                 <li>الزجاج بكافة أنواعه (بعد فترات السماح).</li>
                 <li>شمع الإشعال الذاتي.</li>
@@ -534,9 +409,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 700; color: #17538f;">السخان</td>
+                        <td class="prod">السخان</td>
                         <td>سنتين (2 عام)</td>
-                        <td style="color:#16a34a; font-weight:600;">يتم استبدال المنتج بالكامل (في حال وجود عيب بالحلة لا يمكن إصلاحه).</td>
+                        <td class="ok-text">يتم استبدال المنتج بالكامل (في حال وجود عيب بالحلة لا يمكن إصلاحه).</td>
                         <td>يتم تغيير الحلة الداخلية بالكامل دون أي رسوم بالضمان.</td>
                         <td>• في حال تم تغيير عمود الماغنسيوم بانتظام: يتم تغيير الحلة بالضمان مجاناً.<br>• في حال عدم التغيير: يتم تغيير الحلة بتكلفة مادية على العميل (بقيمة 950 جنيهاً).</td>
                     </tr>
@@ -567,6 +442,8 @@
         </ol>
     </div>
 </section>
+
+</div>
 
 <script>
     document.getElementById('product').addEventListener('change', function() {
