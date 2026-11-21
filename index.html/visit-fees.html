@@ -238,7 +238,7 @@
             line-height: 1.6;
             color: #1b5e20;
             margin-bottom: 6px;
-            max-height: 80px;
+            max-height: 260px;
             overflow-y: auto;
         }
 
@@ -354,23 +354,45 @@
                     </div>
 
                     <div id="hypermarkets-msg" style="display:none;">
-                        يتم التركيب مجانا من خلالنا مع هذة الهايبرات : <br>
-                        الوكيل : / لتجهيز وادارة Hyper Markets <br>
-                        كارفور <br> شركة بى تك للتجارة والتوزيع - القاهرة <br> المرشدي <br>
-                        المصرية لاسواق شارع عبد العزيز <br> جملة ماركت - الإسكندرية <br>
-                        شركة جوميا ايجيبت - القاهرة <br> طيبة رنين للتجارة والصناعة - الجيزة <br>
-                        هايبر وان للتجاره - 6 اكتوبر <br> التوحيد والنور - عبدالله السيد رجب السويركى - القاهرة <br>
-                        مؤسسة مصر الخير <br> اسواق فتح الله للجملة <br> امان للخدمات المالية - الجيزة <br>
-                        شركة رايه للألكترونيات - القاهرة <br> فاين استون للاستثمارات - القاهرة <br>
-                        شركة المحلاوى ستورز للاستيراد والتصدير - القليوبية <br> اسواق القاهرة للمبيعات <br>
-                        التوحيد والنور - السيد رجب السويركى - القاهرة <br> جمعية رسالة للاعمال الخيرية <br>
-                        التوحيد والنور - احمد السيد رجب رزق السويركى - البحر الأعظم <br> تريد لاين ستورز <br>
-                        كراون للانظمة والتوريدات العمومية <br> باندا للتجارة والتوزيع - عبير عبدالعليم محمد - القليوبية - كاش <br>
-                        راديو طلعت 2000 <br> خاماتو للتجارة الالكترونية <br>
-                        عائلة فتح الله ماركت لتصنيع وتجارة السلع الغذائية <br> شركة عمر افندى <br>
-                        جاليريا ديجيتال للتجارة وخدمات التكنولوجيا - الجيزة <br>
-                        توفير للمواد الغذائية - كازيون - القاهرة <br> نون <br> سوق دوت كوم <br>
-                        شركة مظلوم للتجارة والتوكيلات <br><br>
+                        يتم التركيب مجانا من خلالنا مع هذة الهايبرات :<br>
+                        الوكيل : / لتجهيز وادارة Hyper Markets
+                        <input type="text" id="hyper-search" autocomplete="off" placeholder="🔍 ابحث عن الهايبر ماركت..."
+                            style="width:100%; margin:5px 0; padding:4px 8px; border:1px solid #81c784; border-radius:5px; font-family:'Almarai',sans-serif; font-size:11px; background:#fff; color:#1a2533; outline:none;">
+                        <div id="hyper-list" style="max-height:130px; overflow-y:auto;">
+                            <div class="hyper-item">كارفور</div>
+                            <div class="hyper-item">شركة بى تك للتجارة والتوزيع - القاهرة</div>
+                            <div class="hyper-item">المرشدي</div>
+                            <div class="hyper-item">المصرية لاسواق شارع عبد العزيز</div>
+                            <div class="hyper-item">جملة ماركت - الإسكندرية</div>
+                            <div class="hyper-item">شركة جوميا ايجيبت - القاهرة</div>
+                            <div class="hyper-item">طيبة رنين للتجارة والصناعة - الجيزة</div>
+                            <div class="hyper-item">هايبر وان للتجاره - 6 اكتوبر</div>
+                            <div class="hyper-item">التوحيد والنور - عبدالله السيد رجب السويركى - القاهرة</div>
+                            <div class="hyper-item">مؤسسة مصر الخير</div>
+                            <div class="hyper-item">اسواق فتح الله للجملة</div>
+                            <div class="hyper-item">امان للخدمات المالية - الجيزة</div>
+                            <div class="hyper-item">شركة رايه للألكترونيات - القاهرة</div>
+                            <div class="hyper-item">فاين استون للاستثمارات - القاهرة</div>
+                            <div class="hyper-item">شركة المحلاوى ستورز للاستيراد والتصدير - القليوبية</div>
+                            <div class="hyper-item">اسواق القاهرة للمبيعات</div>
+                            <div class="hyper-item">التوحيد والنور - السيد رجب السويركى - القاهرة</div>
+                            <div class="hyper-item">جمعية رسالة للاعمال الخيرية</div>
+                            <div class="hyper-item">التوحيد والنور - احمد السيد رجب رزق السويركى - البحر الأعظم</div>
+                            <div class="hyper-item">تريد لاين ستورز</div>
+                            <div class="hyper-item">كراون للانظمة والتوريدات العمومية</div>
+                            <div class="hyper-item">باندا للتجارة والتوزيع - عبير عبدالعليم محمد - القليوبية - كاش</div>
+                            <div class="hyper-item">راديو طلعت 2000</div>
+                            <div class="hyper-item">خاماتو للتجارة الالكترونية</div>
+                            <div class="hyper-item">عائلة فتح الله ماركت لتصنيع وتجارة السلع الغذائية</div>
+                            <div class="hyper-item">شركة عمر افندى</div>
+                            <div class="hyper-item">جاليريا ديجيتال للتجارة وخدمات التكنولوجيا - الجيزة</div>
+                            <div class="hyper-item">توفير للمواد الغذائية - كازيون - القاهرة</div>
+                            <div class="hyper-item">نون</div>
+                            <div class="hyper-item">سوق دوت كوم</div>
+                            <div class="hyper-item">شركة مظلوم للتجارة والتوكيلات</div>
+                            <div id="hyper-no-result" style="display:none; color:#7a1010;">لا توجد نتائج مطابقة</div>
+                        </div>
+                        <br>
                         - في حاله رغبه العميل شراء كابولي من الشركة 870 جنية
                     </div>
 
@@ -538,14 +560,114 @@
         if (val === 'warranty') $('#lbl-warranty').addClass('service-btn-active');
     });
 
+    // ===== سيريالات خاصة: ضمان سنة شامل فقط / تركيب تكييف 1500 ج =====
+    var UGT_SPECIAL_SERIALS = (
+        '7829471 7829472 7829473 7829474 7829475 7829476 7829486 7829487 7829488 7829489 ' +
+        '7829490 7829491 7829492 7829493 7829494 7829495 7829496 7829497 7829498 7829499 ' +
+        '7829500 7829501 7829502 7829503 7829504 7829505 7829506 7829507 7829508 7829509 ' +
+        '7829510 7829525 7829526 7829527 7829528 7829529 7829530 7829561 7829562 7829563 ' +
+        '7829564 7829565 7830006 7830007 7830008 7830009 7830010 7830011 7830012 7830013 ' +
+        '7830014 7830015 7830016 7830017 7830018 7830019 7830020 7830021 7830022 7830023 ' +
+        '7830024 7830025 7830026 7830027 7830028 7830029 7830030 7830031 7830032 7830033 ' +
+        '7830034 7830035 7830036 7830037 7830038 7830039 7830040 7830041 7830042 7830043 ' +
+        '7830044 7830045 7830046 7830047 7830048 7830049 7830050 7830076 7830077 7830078 ' +
+        '7830111 7830112 7830113 7830114 7830118 7830119 7830120 7830121 7830122 7830124 ' +
+        '7830125 7830126 7830127 7830128 7830129 7830130 7830131 7830132 7830149 7830150 ' +
+        '7830151 7830152 7830153 7830154 7830155 7830156 7830157 7830158 7830159 7830160 ' +
+        '7830161 7830162 7830163 7830164 7830165 7830166 7830167 7830168 7830169 7830170 ' +
+        '7831019 7831020 7831021 7831022 7831023 7831025 7831026 7831027 7831028 7831029 ' +
+        '7831030 7831031 7831032 7831033 7831034 7831035 7831036 7831037 7831038 7831039 ' +
+        '7831040 7832845 7832846 7832847 7832848 7832849 7832850 7832851 7832852 7832853 ' +
+        '7832854 7832855 7832856 7833545 7833546 7833547 7833548 7833549 7833550 7833551 ' +
+        '7833552 7833553 7833554 7833555 7833556 7833557 7833572 7833573 7833574 7833575 ' +
+        '7833576 7833577 7833578 7833579 7833580 7833581 7833582 7833583 7833584 7833585 ' +
+        '7833586 7833587 7833588 7833589 7833590 7833591 7833604 7833605 7833606 7833607 ' +
+        '7833608 7833668 7833669 7833670 7833671 7833672 7833673 7833674 7833675 7833676 ' +
+        '7833677 7833678 7833679 7833680 7833681 7833682 7833683 7833684 7833685 7833686 ' +
+        '7833687 7833689 7833896 7833897 7833898 7833899 7833900 7833901 7833902 7833903 ' +
+        '7833904 7833905 7833906 7833907 7833908 7833909 7833910 7833911 7833912 7833913 ' +
+        '7833914 7833915 7833916 7833917 7833918 7833946 7833947 7833948 7833949 7833950 ' +
+        '7833951 7833952 7833953 7833954 7833955 7833956 7833957 7833958 7833959 7833960'
+    ).split(' ').reduce(function(o, k) { o[k] = true; return o; }, {});
+
+    function ugtIsSpecialSerial() {
+        var v = ($('#serial').val() || '').trim().toUpperCase().replace(/^S-?/, '').replace(/^0+/, '');
+        return !!UGT_SPECIAL_SERIALS[v];
+    }
+
+    // ===== حساب حالة الضمان (4 حالات) =====
+    var UGT_WORD_NUMS = {'ثلاث':3,'ثلاثة':3,'اربع':4,'اربعة':4,'أربع':4,'أربعة':4,'خمس':5,'خمسة':5,'ست':6,'ستة':6,'سبع':7,'سبعة':7,'ثمان':8,'ثماني':8,'ثمانية':8,'تسع':9,'تسعة':9,'عشر':10,'عشرة':10};
+
+    function ugtNorm(tok) { return (tok || '').replace(/^(لل|ال|ل)/, ''); }
+
+    function ugtMaxDurationMonths(seg) {
+        var toks = seg.replace(/[+،,\-\/]/g, ' ').split(/\s+/).filter(Boolean);
+        var max = 0;
+        for (var i = 0; i < toks.length; i++) {
+            var tok = toks[i];
+            var next = ugtNorm(toks[i + 1]);
+            var prev = ugtNorm(toks[i - 1]);
+            var n = null;
+            if (/^\d+(\.\d+)?$/.test(tok)) n = parseFloat(tok);
+            else if (UGT_WORD_NUMS[ugtNorm(tok)] !== undefined) n = UGT_WORD_NUMS[ugtNorm(tok)];
+            if (n !== null) {
+                if (/^سنوات/.test(next) || /^سنوات/.test(prev)) max = Math.max(max, n * 12);
+                else if (/^(سنة|سنه)/.test(next)) max = Math.max(max, n * 12);
+                else if (/^(شهور|شهر|اشهر)/.test(next)) max = Math.max(max, n);
+            } else if (tok === 'سنتين') {
+                max = Math.max(max, 24);
+            } else if (tok === 'سنة' || tok === 'سنه') {
+                max = Math.max(max, 12);
+            }
+        }
+        return max;
+    }
+
+    // يرجع عدد الشهور أو NaN لو غير متاح
+    function ugtParseWarrantyMonths(text) {
+        if (!text) return NaN;
+        var t = String(text).trim();
+        if (/^\d+(\.\d+)?$/.test(t)) return parseFloat(t) * 12;
+        var parts = t.split(/بال[أاإ]ضافة/);
+        var base = ugtMaxDurationMonths(parts[0]);
+        var extra = parts.length > 1 ? ugtMaxDurationMonths(parts[1]) : 0;
+        var total = base + extra;
+        return total > 0 ? total : NaN;
+    }
+
+    function computeWarrantyCategory() {
+        if (!$('#products-list').val()) return '';
+        var diffText = $('#timeDifference').val() || '';
+        if (!diffText) return '';
+
+        var y = diffText.match(/(\d+)\s*سنوات/);
+        var m = diffText.match(/(\d+)\s*شهور/);
+        var d = diffText.match(/(\d+)\s*ايام/);
+        var elapsed = (y ? parseInt(y[1], 10) : 0) * 12 + (m ? parseInt(m[1], 10) : 0) + (d ? parseInt(d[1], 10) / 31 : 0);
+
+        var comp = ugtParseWarrantyMonths($('#waranty').val());
+        var total = ugtParseWarrantyMonths($('#totalWarrantyPeriod').val());
+        if (isNaN(comp)) comp = 0;
+        if (isNaN(total)) total = 0;
+        if (total < comp) total = comp;
+
+        if (total === 0 || elapsed >= total) return 'خارج الضمان';
+        if (elapsed < 12) return 'ضمان السنه الاولي';
+        if (elapsed < comp) return 'ضمان بعد السنه الاولي شامل';
+        return 'ضمان بعد السنه الاولي غير شامل';
+    }
+
     function updateWarrantyStatusDisplay() {
-        var txt = $('#warrantyStatus').val();
-        if (txt && txt !== 'غير متاح') {
-            $('#warrantyStatusDisplay').text(txt);
-            if (txt.indexOf('داخل') !== -1) {
-                $('#warrantyStatusDisplay').css({'background':'#e8f5e9','color':'#1b5e20','border-color':'#81c784'});
-            } else {
+        var txt = computeWarrantyCategory();
+        if (txt) {
+            var feeNote = (txt === 'ضمان السنه الاولي' || txt === 'ضمان بعد السنه الاولي شامل')
+                ? 'لا يتم تحصيل رسوم زيارة إلا في حالات سوء الاستخدام'
+                : 'يتم إبلاغ العميل برسوم الزيارة';
+            $('#warrantyStatusDisplay').text(txt + ' / ' + feeNote);
+            if (txt === 'خارج الضمان') {
                 $('#warrantyStatusDisplay').css({'background':'#fdecea','color':'#7a1010','border-color':'#f5a0a0'});
+            } else {
+                $('#warrantyStatusDisplay').css({'background':'#e8f5e9','color':'#1b5e20','border-color':'#81c784'});
             }
         } else {
             $('#warrantyStatusDisplay').text('لم يتم تحديد الضمان بعد');
@@ -634,6 +756,29 @@
 
             checkDropdownValues();
             checkHypermarketsMsg();
+
+            // ===== بحث في قائمة الهايبر ماركت =====
+            function hyperNorm(t) {
+                return (t || '').toLowerCase()
+                    .replace(/[\u064B-\u065F]/g, '')
+                    .replace(/[أإآ]/g, 'ا')
+                    .replace(/ى/g, 'ي')
+                    .replace(/ة/g, 'ه')
+                    .trim();
+            }
+            $('#hyper-search').on('keydown', function(e) {
+                if (e.key === 'Enter') e.preventDefault();
+            });
+            $('#hyper-search').on('input', function() {
+                var q = hyperNorm($(this).val());
+                var shown = 0;
+                $('#hyper-list .hyper-item').each(function() {
+                    var match = !q || hyperNorm($(this).text()).indexOf(q) !== -1;
+                    $(this).toggle(match);
+                    if (match) shown++;
+                });
+                $('#hyper-no-result').toggle(shown === 0);
+            });
 
             $('#todayDate').val(formatDate(new Date()));
 
@@ -784,6 +929,9 @@
                 }
                 
                 let basePrice = getBasePrice(selectedProduct, visitType);
+                if (ugtIsSpecialSerial() && selectedType === 'new' && selectedProduct === 'AC') {
+                    basePrice = "تركيب تكييف جديد: 1500 ج";
+                }
                 const isComplexProduct = (selectedProduct === 'AC' || basePrice.includes("داخل الضمان") || basePrice.includes("لا يتم تحصيل") || basePrice.includes("\n"));
                 
                 const group2States = ['688', '689', '692', '700', '704', '706', '710', '712'];
@@ -907,6 +1055,7 @@
             }
 
             function getWarrantyPeriod() {
+                if (ugtIsSpecialSerial()) return '1';
                 const selectedProduct = $('#products-list').val();
                 const selectedModel = $('#model-list').val();
                 const issueDate = new Date($('#issueDate').val().split('/').reverse().join('-'));
@@ -1226,6 +1375,7 @@
             };
 
             function getTotalWarrantyPeriod() {
+                if (ugtIsSpecialSerial()) return 'سنة شامل';
                 const selectedProduct = $('#products-list').val();
                 const selectedModel = $('#model-list').val();
                 const issueDateStr = $('#issueDate').val();
@@ -1322,6 +1472,12 @@
 
             updateTotalWarrantyDisplay();
             updateWarrantyStatusDisplay();
+
+            $('#serial').on('input', function() {
+                updateWarrantyDisplay();
+                updateTotalWarrantyDisplay();
+                calculateServiceCost();
+            });
         });
 
         $(document).ready(function() {
