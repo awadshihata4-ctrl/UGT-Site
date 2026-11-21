@@ -7,389 +7,115 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+:root{--bg:#0a1020;--ink:#eef3ff;--mu:#9fb0cc;--ln:rgba(255,255,255,.09);--hd:rgba(255,255,255,.05);--h1:#fff;--h1b:#fff;--sub:#f4b740;--btn:#f4b740;--btnt:#1b1400}
+body{background:radial-gradient(900px 420px at 85% -5%,rgba(99,102,241,.28),transparent 65%),radial-gradient(700px 400px at 5% 105%,rgba(14,165,233,.2),transparent 65%),var(--bg);background-attachment:fixed}
+.hd{backdrop-filter:blur(12px)}
+.ver{color:#9fb0cc}
+.card{position:relative;overflow:hidden;border-radius:20px;padding:22px 10px 18px;min-height:156px;justify-content:center;color:#fff;background:linear-gradient(145deg,var(--a),var(--b));box-shadow:0 12px 24px -14px var(--b)}
+.card:before{content:"";position:absolute;top:-40%;right:-30%;width:90%;height:90%;border-radius:50%;background:rgba(255,255,255,.14)}
+.card .ic{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:23px;background:rgba(255,255,255,.2);color:#fff;margin-bottom:13px;backdrop-filter:blur(2px)}
+.card b{position:relative;font-size:14.5px}
+.card small{position:relative;font-size:12px;color:rgba(255,255,255,.82);margin-top:3px;font-weight:500}
+.card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 34px -12px var(--b)}
+.card:nth-child(1){--a:#6366f1;--b:#8b5cf6}.card:nth-child(2){--a:#0ea5e9;--b:#2563eb}.card:nth-child(3){--a:#14b8a6;--b:#0891b2}
+.card:nth-child(4){--a:#f97316;--b:#ef4444}.card:nth-child(5){--a:#f59e0b;--b:#ea580c}.card:nth-child(6){--a:#ec4899;--b:#e11d48}
+.card:nth-child(7){--a:#8b5cf6;--b:#6366f1}.card:nth-child(8){--a:#38bdf8;--b:#6366f1}.card:nth-child(9){--a:#22c55e;--b:#0d9488}
+.card:nth-child(10){--a:#3b82f6;--b:#1d4ed8}.card:nth-child(11){--a:#a855f7;--b:#ec4899}.card:nth-child(12){--a:#10b981;--b:#059669}
+.card:nth-child(13){--a:#06b6d4;--b:#3b82f6}.card:nth-child(14){--a:#eab308;--b:#f59e0b}
+.note{background:var(--hd);border:1px solid var(--ln);border-right:5px solid #f4b740;border-radius:18px;padding:18px 20px;backdrop-filter:blur(8px)}
+.ni{background:rgba(244,183,64,.16);color:#f4b740}
+.frame{border-color:var(--ln)}
 
-    body {
-        font-family: 'Cairo', sans-serif;
-        background: linear-gradient(145deg, #e8f4f8 0%, #d9eaf0 100%);
-        min-height: 100vh;
-        padding: 24px;
-    }
-
-    .dashboard {
-        max-width: 1600px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 44px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-    }
-
-    .header {
-        background: linear-gradient(105deg, #2c7da0 0%, #3fa7c9 100%);
-        padding: 18px 36px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .logo-area {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-    }
-    .logo-img {
-        width: 60px;
-        height: 60px;
-        background: white;
-        border-radius: 18px;
-        padding: 8px;
-        object-fit: contain;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-    }
-    .logo-text h1 {
-        font-size: 26px;
-        font-weight: 800;
-        color: white;
-        letter-spacing: -0.3px;
-    }
-    .logo-text p {
-        font-size: 13px;
-        color: #ffdea4;
-        font-weight: 600;
-        margin-top: 4px;
-    }
-
-    .top-actions {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-    .back-home-btn {
-        background: rgba(255,255,255,0.18);
-        border: 1px solid rgba(255,255,255,0.3);
-        padding: 10px 22px;
-        border-radius: 60px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.25s ease;
-        color: white;
-        font-family: 'Cairo', sans-serif;
-        backdrop-filter: blur(4px);
-    }
-    .back-home-btn:hover {
-        background: #ffb347;
-        color: #1e2a3e;
-        border-color: #ffb347;
-        transform: translateY(-2px);
-    }
-    .version-badge {
-        background: rgba(255,255,255,0.15);
-        padding: 8px 22px;
-        border-radius: 60px;
-        color: #fff2e0;
-        font-weight: 600;
-        font-size: 13px;
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .main-content {
-        padding: 36px;
-    }
-
-    .unified-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        gap: 22px;
-        margin-bottom: 40px;
-    }
-    
-    .premium-card {
-        background: #ffffff;
-        border-radius: 28px;
-        padding: 24px 16px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 180px;
-    }
-    .premium-card:nth-child(1) { border-top: 4px solid #FFB347; }
-    .premium-card:nth-child(2) { border-top: 4px solid #6C63FF; }
-    .premium-card:nth-child(3) { border-top: 4px solid #4CAF50; }
-    .premium-card:nth-child(4) { border-top: 4px solid #9C27B0; }
-    .premium-card:nth-child(5) { border-top: 4px solid #FF6B6B; }
-    .premium-card:nth-child(6) { border-top: 4px solid #20B2AA; }
-    .premium-card:nth-child(7) { border-top: 4px solid #FF8C42; }
-    .premium-card:nth-child(8) { border-top: 4px solid #8855FF; }
-    .premium-card:nth-child(9) { border-top: 4px solid #E91E63; }
-    .premium-card:nth-child(10) { border-top: 4px solid #00ACC1; }
-    .premium-card:nth-child(11) { border-top: 4px solid #FFA000; }
-    .premium-card:nth-child(12) { border-top: 4px solid #8BC34A; }
-    .premium-card:nth-child(13) { border-top: 4px solid #F06292; }
-    .premium-card:nth-child(14) { border-top: 4px solid #5C6BC0; }
-    .premium-card:nth-child(15) { border-top: 4px solid #FF7043; }
-    .premium-card:nth-child(16) { border-top: 4px solid #26A69A; }
-    .premium-card:nth-child(17) { border-top: 4px solid #D32F2F; }
-    .premium-card:nth-child(18) { border-top: 4px solid #00796B; }
-
-    .premium-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
-        border-color: transparent;
-    }
-    .card-icon {
-        font-size: 46px;
-        margin-bottom: 15px;
-        display: inline-block;
-        transition: 0.2s;
-    }
-    .premium-card:nth-child(1) .card-icon { color: #FFB347; }
-    .premium-card:nth-child(2) .card-icon { color: #6C63FF; }
-    .premium-card:nth-child(3) .card-icon { color: #4CAF50; }
-    .premium-card:nth-child(4) .card-icon { color: #9C27B0; }
-    .premium-card:nth-child(5) .card-icon { color: #FF6B6B; }
-    .premium-card:nth-child(6) .card-icon { color: #20B2AA; }
-    .premium-card:nth-child(7) .card-icon { color: #FF8C42; }
-    .premium-card:nth-child(8) .card-icon { color: #8855FF; }
-    .premium-card:nth-child(9) .card-icon { color: #E91E63; }
-    .premium-card:nth-child(10) .card-icon { color: #00ACC1; }
-    .premium-card:nth-child(11) .card-icon { color: #FFA000; }
-    .premium-card:nth-child(12) .card-icon { color: #8BC34A; }
-    .premium-card:nth-child(13) .card-icon { color: #F06292; }
-    .premium-card:nth-child(14) .card-icon { color: #5C6BC0; }
-    .premium-card:nth-child(15) .card-icon { color: #FF7043; }
-    .premium-card:nth-child(16) .card-icon { color: #26A69A; }
-    .premium-card:nth-child(17) .card-icon { color: #D32F2F; }
-    .premium-card:nth-child(18) .card-icon { color: #00796B; }
-
-    .premium-card:hover .card-icon {
-        transform: scale(1.08);
-    }
-    .card-title {
-        font-weight: 800;
-        font-size: 17px;
-        color: #1e2a3e;
-        margin-top: 6px;
-        line-height: 1.4;
-        word-break: break-word;
-        width: 100%;
-    }
-    .card-sub {
-        font-size: 12px;
-        color: #7f8c8d;
-        margin-top: 6px;
-        font-weight: 500;
-        line-height: 1.4;
-    }
-
-    .premium-card.long-title .card-title {
-        font-size: 14px;
-        line-height: 1.35;
-        margin-top: 4px;
-    }
-    .premium-card.long-title .card-sub {
-        font-size: 11px;
-    }
-
-    .pro-instructions {
-        background: #fefcf5;
-        border-radius: 36px;
-        padding: 32px;
-        margin-top: 15px;
-        border: 1px solid #fce4c1;
-        box-shadow: 0 10px 25px -8px rgba(0,0,0,0.05);
-    }
-    .pro-instructions h3 {
-        font-size: 24px;
-        font-weight: 800;
-        color: #c97e00;
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .instruction-row {
-        background: white;
-        border-radius: 20px;
-        padding: 18px 24px;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: flex-start;
-        gap: 18px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        transition: 0.2s;
-        border-right: 6px solid;
-    }
-    .instruction-row:nth-child(1) { border-right-color: #FF6B6B; }
-    .instruction-row:nth-child(2) { border-right-color: #4CAF50; }
-    .instruction-row:nth-child(3) { border-right-color: #FFB347; }
-    .instruction-row:nth-child(4) { border-right-color: #6C63FF; }
-
-    .instruction-row:hover {
-        transform: translateX(-5px);
-        background: #fffaf2;
-    }
-    .ins-icon {
-        font-size: 28px;
-        min-width: 50px;
-        text-align: center;
-    }
-    .ins-text strong {
-        display: block;
-        font-size: 16px;
-        color: #2d3748;
-        margin-bottom: 6px;
-    }
-    .ins-text p {
-        color: #5a6c7e;
-        line-height: 1.65;
-        font-size: 14px;
-    }
-
-    .iframe-modern {
-        width: 100%;
-        min-height: 70vh;
-        border: none;
-        border-radius: 28px;
-        background: #fefefe;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    }
-
-    @media (max-width: 768px) {
-        .main-content { padding: 20px; }
-        .unified-grid { gap: 14px; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
-        .premium-card { padding: 18px 10px; min-height: 160px; }
-        .card-icon { font-size: 34px; }
-        .card-title { font-size: 13px; }
-        .premium-card.long-title .card-title { font-size: 12px; }
-        .instruction-row { flex-direction: column; gap: 8px; }
-        .header { padding: 15px 20px; }
-        .top-actions { margin-top: 5px; }
-        .back-home-btn { padding: 6px 16px; font-size: 12px; }
-        .version-badge { padding: 6px 16px; font-size: 11px; }
-    }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;min-height:100vh;color:var(--ink);background:var(--bg)}
+.wrap{max-width:1240px;margin:0 auto;padding:22px}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 22px;border-radius:20px;background:var(--hd);border:1px solid var(--ln);margin-bottom:26px}
+.lg{display:flex;align-items:center;gap:14px}
+.lg img{width:50px;height:50px;border-radius:14px;background:#fff;padding:6px;object-fit:contain;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.lg h1{font-size:20px;font-weight:800;color:var(--h1);line-height:1.3}
+.lg p{font-size:12.5px;font-weight:600;color:var(--sub);margin-top:1px}
+.ac{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.back{display:flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:12px;border:0;cursor:pointer;font:700 14px 'Cairo',sans-serif;background:var(--btn);color:var(--btnt);transition:.2s}
+.back:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.ver{font-size:12px;font-weight:600;color:var(--sub);display:flex;align-items:center;gap:7px;padding:0 6px}
+.ver i{color:#f4b740}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}
+.card{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;text-decoration:none;transition:transform .22s,box-shadow .22s,border-color .22s}
+.card b{font-weight:800;line-height:1.45}
+.card:focus-visible{outline:3px solid #f4b740;outline-offset:3px}
+.sec{margin-top:34px}
+.sec h2{font-size:18px;font-weight:800;margin-bottom:14px;color:var(--h1b);display:flex;align-items:center;gap:10px}
+.sec h2:before{content:"";width:5px;height:22px;border-radius:5px;background:#f4b740}
+.notes{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.note{display:flex;gap:14px;align-items:flex-start}
+.note:first-child{grid-column:1/-1}
+.ni{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex-shrink:0;font-size:17px}
+.note strong{display:block;font-size:15px;margin-bottom:4px}
+.note p{font-size:13.5px;line-height:1.8;color:var(--mu)}
+.frame{width:100%;height:calc(100vh - 150px);min-height:520px;border:1px solid var(--ln);border-radius:18px;background:#fff}
+@media(max-width:1180px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){.wrap{padding:12px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.notes{grid-template-columns:1fr}.hd{padding:12px 16px}.lg h1{font-size:17px}.back{padding:0 14px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-
-<div class="dashboard" id="dashboardRoot">
-    <div class="header">
-        <div class="logo-area">
-            <img src="https://unionaire.com/ct/unionaire.png" alt="UGT" class="logo-img" onerror="this.src='https://via.placeholder.com/60?text=UGT'">
-            <div class="logo-text">
-                <h1>UGT Call Center Dashboard</h1>
-                <p>منصة الخدمات المتكاملة | أداء احترافي</p>
-            </div>
-        </div>
-        <div class="top-actions">
-            <button class="back-home-btn" id="backToHomeBtn">
-                <i class="fas fa-home"></i> العودة للقائمة الرئيسية
-            </button>
-            <div class="version-badge">
-                <i class="fas fa-chart-line"></i> الإصدار الاحترافي-Awad shihata v4
-            </div>
-        </div>
+<div class="wrap">
+  <header class="hd">
+    <div class="lg">
+      <img src="https://unionaire.com/ct/unionaire.png" alt="UGT" onerror="this.src='https://via.placeholder.com/60?text=UGT'">
+      <div><h1>UGT Call Center Dashboard</h1><p>منصة الخدمات المتكاملة | أداء احترافي</p></div>
     </div>
-
-    <div class="main-content" id="dynamicContent"></div>
+    <div class="ac">
+      <span class="ver"><i class="fas fa-chart-line"></i> الإصدار الاحترافي-Awad shihata v4</span>
+      <button class="back" id="backToHomeBtn"><i class="fas fa-home"></i> العودة للقائمة الرئيسية</button>
+    </div>
+  </header>
+  <main id="dynamicContent"></main>
 </div>
-
+<template id="homeTpl">
+  <div class="grid">
+<a class="card" data-page="sms.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-comment-dots"></i></span><b>SMS</b><small>إرسال رسائل</small></a>
+<a class="card" data-page="model-serial.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-barcode"></i></span><b>الموديل والسريال</b><small>بحث متقدم</small></a>
+<a class="card" data-page="visit-fees.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-money-bill-wave"></i></span><b>رسوم الزيارة</b><small>الأسعار والتكاليف</small></a>
+<a class="card" data-page="faults.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-exclamation-triangle"></i></span><b>اختيار الأعطال</b><small>تشخيص دقيق</small></a>
+<a class="card" data-page="electric-heater.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-fire"></i></span><b>سخان كهرباء</b><small>استبدال وإصلاح</small></a>
+<a class="card" data-page="misuse.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-ban"></i></span><b>سوء الاستخدام</b><small>سياسات الضمان</small></a>
+<a class="card" data-page="Hande -UNsales-compalin.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-clipboard-list"></i></span><b>Handling &amp; UN Sales</b><small>متابعة الشكاوى</small></a>
+<a class="card" data-page="fridges.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-snowflake"></i></span><b>حجز الثلاجات</b><small>Troubleshooting</small></a>
+<a class="card" data-page="spare-parts.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-cogs"></i></span><b>فروع قطع الغيار</b><small>توفير القطع</small></a>
+<a class="card" data-page="service-centers.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-building"></i></span><b>مراكز الخدمة</b><small>المعتمدة</small></a>
+<a class="card" data-page="3cx-odoo.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-headset"></i></span><b>3CX &amp; Odoo</b><small>روابط النظام</small></a>
+<a class="card" data-page="whatsapp-scripts.html" role="button" tabindex="0"><span class="ic"><i class="fab fa-whatsapp"></i></span><b>WhatsApp Scripts</b><small>نصوص جاهزة</small></a>
+<a class="card" data-page="unionair-script.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-phone-volume"></i></span><b>Call-script Unionaire</b><small>سكريبت المكالمات</small></a>
+<a class="card" data-page="employee-guidelines.html" role="button" tabindex="0"><span class="ic"><i class="fas fa-info-circle"></i></span><b>تعليمات هامة للكول سنتر</b><small>إرشادات الموظفين</small></a>
+  </div>
+  <section class="sec"><h2>توجيهات وإرشادات للموظفين</h2>
+    <div class="notes">
+<div class="note"><span class="ni"><i class="fas fa-exclamation-triangle"></i></span><div><strong>مشاكل الشيكات والرصيد</strong><p>شيك غير مطابق أو إمضاء: يتم إبلاغ العميل بالتواصل مع الفرع الرئيسي (18757) لدعم الشيك. • لا يوجد رصيد: يعني حد السحب اليومي انتهى، يُفضل التوجه في اليوم التالي باكراً أو إيداع الشيك بحساب العميل.</p></div></div>
+<div class="note"><span class="ni"><i class="fas fa-snowflake"></i></span><div><strong>أرفف الثلاجات (مستندات 400 أو 420)</strong><p>يأتي معها رف واحد للفريزر + رفين في الكابينة. إذا رغب العميل في الشراء: 350جنيه رسوم + 250 جنيه ثمن الرف، أو الشراء من منافذ قطع غيار UGT.</p></div></div>
+<div class="note"><span class="ni"><i class="fas fa-tools"></i></span><div><strong>كابولي التكييف</strong><p>سعره 870 جنيهاً ولا يشمل التركيب. أسعار التركيب لا تشمل الكابولي.</p></div></div>
+<div class="note"><span class="ni"><i class="fas fa-soap"></i></span><div><strong>غسيل التكييف بالماكينة</strong><p>يتم تحصيل 650 جنيهاً + فرق المسافة حسب المحافظة.</p></div></div>
+    </div>
+  </section>
+</template>
 <script>
-    const pages = {
-        main: {
-            title: "الرئيسية",
-            content: `
-                <div class="unified-grid">
-                    <div class="premium-card" data-page="sms.html"><div class="card-icon">💬</div><div class="card-title">SMS</div><div class="card-sub">إرسال رسائل</div></div>
-                    <div class="premium-card" data-page="model-serial.html"><div class="card-icon">🔍</div><div class="card-title">الموديل والسريال</div><div class="card-sub">بحث متقدم</div></div>
-                    <div class="premium-card" data-page="visit-fees.html"><div class="card-icon">💰</div><div class="card-title">رسوم الزيارة</div><div class="card-sub">الأسعار والتكاليف</div></div>
-                      <div class="premium-card" data-page="faults.html"><div class="card-icon">⚠️</div><div class="card-title">اختيار الأعطال</div><div class="card-sub">تشخيص دقيق</div></div>
-                    <div class="premium-card" data-page="electric-heater.html"><div class="card-icon">🔥</div><div class="card-title">سخان كهرباء</div><div class="card-sub">استبدال وإصلاح</div></div>
-                    <div class="premium-card" data-page="misuse.html"><div class="card-icon">❌</div><div class="card-title">سوء الاستخدام</div><div class="card-sub">سياسات الضمان</div></div>
-                    <div class="premium-card" data-page="Hande -UNsales-compalin.html"><div class="card-icon">📋</div><div class="card-title">Handling & UN Sales</div><div class="card-sub">متابعة الشكاوى</div></div>
-                    <div class="premium-card" data-page="fridges.html"><div class="card-icon">❄️</div><div class="card-title">حجز الثلاجات</div><div class="card-sub">Troubleshooting</div></div>
-                    <div class="premium-card" data-page="spare-parts.html"><div class="card-icon">⚙️</div><div class="card-title">فروع قطع الغيار</div><div class="card-sub">توفير القطع</div></div>
-                    <div class="premium-card" data-page="service-centers.html"><div class="card-icon">🏢</div><div class="card-title">مراكز الخدمة</div><div class="card-sub">المعتمدة</div></div>
-                    <div class="premium-card" data-page="3cx-odoo.html"><div class="card-icon">💻</div><div class="card-title">3CX & Odoo</div><div class="card-sub">روابط النظام</div></div>
-                    <div class="premium-card" data-page="whatsapp-scripts.html"><div class="card-icon">📱</div><div class="card-title">WhatsApp Scripts</div><div class="card-sub">نصوص جاهزة</div></div>
-                    <div class="premium-card" data-page="unionair-script.html"><div class="card-icon">📞</div><div class="card-title">Call-script Unionaire</div><div class="card-sub">سكريبت المكالمات</div></div>
-                    <div class="premium-card" data-page="employee-guidelines.html"><div class="card-icon">📌</div><div class="card-title">تعليمات هامة للكول سنتر</div><div class="card-sub">إرشادات الموظفين</div></div>
-                </div>
-
-                <div class="pro-instructions">
-                    <h3><i class="fas fa-clipboard-list"></i> توجيهات وإرشادات للموظفين</h3>
-                    <div class="instruction-row"><div class="ins-icon">⚠️</div><div class="ins-text"><strong>مشاكل الشيكات والرصيد</strong><p>شيك غير مطابق أو إمضاء: يتم إبلاغ العميل بالتواصل مع الفرع الرئيسي (18757) لدعم الشيك. • لا يوجد رصيد: يعني حد السحب اليومي انتهى، يُفضل التوجه في اليوم التالي باكراً أو إيداع الشيك بحساب العميل.</p></div></div>
-                    <div class="instruction-row"><div class="ins-icon">❄️</div><div class="ins-text"><strong>أرفف الثلاجات (مستندات 400 أو 420)</strong><p>يأتي معها رف واحد للفريزر + رفين في الكابينة. إذا رغب العميل في الشراء: 350جنيه رسوم + 250 جنيه ثمن الرف، أو الشراء من منافذ قطع غيار UGT.</p></div></div>
-                    <div class="instruction-row"><div class="ins-icon">🔧</div><div class="ins-text"><strong>كابولي التكييف</strong><p>سعره 870 جنيهاً ولا يشمل التركيب. أسعار التركيب لا تشمل الكابولي.</p></div></div>
-                    <div class="instruction-row"><div class="ins-icon">🧼</div><div class="ins-text"><strong>غسيل التكييف بالماكينة</strong><p>يتم تحصيل 650 جنيهاً + فرق المسافة حسب المحافظة.</p></div></div>
-                </div>
-            `
-        },
-        "sms.html": { title: "SMS - رسائل", url: "sms.html" },
-        "model-serial.html": { title: "الموديل والسريال", url: "model-serial.html" },
-        "visit-fees.html": { title: "رسوم الزيارة", url: "visit-fees.html" },
-        "warranty-install.html": { title: "تركيب تكييف بضمان ورسوم خاصة", url: "warranty-install.html" },
-        "ac-install.html": { title: "فك وتركيب التكييف", url: "ac-install.html" },
-        "faults.html": { title: "اختيار الأعطال", url: "faults.html" },
-        "electric-heater.html": { title: "سخان كهرباء", url: "electric-heater.html" },
-        "misuse.html": { title: "سوء الاستخدام", url: "misuse.html" },
-        "Hande -UNsales-compalin.html": { title: "Handling & UN Sales", url: "Hande -UNsales-compalin.html" },
-        "fridges.html": { title: "حجز الثلاجات", url: "fridges.html" },
-        "spare-parts.html": { title: "فروع قطع الغيار", url: "spare-parts.html" },
-        "service-centers.html": { title: "مراكز الخدمة", url: "service-centers.html" },
-        "3cx-odoo.html": { title: "3CX & Odoo", url: "3cx-odoo.html" },
-        "whatsapp-scripts.html": { title: "WhatsApp Scripts", url: "whatsapp-scripts.html" },
-        "unionair-script.html": { title: "Call-script Unionaire", url: "unionair-script.html" },
-        "employee-guidelines.html": { title: "تعليمات هامة للكول سنتر", url: "employee-guidelines.html" },
-        "followup.html": { title: "Follow UP", url: "follow up .html" }
-    };
-
-    const contentDiv = document.getElementById('dynamicContent');
-    const backBtn = document.getElementById('backToHomeBtn');
-
-    function loadPage(pageId) {
-        if (pageId === 'main') {
-            contentDiv.innerHTML = pages.main.content;
-            attachCardEvents();
-            return;
-        }
-        const page = pages[pageId];
-        if (!page) return loadPage('main');
-        
-        contentDiv.innerHTML = `<iframe src="${page.url}" class="iframe-modern" title="${page.title}"></iframe>`;
-    }
-
-    function attachCardEvents() {
-        document.querySelectorAll('.premium-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const target = card.getAttribute('data-page');
-                if (target && pages[target]) loadPage(target);
-                else alert('الصفحة غير متوفرة حالياً');
-            });
-        });
-    }
-
-    backBtn.addEventListener('click', () => loadPage('main'));
-    loadPage('main');
+const urls={"sms.html":"sms.html","model-serial.html":"model-serial.html","visit-fees.html":"visit-fees.html","faults.html":"faults.html","electric-heater.html":"electric-heater.html","misuse.html":"misuse.html","Hande -UNsales-compalin.html":"Hande -UNsales-compalin.html","fridges.html":"fridges.html","spare-parts.html":"spare-parts.html","service-centers.html":"service-centers.html","3cx-odoo.html":"3cx-odoo.html","whatsapp-scripts.html":"whatsapp-scripts.html","unionair-script.html":"unionair-script.html","employee-guidelines.html":"employee-guidelines.html"};
+const content=document.getElementById('dynamicContent');
+const home=document.getElementById('homeTpl').innerHTML;
+function loadPage(id){
+  window.scrollTo(0,0);
+  if(id==='main'||!urls[id]){content.innerHTML=home;bind();return;}
+  content.innerHTML='<iframe src="'+urls[id]+'" class="frame" title="'+urls[id]+'"></iframe>';
+}
+function bind(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const go=()=>{const t=c.getAttribute('data-page');if(urls[t])loadPage(t);else alert('الصفحة غير متوفرة حالياً');};
+    c.addEventListener('click',go);
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  });
+}
+document.getElementById('backToHomeBtn').addEventListener('click',()=>loadPage('main'));
+loadPage('main');
 </script>
-
 </body>
 </html>
