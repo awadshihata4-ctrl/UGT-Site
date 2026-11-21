@@ -4,115 +4,113 @@
 <meta charset="UTF-8">
 <title>مراكز الخدمة</title>
 
+<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* كل الألوان من عائلة واحدة: تيل + حيادي مائل للتيل + لون دافئ واحد للتمييز */
-  --bg:#edf3f2; --surface:#ffffff; --surface-2:#f4f9f8;
-  --ink:#143230; --muted:#5a7572; --line:#d8e5e3;
-  --primary:#0e6b64; --primary-d:#0a4f4a; --primary-soft:#dcefec;
-  --th-bg:#0a4f4a; --th-ink:#e6f5f3;
-  --ut:#0a5c55; --ut-soft:#cdeae5;
-  --tv:#7a4a06; --tv-soft:#f8e6c2;
-  --danger:#a8433b; --danger-soft:#f9e4e1;
-  --shadow:0 1px 2px rgba(10,60,56,.06),0 8px 24px rgba(10,60,56,.08);
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0c1918; --surface:#132422; --surface-2:#172b29;
-    --ink:#e3f1ef; --muted:#93b1ad; --line:#24403d;
-    --primary:#4fc3b7; --primary-d:#7ad6cc; --primary-soft:#173a37;
-    --th-bg:#0a3a36; --th-ink:#d4eeea;
-    --ut:#7ad6cc; --ut-soft:#17413d;
-    --tv:#f0c978; --tv-soft:#40320f;
-    --danger:#f09a92; --danger-soft:#43211f;
-    --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
-  }
+  /* نفس ألوان لوحة UGT: خلفية كحلية سوداء + لوحات داكنة + ذهبي للتمييز */
+  --bg:#090e1a; --panel:#111827; --panel-2:#0d1424; --line:#1f2b40;
+  --ink:#f3f6fb; --muted:#8e9db4;
+  --accent:#f6b93b; --accent-d:#e2a22a; --on-accent:#1b1405;
+  --blue:linear-gradient(135deg,#4c8dff,#2f63e0);
+  --orange:linear-gradient(135deg,#ff9a3c,#f0601f);
+  --teal:linear-gradient(135deg,#1fc7b0,#0e9a8a);
+  --rose:linear-gradient(135deg,#f0508a,#d92a52);
+  --shadow:0 10px 30px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box}
 body{
-  margin:0; padding:28px 20px 40px;
+  margin:0; padding:26px 20px 40px;
   font-family:"Cairo","Segoe UI",Tahoma,Arial,sans-serif;
   background:var(--bg); color:var(--ink); line-height:1.6;
 }
 .page{max-width:1280px; margin:0 auto}
 
-.head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px}
-h2{margin:0; font-size:26px; font-weight:700; color:var(--primary-d)}
-.count{background:var(--primary-soft); color:var(--primary-d); font-size:13px; font-weight:600; padding:3px 14px; border-radius:999px}
+/* الهيدر */
+.head{
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  background:var(--panel); border:1px solid var(--line); border-radius:20px;
+  padding:16px 22px; margin-bottom:20px; box-shadow:var(--shadow);
+}
+.brand{display:flex; align-items:center; gap:14px}
+.logo{
+  width:50px; height:50px; border-radius:14px; background:var(--blue);
+  display:grid; place-items:center; font-size:24px; box-shadow:0 6px 18px rgba(47,99,224,.35);
+}
+h2{margin:0; font-size:22px; font-weight:700; line-height:1.3}
+.sub{color:var(--accent); font-size:13px}
+.head-end{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.count{color:var(--accent); font-size:13px; font-weight:600}
+.back{
+  display:inline-block; padding:10px 20px; border-radius:12px; text-decoration:none;
+  background:var(--accent); color:var(--on-accent); font-weight:700; font-size:14px;
+  transition:background .15s, transform .1s;
+}
+.back:hover{background:var(--accent-d)}
 
+/* التحكم */
 .controls{
   display:flex; gap:12px; flex-wrap:wrap; align-items:center;
-  background:var(--surface); border:1px solid var(--line); border-radius:14px;
-  padding:14px; margin-bottom:16px; box-shadow:var(--shadow);
+  background:var(--panel); border:1px solid var(--line); border-radius:16px;
+  padding:14px; margin-bottom:16px;
 }
 select,button,input{font-family:inherit; font-size:14px}
 select{
-  min-width:170px; padding:9px 12px; border-radius:10px;
-  border:1px solid var(--line); background:var(--surface-2); color:var(--ink);
+  min-width:180px; padding:10px 12px; border-radius:12px;
+  border:1px solid var(--line); background:var(--panel-2); color:var(--ink);
 }
-select:hover{border-color:var(--primary)}
-:focus-visible{outline:2px solid var(--primary); outline-offset:2px}
+select:hover,select:focus{border-color:var(--accent)}
+select option{background:var(--panel); color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
-button{
-  cursor:pointer; border:none; border-radius:10px; font-weight:600;
-  transition:background .15s, transform .1s;
-}
+button{cursor:pointer; border:none; border-radius:12px; font-weight:700; transition:filter .15s, transform .1s}
+button:hover{filter:brightness(1.1)}
 button:active{transform:scale(.97)}
-.add{
-  margin-inline-start:auto; padding:9px 18px;
-  background:var(--primary); color:#fff;
-}
-@media (prefers-color-scheme: dark){.add{color:#06201e}}
-.add:hover{background:var(--primary-d)}
+.add{margin-inline-start:auto; padding:10px 20px; background:var(--accent); color:var(--on-accent)}
 
+/* الجدول */
 .table-wrap{
-  background:var(--surface); border:1px solid var(--line); border-radius:14px;
-  box-shadow:var(--shadow); overflow:auto; max-height:72vh;
+  background:var(--panel); border:1px solid var(--line); border-radius:18px;
+  border-inline-start:4px solid var(--accent);
+  box-shadow:var(--shadow); overflow:auto; max-height:70vh;
 }
 table{width:100%; border-collapse:separate; border-spacing:0; min-width:860px}
-th,td{padding:12px 14px; text-align:right; border-bottom:1px solid var(--line); font-size:14px}
+th,td{padding:13px 14px; text-align:right; border-bottom:1px solid var(--line); font-size:14px}
 th{
   position:sticky; top:0; z-index:1;
-  background:var(--th-bg); color:var(--th-ink);
-  font-weight:600; font-size:13px; white-space:nowrap; border-bottom:none;
+  background:var(--panel-2); color:var(--accent);
+  font-weight:700; font-size:13px; white-space:nowrap;
 }
-tbody tr:nth-child(even){background:var(--surface-2)}
-tbody tr:hover{background:var(--primary-soft)}
-select:focus{border-color:var(--primary)}
+tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+tbody tr:hover{background:rgba(246,185,59,.07)}
 tbody tr:last-child td{border-bottom:none}
-td.name{font-weight:600; color:var(--primary-d)}
+td.name{font-weight:700}
 td.addr{color:var(--muted); min-width:240px}
 td.phone{direction:ltr; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
 td.actions{white-space:nowrap}
 
-.badge{
-  display:inline-block; padding:2px 12px; border-radius:999px;
-  font-size:12px; font-weight:700;
-}
-.badge.UT{background:var(--ut-soft); color:var(--ut)}
-.badge.TV{background:var(--tv-soft); color:var(--tv)}
+.badge{display:inline-block; padding:2px 14px; border-radius:999px; font-size:12px; font-weight:700; color:#fff}
+.badge.UT{background:var(--blue)}
+.badge.TV{background:var(--orange)}
 
-.action-btn{padding:5px 12px; font-size:12px; margin-inline-end:6px}
-.copy{background:var(--primary-soft); color:var(--primary)}
-.copy:hover{background:var(--primary); color:var(--surface)}
-.delete{background:var(--danger-soft); color:var(--danger)}
-.delete:hover{background:var(--danger); color:var(--surface)}
+.action-btn{padding:5px 14px; font-size:12px; margin-inline-end:6px; color:#fff}
+.copy{background:var(--teal)}
+.delete{background:var(--rose)}
 
 .empty{padding:40px; text-align:center; color:var(--muted)}
 
 .toast{
   position:fixed; bottom:24px; left:50%; transform:translate(-50%,20px);
-  background:var(--ink); color:var(--bg); padding:10px 20px; border-radius:999px;
-  font-size:14px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+  background:var(--accent); color:var(--on-accent); padding:10px 22px; border-radius:999px;
+  font-size:14px; font-weight:700; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
 }
 .toast.show{opacity:1; transform:translate(-50%,0)}
 
 @media (max-width:600px){
-  body{padding:16px 12px 32px}
-  h2{font-size:22px}
+  body{padding:14px 10px 32px}
+  .head{padding:14px}
   select{flex:1 1 140px; min-width:0}
   .add{flex:1 1 100%; margin:0}
 }
@@ -125,8 +123,17 @@ td.actions{white-space:nowrap}
 <div class="page">
 
 <div class="head">
-    <h2>📍 مراكز الخدمة</h2>
-    <span class="count" id="count"></span>
+    <div class="brand">
+        <div class="logo">🏢</div>
+        <div>
+            <h2>مراكز الخدمة</h2>
+            <div class="sub">المراكز المعتمدة | بحث وتصفية سريعة</div>
+        </div>
+    </div>
+    <div class="head-end">
+        <span class="count" id="count"></span>
+        <a class="back" href="index.html">العودة للقائمة الرئيسية</a>
+    </div>
 </div>
 
 <div class="controls">
