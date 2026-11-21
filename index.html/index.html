@@ -55,6 +55,17 @@ body{font-family:'Cairo',sans-serif;min-height:100vh;color:var(--ink);background
 .frame{width:100%;height:calc(100vh - 150px);min-height:520px;border:1px solid var(--ln);border-radius:18px;background:#fff}
 @media(max-width:1180px){.grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:760px){.wrap{padding:12px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.notes{grid-template-columns:1fr}.hd{padding:12px 16px}.lg h1{font-size:17px}.back{padding:0 14px;font-size:13px}}
+
+.fs{display:none;background:rgba(255,255,255,.12);color:#fff}
+body.view .fs{display:flex}
+body.view .wrap{max-width:none;height:100vh;height:100dvh;display:flex;flex-direction:column;padding:10px 14px}
+body.view .hd{padding:8px 16px;margin-bottom:10px;border-radius:16px}
+body.view .lg img{width:38px;height:38px;border-radius:11px}
+body.view .lg h1{font-size:16px}
+body.view .lg p,body.view .ver{display:none}
+body.view .back{height:38px;padding:0 16px}
+body.view main{flex:1;min-height:0}
+body.view .frame{height:100%;min-height:0;border-radius:16px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -63,10 +74,11 @@ body{font-family:'Cairo',sans-serif;min-height:100vh;color:var(--ink);background
   <header class="hd">
     <div class="lg">
       <img src="https://unionaire.com/ct/unionaire.png" alt="UGT" onerror="this.src='https://via.placeholder.com/60?text=UGT'">
-      <div><h1>UGT Call Center Dashboard</h1><p>منصة الخدمات المتكاملة | أداء احترافي</p></div>
+      <div><h1 id="pageTitle">UGT Call Center Dashboard</h1><p>منصة الخدمات المتكاملة | أداء احترافي</p></div>
     </div>
     <div class="ac">
       <span class="ver"><i class="fas fa-chart-line"></i> الإصدار الاحترافي-Awad shihata v4</span>
+      <button class="back fs" id="fsBtn"><i class="fas fa-expand"></i> ملء الشاشة</button>
       <button class="back" id="backToHomeBtn"><i class="fas fa-home"></i> العودة للقائمة الرئيسية</button>
     </div>
   </header>
@@ -102,11 +114,16 @@ body{font-family:'Cairo',sans-serif;min-height:100vh;color:var(--ink);background
 const urls={"sms.html":"sms.html","model-serial.html":"model-serial.html","visit-fees.html":"visit-fees.html","faults.html":"faults.html","electric-heater.html":"electric-heater.html","misuse.html":"misuse.html","Hande -UNsales-compalin.html":"Hande -UNsales-compalin.html","fridges.html":"fridges.html","spare-parts.html":"spare-parts.html","service-centers.html":"service-centers.html","3cx-odoo.html":"3cx-odoo.html","whatsapp-scripts.html":"whatsapp-scripts.html","unionair-script.html":"unionair-script.html","employee-guidelines.html":"employee-guidelines.html"};
 const content=document.getElementById('dynamicContent');
 const home=document.getElementById('homeTpl').innerHTML;
+const titles={};
+document.getElementById('homeTpl').content.querySelectorAll('.card').forEach(c=>titles[c.dataset.page]=c.querySelector('b').textContent);
+const pt=document.getElementById('pageTitle'),mainTitle=pt.textContent;
 function loadPage(id){
   window.scrollTo(0,0);
-  if(id==='main'||!urls[id]){content.innerHTML=home;bind();return;}
-  content.innerHTML='<iframe src="'+urls[id]+'" class="frame" title="'+urls[id]+'"></iframe>';
+  if(id==='main'||!urls[id]){document.body.classList.remove('view');pt.textContent=mainTitle;content.innerHTML=home;bind();return;}
+  document.body.classList.add('view');pt.textContent=titles[id]||mainTitle;
+  content.innerHTML='<iframe src="'+urls[id]+'" class="frame" title="'+(titles[id]||'')+'"></iframe>';
 }
+document.getElementById('fsBtn').addEventListener('click',()=>{const f=document.querySelector('.frame');if(f&&f.requestFullscreen)f.requestFullscreen();});
 function bind(){
   document.querySelectorAll('.card').forEach(c=>{
     const go=()=>{const t=c.getAttribute('data-page');if(urls[t])loadPage(t);else alert('الصفحة غير متوفرة حالياً');};
