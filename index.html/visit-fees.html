@@ -15,21 +15,21 @@
 
     <style>
         :root {
-            --blue-dark: #1a3a6e;
-            --blue-mid: #2454a4;
-            --blue-light: #3571be;
-            --green: #1e7e34;
-            --green-dark: #176828;
-            --bg-page: #f0f4f8;
-            --bg-panel: #ffffff;
-            --text-main: #1a2533;
-            --text-muted: #6b7c93;
-            --border: #d1dbe8;
-            --input-bg: #f5f8fc;
-            --input-bg-readonly: #eaf0f8;
+            --blue-dark: #0994b1;
+            --blue-mid: #13b4a8;
+            --blue-light: #13b4a8;
+            --green: #20c062;
+            --green-dark: #0e9784;
+            --bg-page: #0a1020;
+            --bg-panel: #161c2b;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border: #475069;
+            --input-bg: #111a2e;
+            --input-bg-readonly: #1b2540;
             --radius: 8px;
             --radius-sm: 5px;
-            --shadow: 0 2px 10px rgba(26,58,110,0.10);
+            --shadow: 0 2px 14px rgba(0,0,0,0.5);
         }
 
         * { box-sizing: border-box; }
@@ -47,10 +47,10 @@
         }
 
         .ugt-header {
-            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, #2d6fd4 100%);
+            background: linear-gradient(135deg, #6865f2 0%, #119ee9 25%, #13b4a8 50%, #0fb67f 68%, #f4970c 84%, #ef4740 100%);
             padding: 8px 0;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(26,58,110,0.20);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         .ugt-header h1 {
             color: #fff;
@@ -144,12 +144,12 @@
         .ugt-form-group input[readonly],
         .ugt-form-group textarea[readonly] {
             background: var(--input-bg-readonly);
-            color: #3a4a5e;
+            color: #cbd5e1;
         }
         .ugt-form-group input:focus,
         .ugt-form-group select:focus {
             border-color: var(--blue-light);
-            box-shadow: 0 0 0 2px rgba(53,113,190,0.12);
+            box-shadow: 0 0 0 2px rgba(19,180,168,0.25);
         }
 
         .service-type-group {
@@ -175,10 +175,15 @@
         }
         .service-type-group input[type="radio"] { display: none; }
         .service-btn-active {
-            background: var(--blue-mid) !important;
-            border-color: var(--blue-dark) !important;
+            background: linear-gradient(135deg,#13b4a8,#0994b1) !important;
+            border-color: #13b4a8 !important;
             color: #fff !important;
         }
+
+        .service-type-group label:hover { background: #1e2538; }
+        #lbl-addnew.service-btn-active { background: linear-gradient(135deg,#6865f2,#885df6) !important; border-color: #6865f2 !important; }
+        #lbl-relocate.service-btn-active { background: linear-gradient(135deg,#f4970c,#ea5d0c) !important; border-color: #f4970c !important; }
+        #lbl-warranty.service-btn-active { background: linear-gradient(135deg,#20c062,#0e9784) !important; border-color: #20c062 !important; }
 
         .btn-submit { display: none !important; }
 
@@ -188,30 +193,30 @@
             border-radius: var(--radius-sm);
             padding: 5px 8px;
             font-size: 11px;
-            color: #2a5298;
+            color: #5ec8ff;
             font-weight: 700;
             min-height: 26px;
         }
 
         .fee-box {
-            background: #fff8e1;
-            border: 1px solid #f5c518;
+            background: #2e2010;
+            border: 1px solid #f4970c;
             border-radius: var(--radius-sm);
             padding: 6px 8px;
             font-size: 11px;
-            color: #7a5200;
+            color: #ffb84d;
             font-weight: 700;
             min-height: 28px;
             text-align: center;
         }
         .fee-textarea {
-            background: #fff8e1 !important;
-            border-color: #f5c518 !important;
-            color: #7a5200 !important;
+            background: #2e2010 !important;
+            border-color: #f4970c !important;
+            color: #ffb84d !important;
             font-weight: 700 !important;
             width: 100%;
             padding: 5px 8px;
-            border: 1px solid #f5c518;
+            border: 1px solid #f4970c;
             border-radius: var(--radius-sm);
             font-family: 'Almarai', sans-serif;
             font-size: 11px;
@@ -230,13 +235,13 @@
         .current-loc span { font-weight: 700; color: var(--blue-mid); }
 
         #hypermarkets-msg {
-            background: #e8f5e9;
-            border: 1px solid #81c784;
+            background: #0f2a24;
+            border: 1px solid #0fb67f;
             border-radius: var(--radius-sm);
             padding: 6px 8px;
             font-size: 10px;
             line-height: 1.6;
-            color: #1b5e20;
+            color: #3ddba0;
             margin-bottom: 6px;
             max-height: 260px;
             overflow-y: auto;
@@ -255,7 +260,15 @@
             color: var(--text-main) !important;
         }
         .select2-container .select2-selection__arrow { top: 2px !important; }
-        .select2-dropdown { font-size: 11px !important; }
+        .select2-dropdown { font-size: 11px !important; background: #161c2b !important; border: 1px solid #2c313f !important; color: #e2e8f0 !important; }
+        .select2-container--default .select2-search--dropdown .select2-search__field { background: #0f1524 !important; color: #f1f5f9 !important; border: 1px solid #2c313f !important; }
+        .select2-container--default .select2-results__option { background: #161c2b; color: #e2e8f0; }
+        .select2-container--default .select2-results__option--highlighted[aria-selected],
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable { background: #13b4a8 !important; color: #fff !important; }
+        .select2-container--default .select2-results__option[aria-selected=true] { background: #1e2538; }
+        .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #94a3b8 !important; }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b { border-color: #94a3b8 transparent transparent transparent !important; }
+        select option { background: #161c2b; color: #e2e8f0; }
 
         #loadingIndicator {
             text-align: center;
@@ -275,6 +288,88 @@
             .ugt-panel:last-child { flex: 1; max-width: 100%; }
             .ugt-panel-body { overflow-y: visible; }
         }
+
+        /* ===== تحسين الوضوح ===== */
+        .section-label, .current-loc span, #loadingIndicator { color: #4fd1c5 !important; }
+        .ugt-form-group label { color: #e2e8f0 !important; font-size: 11px; }
+        .ugt-form-group input, .ugt-form-group select, .ugt-form-group textarea, .form-control {
+            background-color: #111a2e !important; color: #f8fafc !important;
+            border: 1px solid #475069 !important; font-size: 12px !important;
+        }
+        .ugt-form-group input[readonly], .ugt-form-group textarea[readonly], .form-control[readonly],
+        .form-control[disabled], select[disabled], fieldset[disabled] .form-control {
+            background-color: #1b2540 !important; color: #f8fafc !important; opacity: 1 !important;
+        }
+        .ugt-form-group input:focus, .ugt-form-group select:focus, .form-control:focus {
+            border-color: #13b4a8 !important; box-shadow: 0 0 0 3px rgba(19,180,168,0.35) !important;
+        }
+        ::placeholder { color: #94a3b8 !important; opacity: 1 !important; }
+        select option { background: #161c2b !important; color: #f8fafc !important; }
+        select option:checked { background: #13b4a8 !important; color: #fff !important; }
+
+        .service-type-group label { color: #e2e8f0 !important; border-color: #475069 !important; font-size: 12px; }
+        .service-type-group label:hover { background: #1e2a4a !important; border-color: #13b4a8 !important; }
+        .service-btn-active { color: #fff !important; box-shadow: 0 0 0 2px rgba(255,255,255,0.25); }
+
+        .select2-container--default .select2-selection--single,
+        .select2-container .select2-selection--single { background: #111a2e !important; border: 1px solid #475069 !important; }
+        .select2-container--default.select2-container--focus .select2-selection--single,
+        .select2-container--default.select2-container--open .select2-selection--single { border-color: #13b4a8 !important; }
+        .select2-container--default .select2-selection--single .select2-selection__rendered { color: #f8fafc !important; font-size: 12px !important; }
+        .select2-container--default.select2-container--disabled .select2-selection--single { background: #1b2540 !important; opacity: 1; }
+        .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #94a3b8 !important; }
+        .select2-dropdown { background: #161c2b !important; border: 1px solid #13b4a8 !important; box-shadow: 0 8px 24px rgba(0,0,0,0.6); font-size: 12px !important; }
+        .select2-container--default .select2-results__option { background: #161c2b !important; color: #f8fafc !important; padding: 7px 10px !important; }
+        .select2-container--default .select2-results__option[aria-selected=true] { background: #1d3b4a !important; color: #5eead4 !important; font-weight: 700; }
+        .select2-container--default .select2-results__option--highlighted[aria-selected],
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable,
+        .select2-container--default .select2-results__option:hover { background: #13b4a8 !important; color: #fff !important; }
+        .select2-container--default .select2-results__option[aria-disabled=true] { color: #7f8aa3 !important; }
+        .select2-container--default .select2-results__message { color: #cbd5e1 !important; }
+        .select2-container--default .select2-search--dropdown .select2-search__field { background: #0f1524 !important; color: #f8fafc !important; border: 1px solid #475069 !important; }
+
+        #hypermarkets-msg, #hypermarkets-msg * { color: #6ee7b7 !important; }
+        #hypermarkets-msg { background: #0f2a24 !important; border-color: #0fb67f !important; font-size: 11px; }
+        #hypermarkets-msg input { color: #f8fafc !important; }
+        #hypermarkets-msg #hyper-no-result { color: #ff8a80 !important; }
+        .fee-box, .fee-textarea { color: #ffc86b !important; }
+        a, a:hover, a:focus { color: #5ec8ff; }
+
+        /* ===== وضوح أكتر: خط أكبر وتباين أعلى ===== */
+        body { font-size: 14px !important; color: #ffffff; }
+        .ugt-header h1 { font-size: 19px !important; }
+        .ugt-header p { font-size: 12px !important; color: #fff !important; }
+        .ugt-panel-header { font-size: 14px !important; padding: 9px 14px !important; }
+        .section-label { font-size: 14px !important; color: #5eead4 !important; border-bottom: 2px solid #13b4a8 !important; }
+        .ugt-form-group label { font-size: 13px !important; color: #ffffff !important; font-weight: 800 !important; margin-bottom: 4px !important; }
+        .ugt-form-group { margin-bottom: 10px !important; }
+        .ugt-form-group input, .ugt-form-group select, .ugt-form-group textarea, .form-control {
+            font-size: 14px !important; color: #ffffff !important; background-color: #0c1426 !important;
+            border: 1.5px solid #6b7894 !important; padding: 7px 10px !important; height: auto !important; min-height: 36px;
+        }
+        .warranty-status-field { font-size: 14px !important; padding: 8px 10px !important; color: #7dd3fc !important; border: 1.5px solid #6b7894 !important; }
+        .fee-box, .fee-textarea { font-size: 14px !important; color: #ffd27a !important; border-width: 1.5px !important; }
+        .current-loc { font-size: 13px !important; color: #e2e8f0 !important; }
+        .service-type-group label { font-size: 13px !important; padding: 9px 6px !important; color: #ffffff !important; background: #1b2540 !important; border: 1.5px solid #6b7894 !important; }
+        .service-type-group label.service-btn-active { box-shadow: 0 0 0 3px rgba(255,255,255,0.35) !important; }
+
+        .select2-container .select2-selection--single { height: 38px !important; border: 1.5px solid #6b7894 !important; background: #0c1426 !important; }
+        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 35px !important; font-size: 14px !important; color: #ffffff !important; font-weight: 700; }
+        .select2-container .select2-selection__arrow { top: 6px !important; }
+        .select2-dropdown { font-size: 14px !important; border: 1.5px solid #5eead4 !important; }
+        .select2-container--default .select2-results__option { font-size: 14px !important; padding: 9px 12px !important; color: #ffffff !important; border-bottom: 1px solid #2c313f; }
+        .select2-container--default .select2-results__option[aria-selected=true] { background: #0e7490 !important; color: #ffffff !important; font-weight: 800; }
+        .select2-container--default .select2-results__option--highlighted[aria-selected],
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable,
+        .select2-container--default .select2-results__option:hover { background: #f4970c !important; color: #111827 !important; font-weight: 800; }
+        .select2-container--default .select2-search--dropdown .select2-search__field { font-size: 14px !important; color: #fff !important; }
+        select option { font-size: 14px !important; color: #ffffff !important; background: #161c2b !important; }
+        select option:checked { background: #0e7490 !important; color: #fff !important; }
+
+        #hypermarkets-msg { font-size: 13px !important; line-height: 1.9 !important; }
+        #hypermarkets-msg, #hypermarkets-msg * { color: #a7f3d0 !important; }
+        #hypermarkets-msg input { color: #ffffff !important; font-size: 13px !important; }
+        #hypermarkets-msg #hyper-no-result { color: #ffb4ab !important; }
     </style>
 </head>
 <body>
@@ -389,7 +484,7 @@
                         يتم التركيب مجانا من خلالنا مع هذة الهايبرات :<br>
                         الوكيل : / لتجهيز وادارة Hyper Markets
                         <input type="text" id="hyper-search" autocomplete="off" placeholder="🔍 ابحث عن الهايبر ماركت..."
-                            style="width:100%; margin:5px 0; padding:4px 8px; border:1px solid #81c784; border-radius:5px; font-family:'Almarai',sans-serif; font-size:11px; background:#fff; color:#1a2533; outline:none;">
+                            style="width:100%; margin:5px 0; padding:4px 8px; border:1px solid #0fb67f; border-radius:5px; font-family:'Almarai',sans-serif; font-size:11px; background:#0f1524; color:#f1f5f9; outline:none;">
                         <div id="hyper-list" style="max-height:130px; overflow-y:auto;">
                             <div class="hyper-item">كارفور</div>
                             <div class="hyper-item">شركة بى تك للتجارة والتوزيع - القاهرة</div>
@@ -422,7 +517,7 @@
                             <div class="hyper-item">نون</div>
                             <div class="hyper-item">سوق دوت كوم</div>
                             <div class="hyper-item">شركة مظلوم للتجارة والتوكيلات</div>
-                            <div id="hyper-no-result" style="display:none; color:#7a1010;">لا توجد نتائج مطابقة</div>
+                            <div id="hyper-no-result" style="display:none; color:#ff8a80;">لا توجد نتائج مطابقة</div>
                         </div>
                         <br>
                         - في حاله رغبه العميل شراء كابولي من الشركة 870 جنية
@@ -700,9 +795,9 @@
                 : 'يتم إبلاغ العميل برسوم الزيارة';
             $('#warrantyStatusDisplay').text(txt + ' / ' + feeNote);
             if (txt === 'خارج الضمان') {
-                $('#warrantyStatusDisplay').css({'background':'#fdecea','color':'#7a1010','border-color':'#f5a0a0'});
+                $('#warrantyStatusDisplay').css({'background':'#2f1416','color':'#ff8a80','border-color':'#ef4740'});
             } else {
-                $('#warrantyStatusDisplay').css({'background':'#e8f5e9','color':'#1b5e20','border-color':'#81c784'});
+                $('#warrantyStatusDisplay').css({'background':'#0f2a24','color':'#3ddba0','border-color':'#0fb67f'});
             }
         } else {
             $('#warrantyStatusDisplay').text('لم يتم تحديد الضمان بعد');
