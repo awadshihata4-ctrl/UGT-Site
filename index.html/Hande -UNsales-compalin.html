@@ -10,12 +10,12 @@
 
 <style>
 :root {
-    --primary-color: #007bff;
-    --primary-hover: #0056b3;
-    --bg-color: #f4f6f9;
-    --card-bg: #ffffff;
-    --text-color: #333333;
-    --border-color: #cbd5e1;
+    --primary-color: #6865f2;
+    --primary-hover: #885df6;
+    --bg-color: #0a1020;
+    --card-bg: #161c2b;
+    --text-color: #e2e8f0;
+    --border-color: #2c313f;
 }
 
 * {
@@ -33,7 +33,7 @@ body {
 }
 
 .header {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #6865f2 0%, #119ee9 25%, #13b4a8 50%, #0fb67f 68%, #f4970c 84%, #ef4740 100%);
     color: white;
     padding: 20px;
     text-align: center;
@@ -61,25 +61,31 @@ body {
     border: 1px solid var(--border-color);
     cursor: pointer;
     border-radius: 30px;
-    background: #fff;
+    background: #161c2b;
     font-weight: 700;
     font-size: 15px;
-    color: #555;
+    color: #cbd5e1;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 .nav button:hover {
-    background: #f8fafc;
+    background: #1e2538;
     border-color: var(--primary-color);
     color: var(--primary-color);
 }
 
 .nav button.active {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #f4970c, #ea5d0c);
     color: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    border-color: #f4970c;
+    box-shadow: 0 4px 10px rgba(244, 151, 12, 0.3);
+}
+
+#btn-unsales.active {
+    background: linear-gradient(135deg, #119ee9, #2368ea);
+    border-color: #119ee9;
+    box-shadow: 0 4px 10px rgba(17, 158, 233, 0.3);
 }
 
 .section {
@@ -90,12 +96,12 @@ body {
     background: var(--card-bg);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    border: 1px solid #2c313f;
 }
 
 h3 {
-    color: #1e293b;
+    color: #f1f5f9;
     font-size: 18px;
     margin-bottom: 15px;
     font-weight: 700;
@@ -110,7 +116,7 @@ h3::before {
     top: 25%;
     height: 50%;
     width: 4px;
-    background: var(--primary-color);
+    background: linear-gradient(180deg, #f4970c, #ef4740);
     border-radius: 2px;
 }
 
@@ -123,7 +129,8 @@ select {
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
-    background-color: #fff;
+    background-color: #0f1524;
+    color: #f1f5f9;
     outline: none;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -131,7 +138,7 @@ select {
 
 select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(104, 101, 242, 0.25);
 }
 
 .script-container {
@@ -151,32 +158,45 @@ select:focus {
     margin-top: 10px;
 }
 
+select option, select optgroup {
+    background: #161c2b;
+    color: #f1f5f9;
+}
+
 .handling-script-box .script {
-    background: #fff;
+    background: #161c2b;
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    border-right: 5px solid var(--primary-color);
+    border: 1px solid #2c313f;
+    border-right: 5px solid #f4970c;
     white-space: pre-line;
     font-size: 15.5px;
-    color: #1e293b;
+    color: #e2e8f0;
     max-height: 600px;
     overflow-y: auto;
 }
 
 .script-header {
-    background: #f1f5f9;
+    background: #1e2538;
     padding: 10px 15px;
     border-radius: 8px 8px 0 0;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #2c313f;
     border-bottom: none;
 }
 
 .script-title {
     font-weight: 700;
-    color: #475569;
+    color: #cbd5e1;
     font-size: 14px;
 }
+
+/* ألوان صناديق الملاحظات */
+.script div[style*="#1e2538"] { border-right: 4px solid #6865f2; }
+.script div[style*="#1e2538"]:nth-of-type(6n+2) { border-right-color: #119ee9; }
+.script div[style*="#1e2538"]:nth-of-type(6n+3) { border-right-color: #13b4a8; }
+.script div[style*="#1e2538"]:nth-of-type(6n+4) { border-right-color: #0fb67f; }
+.script div[style*="#1e2538"]:nth-of-type(6n+5) { border-right-color: #af54ee; }
+.script div[style*="#1e2538"]:nth-of-type(6n+6) { border-right-color: #e749a0; }
 
 @media (max-width: 768px) {
     .nav button {
@@ -292,39 +312,39 @@ function handleHandlingSelection() {
     switch(selectedValue) {
         case 'Field Visit - تأخر زيارة منزلية':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color:#007bff;">📍 الزيارة المنزلية</h3>
+                <h3 style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color:#f4970c;">📍 الزيارة المنزلية</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #ffc107;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #f4970c;">
                     <strong>⚠️ مواعيد التوجه للعميل:</strong><br>
                     - محافظات (القاهرة – الجيزة – القليوبية – الأسكندرية) يتم إبلاغ العميل بأن مدة التنفيذ خلال 3 أيام عمل من وقت استلام رسالة الحجز للعميل.<br>
                     - جميع المحافظات الأخرى يتم إبلاغ العميل بأن مدة التنفيذ خلال 5 أيام عمل من وقت استلام رسالة الحجز للعميل.<br>
                     (بشرط: لا يتم عمل شكوى نهائياً طالما أن البلاغ حالته Working ولم يتخطى هذه المدد)
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     بمراجعة بيانات حضراتكم وجد حجز زيارة منزلية ستتم في خلال 48 ساعة عمل، برجاء انتظار تواصل من المندوب قبل الزيارة بوقت كافي، مواعيد العمل من 9 ص وحتى 5 م وممتدة في بعض الأحيان إلى 9 م.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 الفني حاول التواصل والعميل لا يرد</strong><br>
                     بمراجعة بلاغ حضرتك وجد أن الفني حاول الاتصال بسيادتكم، ولكن الهاتف (لا يرد – مغلق – غير متاح)، وسيتم تجديد الحجز لسيادتكم مرة أخرى واستعجال الزيارة.
                     كما سيتم تصعيد شكوى بعدم تواصل الفني مع حضرتك، واستعجال الطلب عبر إيميل داخلي يوضح أن حضرتك تنفي التواصل، مع الإشارة إلى استياء حضرتك من التأخير ورغبتك في تنفيذ الزيارة في أسرع وقت.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: مأمورية ولم يتم تحديد موعد</strong><br>
                     حابب أطمنك إننا هنحدد موعد لتوجه الفني إلى حضرتك للكشف على الجهاز، ولكن موعد حضرتك عبارة عن مأمورية، وبتستغرق بعض الوقت.
                     ولكن سيتم الاستعجال لسرعة التوجه، وإحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في أقرب وقت ويتم الإصلاح في أسرع وقت ممكن.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز ساعة محددة</strong><br>
                     حابب أوضح لحضرتك إننا مش بنكون على علم دقيق بخط سير الفني أو الأماكن الأخرى اللي بيزورها قبل حضرتك.
                     كمان مش بنقدر نحسب بدقة الوقت اللي هياخده في التنقل أو في إصلاح الأجهزة عند العملاء، لأن مدة الإصلاح بتختلف من حالة للتانية.
                     علشان كده الفني بيتواصل مع حضرتك قبل التوجه بحوالي ساعة.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 ختام/تأكيد دعم</strong><br>
                     إحنا مقدرين صبرك وتفهمك، وإن شاء الله الفني يكون عند حضرتك في الموعد المحدد، ونعمل على إصلاح الجهاز في أسرع وقت ممكن.
                     ولو في أي استفسار أو توضيح إضافي، إحنا في خدمتك في أي وقت..
@@ -334,14 +354,14 @@ function handleHandlingSelection() {
             
         case 'Tec.Report - تأخر متابعة تقرير فني':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">📋 تقرير فني</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">📋 تقرير فني</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     بمراجعة بلاغ حضرتك، بالفعل تم التوجه لحضراتكم وتم عمل تقرير بحالة المنتج، وجاري التواصل بكم من الإدارة لمتابعة شكواكم.
                     يرجى الانتظار وسيتم المتابعة في أقرب وقت ممكن… شكرًا لتواصلك بخدمة عملاء يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي بعد التقرير</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لحضرتك لو كان فيه أي تأخير، إحنا مقدرين صبرك وتفهمك معانا.
@@ -349,7 +369,7 @@ function handleHandlingSelection() {
                     حاليًا نحن في انتظار رد الإدارة بقرار نهائي بخصوص موقف جهازك.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 تأكيد المتابعة مع الإدارة</strong><br>
                     إحنا هنتابع مع الإدارة ونؤكد على سرعة الرد على التقرير الفني، وأنا هبعت إيميل حالًا للإدارة أوضح فيه إن حضرتك متضايق جدًا من التأخير ومحتاج رد في أسرع وقت.
                     إحنا دايمًا هنا لخدمتك.
@@ -358,13 +378,13 @@ function handleHandlingSelection() {
                     إحنا بنسعى لتقديم أفضل خدمة بأعلى جودة، ودي خطوة لازم تتم عشان نضمن إننا أخدنا القرار الصح في جهاز حضرتك، بحيث يكون مرضي ليك ولينا.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
                     أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي بدون أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
@@ -374,13 +394,13 @@ function handleHandlingSelection() {
             
         case 'Customer Rejection F.Up - تأخر متابعة اعتراض عميل':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">💰 الاعتراضات على التكلفة</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">💰 الاعتراضات على التكلفة</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     بمراجعة بلاغ حضرتك، وجد أنه تم التوجه والكشف على الجهاز، وتبين أن الجهاز به قطع غيار مستهلكات، وتم الاتصال بكم من جانب الإدارة، وحضرتك رفضت الصيانة بالتكلفة.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف على اعتراض التكلفة</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لحضرتك لو موضوع التكلفة سبب أي إزعاج ليك، إحنا مقدرين تمامًا موقف حضرتك.
@@ -390,13 +410,13 @@ function handleHandlingSelection() {
                     نعتذر لحضرتك جدًا إذا كان القرار سبب أي إزعاج أو عدم رضا.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
@@ -406,14 +426,14 @@ function handleHandlingSelection() {
             
         case 'Internal Leak Follow.Up - تأخر متابعة اجهزة بها تنفيس':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🔧 تسريب خبيث - متابعة</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">🔧 تسريب خبيث - متابعة</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     بمراجعة بلاغ حضرتك، بالفعل تم التوجه لحضراتكم وتم عمل تقرير بحالة المنتج، وجاري التواصل بكم من الإدارة لمتابعة شكواكم.
                     يرجى الانتظار وسيتم المتابعة في أقرب وقت ممكن... شكرا لتواصلك بخدمة عملاء يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لحضرتك لو كان فيه أي تأخير، إحنا مقدرين صبرك معانا وتفهمك.
@@ -421,7 +441,7 @@ function handleHandlingSelection() {
                     حاليًا نحن في انتظار رد الإدارة بقرار نهائي بخصوص موقف جهازك.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 تأكيد المتابعة مع الإدارة</strong><br>
                     إحنا هنتابع مع الإدارة ونؤكد على سرعة الرد على التقرير الفني، وأنا هبعت إيميل حالًا للإدارة أوضح فيه إن حضرتك متضايق جدًا من التأخير ومحتاج رد في أسرع وقت.
                     إحنا دايمًا هنا لخدمتك.
@@ -429,13 +449,13 @@ function handleHandlingSelection() {
                     التقرير الفني تم إعداده بشكل دقيق عشان نقدر نتخذ القرار الصحيح بالنسبة لجهازك، واحنا منتظرين قرار من الإدارة عشان نتحرك في أقرب وقت.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل عاوز يتكلم مع المسؤول</strong><br>
                     أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، ومقدر موقف حضرتك وشعورك تمامًا.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كأقصى تقدير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل رفض</strong><br>
                     أنا فاهم تمامًا إنك حابب تتكلم مع المسؤول، عشان كده، هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل
                     لحظات وهحول حضرتك.
@@ -445,21 +465,21 @@ function handleHandlingSelection() {
             
         case 'Spare Part Required - تأخر متابعة توفير قطع غيار':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">⚙️ قطع الغيار</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">⚙️ قطع الغيار</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #ffc107;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px; border-right: 4px solid #f4970c;">
                     <strong>⚠️ يتم عمل شكوى قطع غيار:</strong><br>
                     - بلاغ توفير قطع الغيار حالته (Open) وعدى عليه 24 ساعة بدون ما يتم الإفادة والتأكيد إذا تم التوفير أم لا.<br>
                     - بلاغ قطع الغيار حالته (Waiting Stock) وتاريخ تغيير هذه الحالة عدى عليه أكثر من 48 ساعة.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     بمراجعة بيانات حضراتكم، وجد أنه يتم توفير قطع غيار تم طلبها، وسيتم التوفير في أقرب وقت ممكن، يرجى الانتظار وسيتم المتابعة مع حضراتكم.
                     وسيتم استعجال الأمر من خلالنا إلى القسم المختص لسرعة إنهاء الإجراءات.
                     سعداء بخدمة حضرتك في يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لك عن تأخير قطع الغيار لجهازك، إحنا مقدرين صبرك معانا وتفهمك.
@@ -470,13 +490,13 @@ function handleHandlingSelection() {
                     وبمجرد وصول القطعة، يتم تحديد موعد التوريد والتركيب لحضرتك في أقرب وقت.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
@@ -486,19 +506,19 @@ function handleHandlingSelection() {
             
         case 'Workshop - تأخر اصلاح جهاز بالورشة':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🏭 الورشة</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">🏭 الورشة</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 إخطار الحالة</strong><br>
                     مساء الخير يا فندم، بمراجعة بيانات حضرتك، وجد أنه تم سحب الجهاز للصيانة في الورشة، وبمجرد الانتهاء سيتم تحديد موعد التوريد. سعداء بخدمة حضرتك في يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 إشعار مع اعتذار واستعجال</strong><br>
                     مساء الخير يا فندم، نعتذر لحضرتك عن التأخير، وسيتم استعجال إصلاح الجهاز بالورشة لسرعة الانتهاء وتحديد موعد للتوريد. سعداء بخدمة حضرتك في يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لك عن التأخير في إصلاح جهازك داخل الورشة، إحنا مقدرين صبرك معانا وتفهمك.
@@ -510,13 +530,13 @@ function handleHandlingSelection() {
                     وبمجرد ما الجهاز يتم إصلاحه، سيتم التواصل مع حضرتك لتحديد موعد التوريد أو الاستلام في أقرب وقت ممكن.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يكلم مسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
@@ -526,14 +546,14 @@ function handleHandlingSelection() {
             
         case 'Product Required - تأخر متابعة توفير استبدال':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">🔄 الاستبدال</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">🔄 الاستبدال</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 إخطار الحالة</strong><br>
                     بمراجعة بلاغ حضرتك، وجد أنه جاري توفير المنتج لحضرتك، وسيتم الاستعجال لسرعة تحديد موعد التوريد لسيادتكم. سعداء بخدمتك في يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لك عن التأخير في استبدال جهازك, إحنا مقدرين صبرك معانا وتفهمك.
@@ -544,13 +564,13 @@ function handleHandlingSelection() {
                     وبمجرد ما الجهاز الجديد يكون جاهز للاستبدال، سيتم التواصل معك لتحديد موعد الاستلام في أقرب وقت ممكن.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يتكلم مع المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
@@ -560,14 +580,14 @@ function handleHandlingSelection() {
             
         case 'Refund Product Required - تأخر متابعة رد قيمة':
             currentHandlingText = `<div style="text-align: right;">
-                <h3 style="font-size: 22px; font-weight: bold; color:#007bff;">💰 رد القيمة وصرف الشيك</h3>
+                <h3 style="font-size: 22px; font-weight: bold; color:#f4970c;">💰 رد القيمة وصرف الشيك</h3>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 إخطار الحالة</strong><br>
                     بمراجعة بلاغ حضرتك، وجد أنه جاري صرف الشيك لحضرتك، وسيتم الاستعجال لسرعة إنهاء الإجراءات وتحديد موعد التوريد لسيادتكم. سعداء بخدمتك في يونيون إير.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 رد الموظف الأساسي</strong><br>
                     أهلاً وسهلاً بحضرتك،
                     أول حاجة حابب أعتذر لك عن التأخير في (رد القيمة / صرف الشيك)، إحنا مقدرين صبرك معانا وتفهمك.
@@ -577,13 +597,13 @@ function handleHandlingSelection() {
                     وأنا هصعد شكوى حضرتك وطلبك في إيميل حالًا إلى الإدارة المختصة، وأوضح لهم إن حضرتك متضايق جدًا من التأخير ومحتاج استعجال الأمر.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: عاوز يتكلم مع مسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، ومقدر موقفك وشعورك.
                     خليني أطمنك إن الموضوع تحت المتابعة، وإن شاء الله المسؤول هيتواصل معاك في أقرب وقت ممكن، غالبًا خلال ساعة كحد أقصى.
                 </div>
                 
-                <div style="background-color: #e1efff; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                <div style="background-color: #1e2538; padding: 15px; margin: 10px 0; border-radius: 8px;">
                     <strong>📌 العميل: رفض ويصر على المسؤول</strong><br>
                     أنا فاهم تمامًا إن حضرتك حابب تتكلم مع المسؤول، وعشان كده هحولك للمسؤول دلوقتي من غير أي انتظار، وهو هيشرح لك كل التفاصيل.
                     لحظات وهحول حضرتك..
