@@ -1,11 +1,18 @@
 <!-- Odoo Modern Panel -->
 <style>
+    html, body {
+        background-color: #000000 !important;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
     .panel {
         max-width: 1000px;
-        margin: auto;
+        margin: 20px auto;
         padding: 20px;
         text-align: center;
-        background: #0a1020;
+        background: #000000;
         border: 1px solid #2c313f;
         border-radius: 20px;
     }
@@ -13,22 +20,32 @@
     .btn-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 12px;
-        margin-bottom: 20px;
+        column-gap: 20px;  /* المسافة الأفقية */
+        row-gap: 50px;     /* المسافة الرأسية بين الصفوف */
+        margin-bottom: 40px;
     }
 
     .open-link-button {
         background: linear-gradient(135deg, #6865f2, #885df6);
         border: none;
         color: white;
-        padding: 12px;
-        font-size: 15px;
+        padding: 14px 12px;
+        font-size: 16px;
         cursor: pointer;
         border-radius: 10px;
         transition: 0.3s;
         box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         font-family: 'Cairo', sans-serif;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .open-link-button .icon {
+        font-size: 28px;
+        line-height: 1;
     }
 
     .open-link-button:hover {
@@ -54,8 +71,15 @@
 
     @media(max-width:600px){
         .open-link-button{
-            font-size: 13px;
+            font-size: 14px;
             padding: 10px;
+        }
+        .open-link-button .icon {
+            font-size: 24px;
+        }
+        .btn-grid {
+            row-gap: 25px; /* مسافة أقل في الموبايل */
+            margin-bottom: 25px;
         }
     }
 </style>
@@ -65,22 +89,22 @@
 
     <!-- الصف الأول -->
     <div class="btn-grid">
-        <button class="open-link-button" onclick="openLink1()">➕ تسجيل عميل جديد</button>
-        <button class="open-link-button" onclick="openLink()">📝 حجز بلاغ صيانة جديد</button>
-        <button class="open-link-button" onclick="openLink2()">🔍 البحث برقم السريال</button>
-        <button class="open-link-button" onclick="openLink3()">👥 قاعدة بيانات العملاء Customer</button>
+        <button class="open-link-button" onclick="openLink1()"><span class="icon">➕</span> تسجيل عميل جديد</button>
+        <button class="open-link-button" onclick="openLink()"><span class="icon">📝</span> حجز بلاغ صيانة جديد</button>
+        <button class="open-link-button" onclick="openLink2()"><span class="icon">🔍</span> البحث برقم السريال</button>
+        <button class="open-link-button" onclick="openLink3()"><span class="icon">👥</span> قاعدة بيانات العملاء Customer</button>
     </div>
 
     <!-- الصف الثاني -->
     <div class="btn-grid">
-        <button class="open-link-button" onclick="openLink8()">📊 مقايسة الأجهزة</button>
-        <button class="open-link-button" onclick="openLink6()">📎 إضافة سريال غير مسجل</button>
-        <button class="open-link-button" onclick="openLink5()">💬 سجل الرسائل القصيرة SMS</button>
-        <button class="open-link-button" onclick="openLink4()">🔧 أوامر الإصلاح Repair</button>
-        <button class="open-link-button" onclick="openLink3()">👥 قاعدة بيانات العملاء Customer</button>
-        <button class="open-link-button" onclick="openLink7()">📞 نظام 3cx</button>
-        <button class="open-link-button" onclick="openLink9()">☕ Break</button>
-        <button class="open-link-button" onclick="openLink10()">📋 Ticket Open</button>
+        <button class="open-link-button" onclick="openLink8()"><span class="icon">📊</span> مقايسة الأجهزة</button>
+        <button class="open-link-button" onclick="openLink6()"><span class="icon">📎</span> إضافة سريال غير مسجل</button>
+        <button class="open-link-button" onclick="openLink5()"><span class="icon">💬</span> سجل الرسائل القصيرة SMS</button>
+        <button class="open-link-button" onclick="openLink4()"><span class="icon">🔧</span> أوامر الإصلاح Repair</button>
+        <button class="open-link-button" onclick="openLink3()"><span class="icon">👥</span> قاعدة بيانات العملاء Customer</button>
+        <button class="open-link-button" onclick="openLink7()"><span class="icon">📞</span> نظام 3cx</button>
+        <button class="open-link-button" onclick="openLink9()"><span class="icon">☕</span> Break</button>
+        <button class="open-link-button" onclick="openLink10()"><span class="icon">📋</span> Ticket Open</button>
     </div>
 </div>
 
