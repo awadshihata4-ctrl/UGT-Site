@@ -3,249 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>سخان الكهرباء</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
         :root {
             --primary-color: #6865f2;
-            --primary-hover: #885df6;
             --bg-color: #0a1020;
             --card-bg: #161c2b;
             --text-color: #e2e8f0;
             --border-color: #2c313f;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', Arial, sans-serif; }
+        body { background: var(--bg-color); color: var(--text-color); font-size: 15px; line-height: 1.6; padding-bottom: 40px; }
+        
+        .header { background: linear-gradient(135deg, #6865f2 0%, #119ee9 25%, #13b4a8 50%, #0fb67f 68%, #f4970c 84%, #ef4740 100%); color: white; padding: 25px 20px; text-align: center; font-size: 24px; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .container { max-width: 1400px; margin: 25px auto; padding: 0 20px; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', Arial, sans-serif;
-        }
+        /* صندوق السيريال */
+        .serial-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); border-right: 5px solid #13b4a8; }
+        .serial-box h3 { font-size: 16px; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+        .serial-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+        .serial-field { flex: 1; min-width: 220px; }
+        .serial-field label { display: block; font-size: 13px; font-weight: 700; color: #94a3b8; margin-bottom: 4px; }
+        .serial-field input { width: 100%; padding: 10px 14px; border: 1.5px solid #475069; border-radius: 8px; background: #111a2e; color: #f8fafc; font-size: 15px; font-family: 'Cairo', sans-serif; outline: none; }
+        .serial-field input[readonly] { background: #1b2540; color: #7dd3fc; font-weight: 700; }
+        
+        .serial-status { flex: 1; min-width: 220px; }
+        .serial-status .status-label { font-size: 13px; font-weight: 700; color: #94a3b8; margin-bottom: 4px; }
+        .serial-status .status-value { background: #0f2a24; border: 1.5px solid #0fb67f; border-radius: 8px; padding: 10px 14px; font-size: 15px; font-weight: 700; color: #3ddba0; min-height: 44px; }
+        .serial-status .status-value.out { background: #2f1416; border-color: #ef4740; color: #ff8a80; }
+        .serial-status .status-value.neutral { background: #1b2540; border-color: #475069; color: #94a3b8; }
 
-        body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-size: 15px;
-            line-height: 1.6;
-            padding-bottom: 40px;
-        }
+        .btn-manual-date { background: #13b4a8; color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; margin-top: 5px; display: none; width: 100%; transition: 0.3s; }
+        .btn-manual-date:hover { background: #0fb67f; }
 
-        .header {
-            background: linear-gradient(135deg, #6865f2 0%, #119ee9 25%, #13b4a8 50%, #0fb67f 68%, #f4970c 84%, #ef4740 100%);
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
+        /* البطاقات والتبويبات */
+        .info-grid { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .info-card { flex: 1; min-width: 280px; background: var(--card-bg); padding: 20px; border-radius: 12px; border-right: 5px solid #6865f2; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+        .info-card h4 { font-size: 14px; color: #94a3b8; margin-bottom: 5px; font-weight: 600; }
+        .info-card p { font-size: 20px; font-weight: 700; color: #f1f5f9; }
 
-        .container {
-            max-width: 1400px;
-            margin: 25px auto;
-            padding: 0 20px;
-        }
+        .tabs-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #f1f5f9; }
+        .tabs-nav { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tabs-nav button { padding: 12px 24px; border: 1px solid #2c313f; cursor: pointer; border-radius: 8px; background: #161c2b; font-weight: 700; font-size: 15px; color: #cbd5e1; transition: all 0.3s ease; }
+        .tabs-nav button:hover { background: #1e2538; border-color: #6865f2; color: #6865f2; }
+        
+        #btn-firstYear.active { background: linear-gradient(135deg, #20c062, #0e9784); border-color: #20c062; color: white; }
+        #btn-afterFirstYear.active { background: linear-gradient(135deg, #f4970c, #ea5d0c); border-color: #f4970c; color: white; }
+        #btn-outOfWarranty.active { background: linear-gradient(135deg, #f86e1b, #ef4740); border-color: #ef4740; color: white; }
 
-        .info-grid {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .info-card {
-            flex: 1;
-            min-width: 280px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border-right: 5px solid #6865f2;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-        }
-
-        .info-card h4 {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .info-card p {
-            font-size: 20px;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .tabs-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #f1f5f9;
-        }
-
-        .tabs-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .tabs-nav button {
-            padding: 12px 24px;
-            border: 1px solid #2c313f;
-            cursor: pointer;
-            border-radius: 8px;
-            background: #161c2b;
-            font-weight: 700;
-            font-size: 15px;
-            color: #cbd5e1;
-            transition: all 0.3s ease;
-        }
-
-        .tabs-nav button:hover {
-            background: #1e2538;
-            border-color: #6865f2;
-            color: #6865f2;
-        }
-        #btn-firstYear:hover { border-color: #20c062; color: #0e9784; }
-        #btn-afterFirstYear:hover { border-color: #f4970c; color: #ea5d0c; }
-        #btn-outOfWarranty:hover { border-color: #ef4740; color: #ef4740; }
-
-        .tabs-nav button.active {
-            background: linear-gradient(135deg, #6865f2, #885df6);
-            color: white;
-            border-color: #6865f2;
-            box-shadow: 0 4px 12px rgba(104, 101, 242, 0.25);
-        }
-        #btn-firstYear.active { background: linear-gradient(135deg, #20c062, #0e9784); border-color: #20c062; box-shadow: 0 4px 12px rgba(32, 192, 98, 0.3); color: white; }
-        #btn-afterFirstYear.active { background: linear-gradient(135deg, #f4970c, #ea5d0c); border-color: #f4970c; box-shadow: 0 4px 12px rgba(244, 151, 12, 0.3); color: white; }
-        #btn-outOfWarranty.active { background: linear-gradient(135deg, #f86e1b, #ef4740); border-color: #ef4740; box-shadow: 0 4px 12px rgba(239, 71, 64, 0.3); color: white; }
-
-        .summary-card {
-            background: #161c2b;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            padding: 20px 25px;
-            margin-bottom: 20px;
-            border-right: 6px solid #6865f2;
-            animation: fadeIn 0.4s ease;
-        }
-
+        .summary-card { background: #161c2b; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.4); padding: 20px 25px; margin-bottom: 20px; border-right: 6px solid #6865f2; display: none; animation: fadeIn 0.4s ease; }
         .summary-card.green { border-right-color: #20c062; }
         .summary-card.yellow { border-right-color: #f4970c; }
         .summary-card.red { border-right-color: #ef4740; }
+        .summary-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #f8fafc; }
+        .summary-card .row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 15px; }
+        .summary-card .label { font-weight: 700; color: #94a3b8; min-width: 110px; }
+        .summary-card .value { color: #e2e8f0; flex: 1; }
+        .summary-card .reason-box { background: #0f1524; border: 1px dashed #3b4256; border-radius: 8px; padding: 12px 15px; margin-top: 10px; font-size: 14.5px; color: #e2e8f0; line-height: 1.8; }
+        .summary-card .reason-box strong { color: #ff7a6e; }
 
-        .summary-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #f8fafc;
-        }
-
-        .summary-card .row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-size: 15px;
-        }
-
-        .summary-card .label {
-            font-weight: 700;
-            color: #94a3b8;
-            min-width: 110px;
-        }
-
-        .summary-card .value {
-            color: #e2e8f0;
-            flex: 1;
-        }
-
-        .summary-card .reason-box {
-            background: #0f1524;
-            border: 1px dashed #3b4256;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-top: 10px;
-            font-size: 14.5px;
-            color: #e2e8f0;
-            line-height: 1.8;
-        }
-
-        .summary-card .reason-box strong {
-            color: #ff7a6e;
-        }
-
-        .table-container {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .table-container.visible {
-            display: block;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-            min-width: 900px;
-        }
-
-        th {
-            background-color: #1e2538;
-            color: #f8fafc;
-            font-weight: 700;
-            padding: 16px 12px;
-            font-size: 15px;
-            border-bottom: 2px solid #3b4256;
-            border-left: 1px solid var(--border-color);
-        }
-
-        th:last-child {
-            border-left: none;
-        }
-
-        td {
-            padding: 16px 12px;
-            border-bottom: 1px solid var(--border-color);
-            border-left: 1px solid var(--border-color);
-            font-size: 15px;
-            color: #e2e8f0;
-            vertical-align: top;
-        }
-
-        td:last-child {
-            border-left: none;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:nth-child(even) {
-            background-color: #121828;
-        }
-
-        tr:hover {
-            background-color: #1e2538;
-        }
-
+        .table-container { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); border: 1px solid var(--border-color); overflow-x: auto; display: none; animation: fadeIn 0.4s ease; }
+        table { width: 100%; border-collapse: collapse; text-align: right; min-width: 900px; }
+        th { background-color: #1e2538; color: #f8fafc; font-weight: 700; padding: 16px 12px; font-size: 15px; border-bottom: 2px solid #3b4256; border-left: 1px solid var(--border-color); }
+        th:last-child { border-left: none; }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--border-color); border-left: 1px solid var(--border-color); font-size: 15px; color: #e2e8f0; vertical-align: top; }
+        td:last-child { border-left: none; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) { background-color: #121828; }
+        tr:hover { background-color: #1e2538; }
         #firstYear th { border-bottom-color: #20c062; }
         #afterFirstYear th { border-bottom-color: #f4970c; }
         #outOfWarranty th { border-bottom-color: #ef4740; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .active-tab { display: block !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -253,7 +86,32 @@
 <div class="header">دليل إجراءات استبدال سخان الكهرباء</div>
 
 <div class="container">
+    <!-- صندوق السيريال -->
+    <div class="serial-box">
+        <h3>🔍 ابحث برقم السيريال لعرض موقف الضمان المحدد</h3>
+        <div class="serial-row">
+            <div class="serial-field">
+                <label>رقم السيريال</label>
+                <input type="text" id="serialInput" placeholder="أدخل رقم السيريال...">
+            </div>
+            <div class="serial-field">
+                <label>تاريخ الصرف</label>
+                <input type="date" id="dateInput" style="display:none; background:#111a2e; color:#fff;">
+                <input type="text" id="issueDateDisplay" readonly placeholder="سيتم جلب التاريخ أو تحديده..." style="margin-bottom:5px;">
+                <button type="button" class="btn-manual-date" id="btnManualDate" onclick="showManualDate()">📅 تحديد التاريخ يدوياً</button>
+            </div>
+            <div class="serial-field">
+                <label>المدة منذ الصرف</label>
+                <input type="text" id="timeDifferenceDisplay" readonly placeholder="...">
+            </div>
+            <div class="serial-status">
+                <div class="status-label">موقف الضمان</div>
+                <div class="status-value neutral" id="warrantyStatusDisplay">بانتظار إدخال السيريال...</div>
+            </div>
+        </div>
+    </div>
 
+    <!-- بطاقات المعلومات -->
     <div class="info-grid">
         <div class="info-card">
             <h4>الاستبدال هيكون بالموديل دا:</h4>
@@ -265,15 +123,15 @@
         </div>
     </div>
 
-    <p class="tabs-title">اختر موقف الضمان لعرض التفاصيل:</p>
+    <p class="tabs-title" id="tabsTitle">اختر موقف الضمان لعرض التفاصيل:</p>
     <div class="tabs-nav">
-        <button id="btn-firstYear" onclick="showTable('firstYear')">السنة الأولى</button>
-        <button id="btn-afterFirstYear" onclick="showTable('afterFirstYear')">بعد السنة الأولى</button>
-        <button id="btn-outOfWarranty" onclick="showTable('outOfWarranty')">خارج الضمان</button>
+        <button id="btn-firstYear" onclick="showTab('firstYear')">السنة الأولى</button>
+        <button id="btn-afterFirstYear" onclick="showTab('afterFirstYear')">بعد السنة الأولى</button>
+        <button id="btn-outOfWarranty" onclick="showTab('outOfWarranty')">خارج الضمان</button>
     </div>
 
     <!-- ========== ملخص السنة الأولى ========== -->
-    <div id="summary-firstYear" class="summary-card green">
+    <div id="summary-firstYear" class="summary-card green active-tab">
         <h3>🟢 ملخص موقف الضمان: السنة الأولى</h3>
         <div class="row">
             <span class="label">الوضع:</span>
@@ -293,7 +151,7 @@
         </div>
     </div>
 
-    <div id="firstYear" class="table-container">
+    <div id="firstYear" class="table-container active-tab">
         <table>
             <thead>
                 <tr>
@@ -460,30 +318,164 @@
 </div>
 
 <script>
-function showTable(tableId) {
-    const tables = ['firstYear', 'afterFirstYear', 'outOfWarranty'];
-    const summaries = {
-        firstYear: 'summary-firstYear',
-        afterFirstYear: 'summary-afterFirstYear',
-        outOfWarranty: 'summary-outOfWarranty'
-    };
+    var WARRANTY_MONTHS = 24; 
+    var ALL_TABS = ['firstYear', 'afterFirstYear', 'outOfWarranty'];
 
-    tables.forEach(id => {
-        document.getElementById(id).classList.remove('visible');
-        document.getElementById('btn-' + id).classList.remove('active');
-        document.getElementById(summaries[id]).style.display = 'none';
+    // دالة إظهار وإخفاء التبويبات بناءً على الموقف
+    function showTab(tabId) {
+        ALL_TABS.forEach(function(id) {
+            document.getElementById('btn-' + id).classList.remove('active');
+            document.getElementById(id).classList.remove('active-tab');
+            document.getElementById('summary-' + id).classList.remove('active-tab');
+        });
+        
+        if(tabId) {
+            document.getElementById('btn-' + tabId).classList.add('active');
+            document.getElementById(id = tabId).classList.add('active-tab');
+            document.getElementById('summary-' + tabId).classList.add('active-tab');
+            document.getElementById('tabsTitle').innerText = 'الموقف المطابق:';
+        }
+    }
+
+    // عرض كل التبويبات (لما السيريال يكون فاضي)
+    function showAllTabs() {
+        ALL_TABS.forEach(function(id) {
+            document.getElementById('btn-' + id).style.display = 'inline-block'; // نرجع الأزرار تظهر
+            document.getElementById(id).classList.remove('active-tab');
+            document.getElementById('summary-' + id).classList.remove('active-tab');
+        });
+        document.getElementById('tabsTitle').innerText = 'اختر موقف الضمان لعرض التفاصيل:';
+        showTab('firstYear');
+    }
+
+    // إظهار تبويب واحد فقط وإخفاء الأزرار الباقية
+    function showSingleTabOnly(tabId) {
+        ALL_TABS.forEach(function(id) {
+            document.getElementById('btn-' + id).classList.remove('active');
+            document.getElementById(id).classList.remove('active-tab');
+            document.getElementById('summary-' + id).classList.remove('active-tab');
+            
+            // إخفاء الأزرار اللي مش بتاعة الموقف الحالي
+            if (id !== tabId) {
+                document.getElementById('btn-' + id).style.display = 'none';
+            } else {
+                document.getElementById('btn-' + id).style.display = 'inline-block';
+            }
+        });
+        
+        document.getElementById('btn-' + tabId).classList.add('active');
+        document.getElementById(tabId).classList.add('active-tab');
+        document.getElementById('summary-' + tabId).classList.add('active-tab');
+        document.getElementById('tabsTitle').innerText = 'الموقف المطابق:';
+    }
+
+    function calcDiff(issueDate) {
+        var today = new Date();
+        var years = today.getFullYear() - issueDate.getFullYear();
+        var months = today.getMonth() - issueDate.getMonth();
+        var days = today.getDate() - issueDate.getDate();
+        
+        if (days < 0) { months--; days += 30; }
+        if (months < 0) { years--; months += 12; }
+        
+        var total = (years * 12) + months + (days / 30);
+        return { years: years, months: months, days: days, total: total };
+    }
+
+    // تطبيق التاريخ وتحديد الموقف
+    function applyDateAndShow(issueDate) {
+        var diff = calcDiff(issueDate);
+        
+        var d = issueDate.getDate().toString().padStart(2, '0');
+        var m = (issueDate.getMonth() + 1).toString().padStart(2, '0');
+        var y = issueDate.getFullYear();
+        document.getElementById('issueDateDisplay').value = d + '/' + m + '/' + y;
+        document.getElementById('timeDifferenceDisplay').value = diff.years + ' سنوات, ' + diff.months + ' شهور, ' + diff.days + ' أيام';
+
+        var statusEl = document.getElementById('warrantyStatusDisplay');
+        
+        if (diff.total < 12) {
+            statusEl.innerText = '✅ داخل السنة الأولى';
+            statusEl.className = 'status-value';
+            showSingleTabOnly('firstYear');
+        } else if (diff.total < WARRANTY_MONTHS) {
+            statusEl.innerText = '⚠️ بعد السنة الأولى - لسه داخل الضمان';
+            statusEl.className = 'status-value';
+            showSingleTabOnly('afterFirstYear');
+        } else {
+            statusEl.innerText = '❌ خارج الضمان';
+            statusEl.className = 'status-value out';
+            showSingleTabOnly('outOfWarranty');
+        }
+    }
+
+    function showManualDate() {
+        var di = document.getElementById('dateInput');
+        di.style.display = 'block';
+        di.focus();
+    }
+
+    document.getElementById('dateInput').addEventListener('change', function() {
+        if (!this.value) return;
+        var p = this.value.split('-');
+        applyDateAndShow(new Date(p[0], p[1]-1, p[2]));
     });
 
-    if(tableId) {
-        document.getElementById(tableId).classList.add('visible');
-        document.getElementById('btn-' + tableId).classList.add('active');
-        document.getElementById(summaries[tableId]).style.display = 'block';
-    }
-}
+    function fetchSerialData() {
+        var serial = document.getElementById('serialInput').value.trim();
+        var statusEl = document.getElementById('warrantyStatusDisplay');
+        var btnManual = document.getElementById('btnManualDate');
+        var dateInput = document.getElementById('dateInput');
 
-window.onload = function() {
-    showTable('firstYear');
-};
+        if (!serial) {
+            document.getElementById('issueDateDisplay').value = '';
+            document.getElementById('timeDifferenceDisplay').value = '';
+            statusEl.innerText = 'لم يتم إدخال سيريال - يتم عرض كل المواقف';
+            statusEl.className = 'status-value neutral';
+            btnManual.style.display = 'none';
+            dateInput.style.display = 'none';
+            showAllTabs();
+            return;
+        }
+
+        statusEl.innerText = 'جاري جلب البيانات... ⏳';
+        statusEl.className = 'status-value neutral';
+        btnManual.style.display = 'none';
+        
+        var url = "https://www.unionaire-tech.com/get_last_date?a_serial=" + encodeURIComponent(serial) + "&timestamp=" + new Date().getTime();
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                var rawDate = data && (data.issue_date || data.issueDate || data.date);
+                if (!rawDate) {
+                    statusEl.innerText = '⚠️ السيريال مش موجود أو مفيش تاريخ. برجاء تحديد التاريخ يدوياً.';
+                    statusEl.className = 'status-value out';
+                    btnManual.style.display = 'block';
+                    // إخفاء كل التبويبات لحد ما يحدد تاريخ
+                    ALL_TABS.forEach(function(id) { document.getElementById(id).classList.remove('active-tab'); document.getElementById('summary-' + id).classList.remove('active-tab'); document.getElementById('btn-' + id).style.display = 'none'; });
+                } else {
+                    applyDateAndShow(new Date(rawDate));
+                }
+            })
+            .catch(error => {
+                statusEl.innerText = '⚠️ المتصفح منع الاتصال. يرجى تحديد التاريخ يدوياً.';
+                statusEl.className = 'status-value out';
+                btnManual.style.display = 'block';
+                // إخفاء كل التبويبات
+                ALL_TABS.forEach(function(id) { document.getElementById(id).classList.remove('active-tab'); document.getElementById('summary-' + id).classList.remove('active-tab'); document.getElementById('btn-' + id).style.display = 'none'; });
+            });
+    }
+
+    var timer = null;
+    document.getElementById('serialInput').addEventListener('input', function() {
+        clearTimeout(timer);
+        timer = setTimeout(fetchSerialData, 800);
+    });
+
+    window.onload = function() {
+        showAllTabs();
+    };
 </script>
 
 </body>
