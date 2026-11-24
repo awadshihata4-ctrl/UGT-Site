@@ -185,6 +185,17 @@
         #lbl-relocate.service-btn-active { background: linear-gradient(135deg,#f4970c,#ea5d0c) !important; border-color: #f4970c !important; }
         #lbl-warranty.service-btn-active { background: linear-gradient(135deg,#20c062,#0e9784) !important; border-color: #20c062 !important; }
 
+        .relocate-note {
+            background: #2e2010;
+            border: 1.5px solid #f4970c;
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #ffd27a;
+            font-weight: 700;
+        }
         .btn-submit { display: none !important; }
 
         .warranty-status-field {
@@ -424,6 +435,7 @@
                                 <option value="remove-install-full">فك وتركيب جهاز كامل قديم</option>
                             </select>
                         </div>
+                        <div id="relocate-note" class="relocate-note" style="display:none;"></div>
                         <div class="ugt-form-group">
                             <label>قدرة الجهاز (حصان)</label>
                             <select class="form-control" id="relocate-capacity">
@@ -919,6 +931,21 @@
             $('input[name="type_ID"]').change(function() {
                 calculateServiceCost();
             });
+
+            var RELOCATE_NOTES = {
+                'remove-only': '📌 تنويه: يُطبق عند التوجه إلى العميل وفك الجهاز بالكامل وتركه لديه دون تنفيذ أي إجراء آخر، أو فك إحدى وحدات الجهاز وتركها لدى العميل.',
+                'remove-install-part': '📌 تنويه: في حالة نقل الوحدة الداخلية لتعديل مكانها، أو نقل الكباس لتعديل مكانه، تُحتسب تكلفة فك ونقل الوحدة بشكل منفصل.',
+                'install-new': '',
+                'remove-install-full': '📌 تنويه: يُطبق في حالة فك الجهاز وتركيبه داخل المنزل نفسه الموجود به المنتج.'
+            };
+            function updateRelocateNote() {
+                var isReloc = $('input[name="type_ID"]:checked').val() === 'relocate';
+                var note = isReloc ? (RELOCATE_NOTES[$('#relocate-service').val()] || '') : '';
+                if (note) { $('#relocate-note').text(note).show(); }
+                else { $('#relocate-note').text('').hide(); }
+            }
+            $('#relocate-service').on('change', updateRelocateNote);
+            $('input[name="type_ID"]').on('change', updateRelocateNote);
 
             $('#relocate-capacity, #relocate-service').on('change', function() {
                 calculateServiceCost();
