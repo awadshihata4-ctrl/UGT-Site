@@ -26,7 +26,8 @@
         .serial-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
         .serial-field { flex: 1; min-width: 220px; }
         .serial-field label { display: block; font-size: 13px; font-weight: 700; color: #94a3b8; margin-bottom: 4px; }
-        .serial-field input { width: 100%; padding: 10px 14px; border: 1.5px solid #475069; border-radius: 8px; background: #111a2e; color: #f8fafc; font-size: 15px; font-family: 'Cairo', sans-serif; outline: none; }
+        .serial-field input { width: 100%; padding: 10px 14px; border: 1.5px solid #475069; border-radius: 8px; background: #111a2e; color: #f8fafc; font-size: 15px; font-family: 'Cairo', sans-serif; outline: none; transition: border-color 0.2s; }
+        .serial-field input.input-error { border-color: #ef4740; background: #221216; }
         .serial-field input[readonly] { background: #1b2540; color: #7dd3fc; font-weight: 700; }
         
         .serial-status { flex: 1; min-width: 220px; }
@@ -91,8 +92,8 @@
         <h3>🔍 ابحث برقم السيريال لعرض موقف الضمان المحدد</h3>
         <div class="serial-row">
             <div class="serial-field">
-                <label>رقم السيريال</label>
-                <input type="text" id="serialInput" placeholder="أدخل رقم السيريال...">
+                <label>رقم السيريال (يجب أن يبدأ بـ E-)</label>
+                <input type="text" id="serialInput" placeholder="مثال: E-123456..." dir="ltr" style="text-align: right;">
             </div>
             <div class="serial-field">
                 <label>تاريخ الصرف</label>
@@ -331,7 +332,7 @@
         
         if(tabId) {
             document.getElementById('btn-' + tabId).classList.add('active');
-            document.getElementById(id = tabId).classList.add('active-tab');
+            document.getElementById(tabId).classList.add('active-tab');
             document.getElementById('summary-' + tabId).classList.add('active-tab');
             document.getElementById('tabsTitle').innerText = 'الموقف المطابق:';
         }
@@ -340,7 +341,7 @@
     // عرض كل التبويبات (لما السيريال يكون فاضي)
     function showAllTabs() {
         ALL_TABS.forEach(function(id) {
-            document.getElementById('btn-' + id).style.display = 'inline-block'; // نرجع الأزرار تظهر
+            document.getElementById('btn-' + id).style.display = 'inline-block';
             document.getElementById(id).classList.remove('active-tab');
             document.getElementById('summary-' + id).classList.remove('active-tab');
         });
@@ -355,7 +356,6 @@
             document.getElementById(id).classList.remove('active-tab');
             document.getElementById('summary-' + id).classList.remove('active-tab');
             
-            // إخفاء الأزرار اللي مش بتاعة الموقف الحالي
             if (id !== tabId) {
                 document.getElementById('btn-' + id).style.display = 'none';
             } else {
@@ -422,10 +422,14 @@
     });
 
     function fetchSerialData() {
-        var serial = document.getElementById('serialInput').value.trim();
+        var inputEl = document.getElementById('serialInput');
+        var serial = inputEl.value.trim();
         var statusEl = document.getElementById('warrantyStatusDisplay');
         var btnManual = document.getElementById('btnManualDate');
         var dateInput = document.getElementById('dateInput');
+
+        // إعادة تعيين التنسيق
+        inputEl.classList.remove('input-error');
 
         if (!serial) {
             document.getElementById('issueDateDisplay').value = '';
@@ -436,6 +440,31 @@
             dateInput.style.display = 'none';
             showAllTabs();
             return;
+        }
+
+        // التحقق من أن السيريال يبدأ بـ E- (سواء E كبيرة أو e صغيرة مع توحيدها)
+        var upperSerial = serial.toUpperCase();
+        if (!upperSerial.startsWith('E-') || upperSerial.length <= 2) {
+            inputEl.classList.add('input-error');
+            document.getElementById('issueDateDisplay').value = '';
+            document.getElementById('timeDifferenceDisplay').value = '';
+            statusEl.innerText = '❌ السيريال غلط! لازم يبدأ بـ E-';
+            statusEl.className = 'status-value out';
+            btnManual.style.display = 'none';
+            dateInput.style.display = 'none';
+            ALL_TABS.forEach(function(id) {
+                document.getElementById(id).classList.remove('active-tab');
+                document.getElementById('summary-' + id).classList.remove('active-tab');
+                document.getElementById('btn-' + id).style.display = 'none';
+            });
+            document.getElementById('tabsTitle').innerText = 'برجاء إدخال سيريال صحيح يبدأ بـ E-';
+            return;
+        }
+
+        // توحيد الحرف الأول لـ E- كبيرة في الحقل
+        if (serial !== upperSerial) {
+            inputEl.value = upperSerial;
+            serial = upperSerial;
         }
 
         statusEl.innerText = 'جاري جلب البيانات... ⏳';
@@ -452,7 +481,6 @@
                     statusEl.innerText = '⚠️ السيريال مش موجود أو مفيش تاريخ. برجاء تحديد التاريخ يدوياً.';
                     statusEl.className = 'status-value out';
                     btnManual.style.display = 'block';
-                    // إخفاء كل التبويبات لحد ما يحدد تاريخ
                     ALL_TABS.forEach(function(id) { document.getElementById(id).classList.remove('active-tab'); document.getElementById('summary-' + id).classList.remove('active-tab'); document.getElementById('btn-' + id).style.display = 'none'; });
                 } else {
                     applyDateAndShow(new Date(rawDate));
@@ -462,7 +490,6 @@
                 statusEl.innerText = '⚠️ المتصفح منع الاتصال. يرجى تحديد التاريخ يدوياً.';
                 statusEl.className = 'status-value out';
                 btnManual.style.display = 'block';
-                // إخفاء كل التبويبات
                 ALL_TABS.forEach(function(id) { document.getElementById(id).classList.remove('active-tab'); document.getElementById('summary-' + id).classList.remove('active-tab'); document.getElementById('btn-' + id).style.display = 'none'; });
             });
     }
